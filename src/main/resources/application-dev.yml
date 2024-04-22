@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+    session:
+      timeout: 10m
+
+spring:
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
+
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PW}
+
+mybatis:
+  type-aliases-package: com.hana.app.data.dto
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
