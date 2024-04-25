@@ -1,0 +1,86 @@
+/* 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    border-bottom: 1.5px solid #02875C;
+}
+
+.hamburger-icon {
+    width: 31px;
+    height: 4px;
+    background-color: #D9D9D9;
+    margin: 5px 0;
+}
+
+.nav-icon:hover {
+    cursor: pointer;
+}
+
+.nav-icon:hover .hamburger-icon {
+    background-color: #A0A0A0;
+}
+
+.login-btn {
+    border-radius: 20px;
+    background-color: #008E73;
+    width: 65px;
+    height: 30px;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 30px;
+}
+
+.login-btn:hover {
+    cursor: pointer;
+    background-color: #D80C18;
+}
+
+/* 테블릿 */
+@media screen and (min-width: 768px) and (max-width: 959px) {
+}
+/* 모바일 */
+@media screen and (max-width: 767px) and (orientation: portrait) {
+    /* product */
+    .contents1 {
+        flex: 1 100%;
+    }
+    .proSection3 {
+        flex: 1 100%;
+    }
+    /* business */
+    .businessCard {
+        flex: 1 45%;
+    }
+    .businessImg {
+        height: 180px;
+    }
+    /* cs */
+    .csMain {
+        display: flex;
+        flex-flow: column;
+    }
+    .csSection3 {
+        display: flex;
+        flex-flow: column;
+        padding-top: 10px;
+    }
+
+    /* footer */
+    .footer div a:nth-child(1) {
+        display: none;
+    }
+    .footer div a:nth-child(4) {
+        display: none;
+    }
+    .footer div a:nth-child(5) {
+        display: none;
+    }
+    .footer div span {
+        font-size: 12px;
+    }
+}
