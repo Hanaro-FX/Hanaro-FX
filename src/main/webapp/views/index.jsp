@@ -65,14 +65,16 @@
 <br/>
 
 <!-- Main -->
-<c:choose>
-    <c:when test="${center == null}">
-        <jsp:include page="main.jsp"/>
-    </c:when>
-    <c:otherwise>
-        <jsp:include page="${center}.jsp"/>
-    </c:otherwise>
-</c:choose>
+<div class="main-content">
+    <c:choose>
+        <c:when test="${center == null}">
+            <jsp:include page="main.jsp"/>
+        </c:when>
+        <c:otherwise>
+            <jsp:include page="${center}.jsp"/>
+        </c:otherwise>
+    </c:choose>
+</div>
 
 <!-- Footer -->
 <div class="footer">

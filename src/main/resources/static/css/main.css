@@ -118,6 +118,41 @@
     .sidenav a {font-size: 18px;}
 }
 
+/* Main */
+.banner {
+    padding: 50px 0px 80px 0px;
+    position: relative;
+}
+
+.banner-btn {
+    border-radius: 20px;
+    background-color: #FFE040;
+    width: 20%;
+    height: auto;
+    max-width: 135px;
+    max-height: 50px;
+    color: #03875F;
+    font-weight: bolder;
+    font-size: large;
+    text-align: center;
+    line-height: 50px;
+    position: absolute;
+    top: 63%;
+    left: 45%;
+}
+
+.banner-btn:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 18px transparent;
+    animation: pulse 1s;
+}
+
+@keyframes pulse {
+    from {
+        box-shadow: 0 0 0 0 #ffefa5;
+    }
+}
+
 /* 테블릿 */
 @media screen and (min-width: 768px) and (max-width: 959px) {
 }
