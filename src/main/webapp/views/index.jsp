@@ -39,7 +39,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-auto">
-                    <span class="nav-icon">
+                    <span onclick="openNav()" class="nav-icon">
                         <div class="hamburger-icon"></div>
                         <div class="hamburger-icon"></div>
                         <div class="hamburger-icon"></div>
@@ -48,6 +48,14 @@
             <div class="col-auto">
                 <a class="navbar-brand" href="<c:url value="/"/>"><img src="https://i.ibb.co/N6DJGnw/logo.png" alt="로고" width="55px"></a>
             </div>
+        </div>
+
+        <!-- Side Menu -->
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="<c:url value="/"/>" class="menu-item"><img src="https://i.ibb.co/PcsvJQ2/home-icon.png" alt="home" style="margin-top: -5px; width: 30px">&nbsp; HOME</a>
+            <a href="#" class="menu-item"><img src="https://i.ibb.co/7tPN2jx/mypage-icon.png" alt="mypage" width="30px">&nbsp; MYPAGE</a>
+            <a href="#" class="menu-item"><img src="https://i.ibb.co/MB36wd6/portfolio-icon.png" alt="portfolio" width="30px">&nbsp; PORTFOLIO</a>
         </div>
 
         <!-- Login / Logout -->
@@ -81,5 +89,19 @@
     </div>
 </div>
 
+<script>
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+    }
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    $('html').click(function(e){
+        if(!$(e.target).hasClass('sidenav') && !$(e.target).hasClass('nav-icon') && !$(e.target).hasClass('hamburger-icon')){
+            closeNav();
+        }
+    });
+</script>
 </body>
 </html>
