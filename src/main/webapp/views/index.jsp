@@ -66,5 +66,20 @@
     </c:otherwise>
 </c:choose>
 
+<!-- Footer -->
+<div class="footer">
+    <div class="container text-center">
+        <img src="https://i.ibb.co/7JFLzT3/footer-logo.png" alt="로고" width="55px">
+        <div>
+            <a href="#">서비스 이용약관&nbsp;&nbsp;<span>|</span></a>
+            <a href="#">개인정보 처리방침&nbsp;&nbsp;<span>|</span></a>
+            <a href="https://github.com/Hanaro-FX/Hanaro-FX"><img src="https://i.ibb.co/mDwgHbK/github.png" alt="깃허브" style="margin-top: -5px; width: 25px"></a>
+        </div>
+        <div>
+            <span>Copyright © 2024 Hanaro-FX. All rights reserved.</span>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

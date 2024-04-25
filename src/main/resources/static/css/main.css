@@ -40,6 +40,24 @@
     background-color: #D80C18;
 }
 
+/* Footer */
+.footer {
+    height: 200px;
+    border-top: 1.5px solid #C0C0C0;
+}
+.footer div a {
+    color: black;
+}
+.footer div a:hover {
+    text-decoration: none;
+}
+.footer div span {
+    color: rgb(163, 163, 163);
+}
+.footer div {
+    padding-top: 15px;
+}
+
 /* 테블릿 */
 @media screen and (min-width: 768px) and (max-width: 959px) {
 }
