@@ -4,5 +4,5 @@
 
 <div class="banner">
     <img src="<c:url value="/img/banner.png"/>" alt="banner" style="width: 100%; max-width: 100vw; height: auto;"/>
-    <div class="banner-btn">지금 시작하기</div>
+    <div><img class="banner-btn" src="<c:url value="/img/banner_icon.png"/>" alt="banner" style="width: 9%; height: auto;"/></div>
 </div>
