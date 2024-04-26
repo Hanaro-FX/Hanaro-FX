@@ -64,7 +64,7 @@
     function deletePortfolio(id) {
         let check = confirm('포트폴리오를 삭제하시겠습니까?');
         if (check == true) {
-            location.href = '<c:url value="/mypage/portfolio/delete"/>?id='+id;
+            location.href = '<c:url value="/portfolio/delete"/>?id='+id;
         }
     }
 </script>

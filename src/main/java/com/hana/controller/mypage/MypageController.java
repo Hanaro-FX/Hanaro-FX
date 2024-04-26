@@ -33,12 +33,4 @@ public class MypageController {
         model.addAttribute("center", dir + "mypage");
         return "index";
     }
-
-    // 프트폴리오 삭제
-    @RequestMapping("portfolio/delete")
-    public String deletePortfolio(@RequestParam("id") Integer id) throws Exception {
-        portfolioService.delete(id);
-
-        return "redirect:/mypage";
-    }
 }
