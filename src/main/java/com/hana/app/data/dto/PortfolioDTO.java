@@ -11,7 +11,7 @@ public class PortfolioDTO {
 
     //    0, 1, 3, 6, 12
     private int rebalancing;
-    
+
     private long percentage_AED;
     private long percentage_ARS;
     private long percentage_AUD;
