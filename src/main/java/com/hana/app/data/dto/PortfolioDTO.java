@@ -1,7 +1,13 @@
 package com.hana.app.data.dto;
 
+import lombok.*;
+
 import java.time.LocalDate;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PortfolioDTO {
     private int id;
     private int userId;
