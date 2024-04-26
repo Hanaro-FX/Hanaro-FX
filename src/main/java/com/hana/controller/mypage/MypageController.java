@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,5 +32,13 @@ public class MypageController {
 
         model.addAttribute("center", dir + "mypage");
         return "index";
+    }
+
+    // 프트폴리오 삭제
+    @RequestMapping("portfolio/delete")
+    public String deletePortfolio(@RequestParam("id") Integer id) throws Exception {
+        portfolioService.delete(id);
+
+        return "redirect:/mypage";
     }
 }

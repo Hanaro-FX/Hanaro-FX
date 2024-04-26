@@ -20,8 +20,8 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     }
 
     @Override
-    public int delete(Integer integer) throws Exception {
-        return 0;
+    public int delete(Integer id) throws Exception {
+        return portfolioRepository.delete(id);
     }
 
     @Override
