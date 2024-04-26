@@ -1,0 +1,170 @@
+/* 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    border-bottom: 1.5px solid #02875C;
+}
+
+.hamburger-icon {
+    width: 31px;
+    height: 4px;
+    background-color: #D9D9D9;
+    margin: 5px 0;
+}
+
+.nav-icon:hover {
+    cursor: pointer;
+}
+
+.nav-icon:hover .hamburger-icon {
+    background-color: #A0A0A0;
+}
+
+.login-btn {
+    border-radius: 20px;
+    background-color: #008E73;
+    width: 65px;
+    height: 30px;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 30px;
+}
+
+.login-btn:hover {
+    cursor: pointer;
+    background-color: #D80C18;
+}
+
+/* Footer */
+.footer {
+    height: 200px;
+    border-top: 1.5px solid #C0C0C0;
+}
+.footer div a {
+    color: black;
+}
+.footer div a:hover {
+    text-decoration: none;
+}
+.footer div span {
+    color: rgb(163, 163, 163);
+}
+.footer div {
+    padding-top: 15px;
+}
+
+/* Side Menu */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #02875C;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+}
+
+.menu-item {
+    margin: 5px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.sidenav a:hover {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #008E73;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.sidenav .closebtn:hover {
+    text-decoration: none;
+    background-color: transparent;
+    color: #FFE040;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/* Main */
+.banner {
+    padding: 50px 0px 80px 0px;
+    position: relative;
+}
+
+.banner-btn {
+    border-radius: 20px;
+    background-color: #FFE040;
+    position: absolute;
+    top: 62%;
+    left: 44%;
+}
+
+.banner-btn:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 18px transparent;
+    animation: pulse 1s;
+}
+
+@keyframes pulse {
+    from {
+        box-shadow: 0 0 0 0 #ffefa5;
+    }
+}
+
+/* 테블릿 */
+@media screen and (min-width: 768px) and (max-width: 959px) {
+}
+/* 모바일 */
+@media screen and (max-width: 1100px) {
+    .banner-btn {
+        top: 60%;
+        left: 44%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .banner-btn {
+        top: 57%;
+        left: 44%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .banner-btn {
+        top: 55%;
+        left: 44%;
+    }
+}
