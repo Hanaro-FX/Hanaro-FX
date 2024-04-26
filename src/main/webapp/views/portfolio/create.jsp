@@ -1,6 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
+<style>
+    .main-content {
+        padding: 0px 200px 20px 200px;
+    }
+</style>
+
 <script>
     let create = {
         init: function () {
@@ -11,7 +17,7 @@
     });
 </script>
 
-<div class="container-fluid">
+<div class="container-fluid main-content">
     <form id="assetAllocationForm">
         <!-- Start Year -->
         <div class="row">
@@ -40,12 +46,6 @@
         <div class="row">
             <label for="firstMonth" class="col-form-label col-md-3"
             >First Month
-                <span
-                        class="fa fa-pv-info"
-                        data-bs-toggle="tooltip"
-                        aria-label="Start month for portfolio backtest"
-                        data-bs-original-title="Start month for portfolio backtest"
-                ></span>
             </label>
             <div class="col-md-2">
                 <div class="select-parent">
@@ -92,12 +92,6 @@
         <div class="row">
             <label for="lastMonth" class="col-form-label col-md-3"
             >First Month
-                <span
-                        class="fa fa-pv-info"
-                        data-bs-toggle="tooltip"
-                        aria-label="Start month for portfolio backtest"
-                        data-bs-original-title="Start month for portfolio backtest"
-                ></span>
             </label>
             <div class="col-md-2">
                 <div class="select-parent">
@@ -115,6 +109,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Initial Amount -->
+        <!-- TODO: Review CSS -->
+        <div class="row">
+            <label for="initialAmount" class="col-form-label col-md-3">Initial Amount</label>
+            <div class="col-md-3">
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text">$</span>
+                    <input
+                            type="number"
+                            id="initialAmount"
+                            name="initialAmount"
+                            class="form-control fmt-posint"
+                            value="10000"
+                            placeholder="Amount..."
+                            autocomplete="off"
+                    />
+                    <span class="input-group-text">.00</span>
+                </div>
+            </div>
+        </div>
+
+
 
     </form>
 </div>
