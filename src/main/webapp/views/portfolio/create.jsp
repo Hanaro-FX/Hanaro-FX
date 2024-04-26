@@ -50,13 +50,16 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
+    let i = 2;
     let create = {
         init: function () {
-            this.dummy(2);
+
+            $('#addButton').click(() => {
+                this.dummy(i++);
+            });
         },
 
         dummy: function (i) {
-
             let rowDiv = document.createElement("div");
             rowDiv.classList.add("row", "asset-row");
 
@@ -74,7 +77,6 @@
 
             let selectParent = document.createElement("div");
             selectParent.classList.add("select-parent");
-
 
             let select = this.addSelect(i);
 
@@ -95,6 +97,7 @@
             input.id = "allocation" + i;
             input.name = "allocation" + i;
             input.classList.add("form-control", "fmt-pospct", "asset-weight");
+            input.onchange = this.sumPercentages;
 
             let percentSpan = document.createElement("span");
             percentSpan.classList.add("input-group-text");
@@ -106,7 +109,6 @@
             rowDiv.append(percentage);
 
             document.getElementById("pfSection").append(rowDiv);
-
         },
 
         addSelect: function (i) {
@@ -115,13 +117,16 @@
             assetSelect.name = "asset" + i;
             assetSelect.classList.add("form-control", "form-select");
 
+            let defaultOption = document.createElement("option");
+            defaultOption.innerText = "Select Currency";
+
             let asiaGroup = this.addCountries("Asia", asianCountries);
             let africaGroup = this.addCountries("Africa", africanCountries);
             let northAmericaGroup = this.addCountries("North America", northAmericanCountries);
             let southAmericaGroup = this.addCountries("South America", southAmericanCountries);
             let europeGroup = this.addCountries("Europe", europeanCountries);
 
-            assetSelect.append(asiaGroup, africaGroup, northAmericaGroup, southAmericaGroup, europeGroup);
+            assetSelect.append(defaultOption, asiaGroup, africaGroup, northAmericaGroup, southAmericaGroup, europeGroup);
             return assetSelect;
         },
 
@@ -134,13 +139,45 @@
                 country.textContent = x.emoji + " " + x.currencyCode + "(" + x.currencyName + ")";
                 group.append(country);
             })
-
             return group;
+        },
+
+        sumPercentages: function () {
+            let total = 0;
+            for (let j = 1; j <= i; j++) {
+                let allocationInput = document.getElementById("allocation" + j);
+                if (allocationInput) {
+                    let value = parseFloat(allocationInput.value);
+                    if (!isNaN(value)) {
+                        total += value;
+                    }
+                }
+            }
+            let totalCell = document.getElementById("total1");
+
+            totalCell.value = total;
+
+            if (total > 100) {
+                totalCell.style.backgroundColor = 'rgb(255, 200, 200)';
+            } else {
+                totalCell.style.backgroundColor = 'rgb(223, 240, 216)';
+            }
+
         }
     };
     $(function () {
         create.init();
     });
+
+    function checkTotal(input) {
+        let total = parseFloat(input.value);
+        console.log(input.value);
+        if (isNaN(total) || total <= 100) {
+            input.style.backgroundColor = 'rgb(223, 240, 216)';
+        } else {
+            input.style.backgroundColor = 'rgb(255, 200, 200)';
+        }
+    }
 </script>
 <div
         id="pfSection"
@@ -196,7 +233,7 @@
     </div>
 </div>
 
-<button>ADD</button>
+<button id="addButton">ADD</button>
 <div class="row topBorder totals-row">
     <div class="col-md-2 separateTop"><b>Total</b></div>
     <div class="col-md-2 offset-md-4 totals-column">
@@ -210,11 +247,10 @@
                     autocomplete="off"
                     style="background-color: rgb(223, 240, 216)"
             />
-            <label class="visually-hidden" for="total1" style="display: none"
-            >Total allocation for portfolio 1</label
-            >
+            <label class="visually-hidden" for="total1" style="display: none">Total allocation for portfolio 1</label>
             <span class="input-group-text">%</span>
         </div>
     </div>
 </div>
-</div>
+
+<button id="submitButton">SUBMIT</button>
