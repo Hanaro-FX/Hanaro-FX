@@ -131,7 +131,24 @@
             </div>
         </div>
 
-
+        <div class="row">
+            <label for="rebalanceType" class="col-form-label col-md-3">Rebalancing</label>
+            <div class="col-md-3">
+                <div class="select-parent">
+                    <select
+                            id="rebalanceType"
+                            name="rebalanceType"
+                            class="form-control form-select"
+                    >
+                        <option value="0" selected="">No rebalancing</option>
+                        <option value="12">년마다 Rebalance</option>
+                        <option value="6">반년마다 Rebalance</option>
+                        <option value="3">분기마다 Rebalance</option>
+                        <option value="1">매달 Rebalance</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
     </form>
 </div>
