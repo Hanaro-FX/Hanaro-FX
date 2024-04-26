@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <c:forEach var="portfolio" items="${portfolioList}">
-                <tr>
+                <tr onclick="redirectResult(${portfolio.id})">
                     <td>${portfolio.portfolioDate}</td>
                     <td>
                         <c:choose>
@@ -59,6 +59,11 @@
         icon.addEventListener('mouseover', onMouseOver);
         icon.addEventListener('mouseout', onMouseOut);
     });
+
+    // 결과 페이지 이동
+    function redirectResult(id) {
+        window.location.href = '<c:url value="/portfolio/result"/>?id='+id;
+    }
 
     // delete
     function deletePortfolio(id) {

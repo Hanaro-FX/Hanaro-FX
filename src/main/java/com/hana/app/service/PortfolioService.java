@@ -39,6 +39,11 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
         return null;
     }
 
+    // 포트폴리오페이지 - 포트폴리오 데이터 가져오기
+    public PortfolioDTO getPortfolio(Integer id) throws Exception {
+        return portfolioRepository.selectOne(id);
+    }
+
     // 마이페이지 - 사용자의 포트폴리오 목록 가져오기
     public List<PortfolioDTO> getPortfolioList(Integer userId) throws Exception {
         return portfolioRepository.selectByUserId(userId);
