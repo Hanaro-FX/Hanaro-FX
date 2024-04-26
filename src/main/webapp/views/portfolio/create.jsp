@@ -50,7 +50,7 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
-    let i = 2;
+    let i = 1;
     let create = {
         init: function () {
 
@@ -179,6 +179,14 @@
         }
     }
 </script>
+<figure>
+    <blockquote class="blockquote">
+        <h1>Portfolio Composition.</h1>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+        Be considerate
+    </figcaption>
+</figure>
 <div
         id="pfSection"
         class="portfolio-section pv-asset-classes pv-allow-expansion pv-multiple"
@@ -197,37 +205,6 @@
                     id="allocation-menu-1"
                     class="dropdown d-inline-block allocation-menu px-2"
             >
-            </div>
-        </div>
-    </div>
-    <div class="row highlightRow asset-row">
-        <div class="col-md-2 separateTop">Asset 1</div>
-        <div class="col-md-4 asset-column">
-            <label style="display:none;" for="asset1">Select asset 1</label>
-            <div class="select-parent">
-                <select
-                        id="asset1"
-                        name="asset1"
-                        class="form-control form-select"
-                >
-                    <option value="">Select asset class...</option>
-                    <%-- Add Here --%>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="input-group flex-nowrap smallMargin">
-                <input
-                        type="number"
-                        id="allocation1_1"
-                        name="allocation1_1"
-                        class="form-control fmt-pospct asset-weight"
-                        value="60"
-                        autocomplete="off"
-                />
-                <label class="visually-hidden" for="allocation1_1" style="display: none;">Enter percentage allocation
-                    for asset 1 in portfolio 1</label>
-                <span class="input-group-text">%</span>
             </div>
         </div>
     </div>
@@ -253,4 +230,4 @@
     </div>
 </div>
 
-<button id="submitButton">SUBMIT</button>
+<button id="submitButton">CREATE</button>
