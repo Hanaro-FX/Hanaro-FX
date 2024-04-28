@@ -34,7 +34,7 @@
                     <td>${portfolio.portfolioDesc}</td>
                     <td>
                         <i class="fa-regular fa-pen-to-square" style="color: #316ed8;"></i>&nbsp;&nbsp;
-                        <i class="fa-regular fa-trash-can" onclick="deletePortfolio(${portfolio.id})" style="color: #ff0000;"></i>
+                        <i class="fa-regular fa-trash-can" onclick="deletePortfolio(event, ${portfolio.id})" style="color: #ff0000;"></i>
                     </td>
                 </tr>
             </c:forEach>
@@ -66,7 +66,8 @@
     }
 
     // delete
-    function deletePortfolio(id) {
+    function deletePortfolio(event, id) {
+        event.stopPropagation(); // 이벤트 버블링 중지
         let check = confirm('포트폴리오를 삭제하시겠습니까?');
         if (check == true) {
             location.href = '<c:url value="/portfolio/delete"/>?id='+id;
