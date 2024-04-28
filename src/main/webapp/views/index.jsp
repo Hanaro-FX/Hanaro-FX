@@ -34,6 +34,9 @@
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/aa90a3ea04.js" crossorigin="anonymous"></script>
+
+    <!--PieChart API -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 

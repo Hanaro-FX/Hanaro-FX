@@ -1,0 +1,30 @@
+.main-content {
+    padding: 30px 100px 50px 200px;
+}
+
+#startYear, #firstMonth, #endYear, #lastMonth, #rebalanceType {
+    width: 200px;
+}
+
+.test-btn-box {
+    text-align: center;
+}
+
+.test-btn {
+    border: 1.5px solid #02875C;
+    border-radius: 20px;
+    width: 60px;
+    height: 30px;
+    font-weight: normal;
+    text-align: center;
+    color: #02875C;
+    line-height: 30px;
+    display: inline-block;
+    margin-right: 100px;
+}
+
+.test-btn:hover {
+    cursor: pointer;
+    background-color: #02875C;
+    color: white;
+}

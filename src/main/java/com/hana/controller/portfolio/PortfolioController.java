@@ -21,8 +21,8 @@ public class PortfolioController {
 
     @RequestMapping("/result")
     public String resultPage(@RequestParam("id") Integer id, Model model) throws Exception {
-        // 포트폴리오 목록 불러오기
-        PortfolioDTO portfolio = portfolioService.getPortfolio(id);
+        // 포트폴리오 데이터 불러오기
+        PortfolioDTO portfolio = portfolioService.selectOne(id);
         model.addAttribute("portfolio", portfolio);
 
         model.addAttribute("center", dir + "result");
