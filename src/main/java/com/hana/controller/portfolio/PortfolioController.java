@@ -1,5 +1,6 @@
 package com.hana.controller.portfolio;
 
+import com.hana.app.data.dto.PortfolioDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,11 @@ public class PortfolioController {
     @RequestMapping("/create")
     public String portfolioCreateView(Model model) {
         model.addAttribute("center", dir + "create");
+        return "index";
+    }
+
+    @RequestMapping("/createImpl")
+    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) {
         return "index";
     }
 }

@@ -2,13 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <script>
-    let result
-    .jsp = {
+    let result = {
         init: function () {
         }
     };
     $(function () {
-        result.jsp.init();
+        result.init();
     });
 </script>
 
