@@ -61,7 +61,14 @@
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
 
                 for (let j = 1; j < i; j++) {
-                    dict[$('#asset' + j).val()] = Number.parseFloat($('#allocation' + j).val());
+                    let key = $('#asset' + j).val();
+                    let v = Number.parseFloat($('#allocation' + j).val());
+                    dict[key] = v;
+                    if (key == "Select Currency" || v == 0) {
+                        alert("Wrong Input");
+                        return;
+                    }
+
                 }
 
                 console.log(dict);
@@ -205,19 +212,16 @@
         }
     }
 </script>
-<figure>
-    <blockquote class="blockquote">
-        <h1>Portfolio Composition.</h1>
-    </blockquote>
-</figure>
 <div>
     <label for="portfolioName">포트폴리오 이름</label>
     <br>
     <input id="portfolioName"/>
     <br>
+    <br>
     <label for="portfolioDescription">포트폴리오 상세</label>
     <br>
     <input id="portfolioDescription"/>
+    <br>
     <br>
     <label for="rebalancing">리밸런싱 주기</label>
     <select
@@ -233,6 +237,7 @@
         <option value="1">Rebalance monthly</option>
     </select>
 </div>
+<hr>
 <div
         id="pfSection"
         class="portfolio-section pv-asset-classes pv-allow-expansion pv-multiple"
