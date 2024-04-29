@@ -53,7 +53,27 @@
     let i = 1;
     let create = {
         init: function () {
+            $('#submitButton').click(() => {
+                let dict = {};
 
+                for (let j = 1; j < i; j++) {
+                    dict[$('#asset' + j).val()] = Number.parseFloat($('#allocation' + j).val());
+                }
+
+                $.ajax({
+                    url: 'portfolio/create',
+                    success: function (data) {
+                        console.log(data);
+                        alert("COMPLETE");
+                    },
+                    error: function () {
+
+                    },
+                });
+
+                console.log(dict);
+
+            });
             $('#addButton').click(() => {
                 this.dummy(i++);
             });
@@ -135,7 +155,7 @@
             group.label = continent
             countries.forEach((x) => {
                 let country = document.createElement("option");
-                country.value = x.name;
+                country.value = "percentage_" + x.currencyCode;
                 country.textContent = x.emoji + " " + x.currencyCode + "(" + x.currencyName + ")";
                 group.append(country);
             })
