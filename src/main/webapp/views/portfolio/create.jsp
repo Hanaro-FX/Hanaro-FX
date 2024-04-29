@@ -66,7 +66,8 @@
                 console.log(dict);
 
                 $.ajax({
-                    url: 'portfolio/createImpl',
+                    url: '/portfolio/createImpl',
+                    data: dict,
                     success: function (data) {
                         console.log(data);
                         alert("COMPLETE");
@@ -75,7 +76,6 @@
 
                     },
                 });
-
 
 
             });

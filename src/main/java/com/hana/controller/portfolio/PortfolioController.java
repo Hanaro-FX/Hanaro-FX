@@ -20,9 +20,4 @@ public class PortfolioController {
         model.addAttribute("center", dir + "create");
         return "index";
     }
-
-    @RequestMapping("/createImpl")
-    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) {
-        return "index";
-    }
 }
