@@ -7,6 +7,7 @@
     }
 </style>
 
+<%-- TODO: Data input verification--%>
 
 <script>
     const asianCountries = [
@@ -160,7 +161,7 @@
             group.label = continent
             countries.forEach((x) => {
                 let country = document.createElement("option");
-                country.value = "percentage_" + x.currencyCode;
+                country.value = "percentage" + x.currencyCode;
                 country.textContent = x.emoji + " " + x.currencyCode + "(" + x.currencyName + ")";
                 group.append(country);
             })

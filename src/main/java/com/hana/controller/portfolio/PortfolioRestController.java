@@ -19,6 +19,7 @@ public class PortfolioRestController {
     public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
         log.info(portfolioDTO.toString());
         portfolioService.insert(portfolioDTO);
+        model.addAttribute("center", "/");
         return "index";
     }
 }
