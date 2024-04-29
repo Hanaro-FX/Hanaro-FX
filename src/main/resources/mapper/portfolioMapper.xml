@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hana.app.repository.PortfolioRepository">
+    <insert id="insert" parameterType="portfolioDTO">
+        INSERT INTO portfolio
+        VALUES (0,
+                #{userId},
+                #{portfolioName},
+                #{portfolioDesc},
+                NOW(),
+                #{rebalancing},
+                #{percentage_AED},
+                #{percentage_ARS},
+                #{percentage_AUD},
+                #{percentage_BHD},
+                #{percentage_CAD},
+                #{percentage_CHF},
+                #{percentage_CNY},
+                #{percentage_DKK},
+                #{percentage_EUR},
+                #{percentage_GBP},
+                #{percentage_HKD},
+                #{percentage_HUF},
+                #{percentage_IDR},
+                #{percentage_ILS},
+                #{percentage_INR},
+                #{percentage_JPY},
+                #{percentage_KWD},
+                #{percentage_MXN},
+                #{percentage_MYR},
+                #{percentage_NOK},
+                #{percentage_NZD},
+                #{percentage_PHP},
+                #{percentage_PKR},
+                #{percentage_PLN},
+                #{percentage_QAR},
+                #{percentage_RUB},
+                #{percentage_SAR},
+                #{percentage_SEK},
+                #{percentage_SGD},
+                #{percentage_THB},
+                #{percentage_TRY},
+                #{percentage_TWD},
+                #{percentage_USD},
+                #{percentage_VND},
+                #{percentage_XAG},
+                #{percentage_XAU},
+                #{percentage_ZAR})
+    </insert>
+
+
+    <!-- Update and Delete not required -->
+
+</mapper>

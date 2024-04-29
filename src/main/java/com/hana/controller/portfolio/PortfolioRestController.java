@@ -16,8 +16,9 @@ public class PortfolioRestController {
     final PortfolioService portfolioService;
 
     @RequestMapping("/createImpl")
-    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) {
+    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
         log.info(portfolioDTO.toString());
+        portfolioService.insert(portfolioDTO);
         return "index";
     }
 }
