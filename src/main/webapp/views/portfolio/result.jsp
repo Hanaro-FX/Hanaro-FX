@@ -5,15 +5,226 @@
 
 <link rel="stylesheet" href="<c:url value="/css/portfolio/result.css"/>"/>
 
+<!--PieChart API -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- Datepicker -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery-ui-monthpicker@1.0.3/jquery.ui.monthpicker.min.js"></script>
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/aa90a3ea04.js" crossorigin="anonymous"></script>
+
 <script>
+
     let result = {
         init: function () {
+            $('#startDate').monthpicker({
+                startYear: 2000,
+                finalYear: new Date().getFullYear(),
+                monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
+                monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                showOn: "button",
+                buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
+                buttonImageOnly: true,
+                changeYear: true,
+                minDate: new Date(2000, 0),
+                maxDate: new Date(),
+                yearRange: '2000:c',
+                dateFormat: 'yy-mm',
+                onSelect: function (selected) {
+                    let selectedMonth = $('#startDate').monthpicker('getDate');
+                    selectedMonth.setMonth(selectedMonth.getMonth() + 1);
+                    $('#endDate').monthpicker('option', 'minDate', selectedMonth);
+                    $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
+                }
+            });
 
-            google.charts.load('current', {'packages': ['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
+            $('#endDate').monthpicker({
+                startYear: 2000,
+                finalYear: new Date().getFullYear(),
+                monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
+                monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                showOn: "button",
+                buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
+                buttonImageOnly: true,
+                changeYear: true,
+                minDate: new Date(2000, 0),
+                maxDate: new Date(),
+                yearRange: '2000:c',
+                dateFormat: 'yy-mm',
+                onSelect: function (selected) {
+                    let selectedMonth = $('#endDate').monthpicker('getDate');
+                    selectedMonth.setMonth(selectedMonth.getMonth() - 1);
+                    $('#startDate').monthpicker('option', 'maxDate', selectedMonth);
+                    $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
+                }
+            });
 
-            function drawChart() {
-                currencyData = getData();
+            $.ajax({
+                url: '<c:url value="/portfolio/resultImpl"/>',
+                data: {'id': ${id}},
+                success: function (data) {
+                    google.charts.load('current', {'packages': ['corechart']});
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(data);
+                    });
+                }
+            })
+
+            let getData = function (dd) {
+                {
+                    let portfolio = dd;
+                    data = [];
+
+                    if (portfolio.percentageAED !== 0) {
+                        data.push(['🇦🇪AED', portfolio.percentageAED]);
+                    }
+                    if (portfolio.percentageARS !== 0) {
+                        data.push(['🇦🇷ARS', portfolio.percentageARS]);
+                    }
+
+                    if (portfolio.percentageAUD !== 0) {
+                        data.push(['🇦🇺AUD', portfolio.percentageAUD]);
+                    }
+
+                    if (portfolio.percentageBHD !== 0) {
+                        data.push(['🇧🇭BHD', portfolio.percentageBHD]);
+                    }
+
+                    if (portfolio.percentageCAD !== 0) {
+                        data.push(['🇨🇦CAD', portfolio.percentageCAD]);
+                    }
+
+                    if (portfolio.percentageCHF !== 0) {
+                        data.push(['🇨🇭CHF', portfolio.percentageCHF]);
+                    }
+
+                    if (portfolio.percentageCNY !== 0) {
+                        data.push(['🇨🇳CNY', portfolio.percentageCNY]);
+                    }
+
+                    if (portfolio.percentageDKK !== 0) {
+                        data.push(['🇩🇰DKK', portfolio.percentageDKK]);
+                    }
+
+                    if (portfolio.percentageEUR !== 0) {
+                        data.push(['🇪🇺EUR', portfolio.percentageEUR]);
+                    }
+
+                    if (portfolio.percentageGBP !== 0) {
+                        data.push(['🇬🇧GBP', portfolio.percentageGBP]);
+                    }
+
+                    if (portfolio.percentageHKD !== 0) {
+                        data.push(['🇭🇰HKD', portfolio.percentageHKD]);
+                    }
+
+                    if (portfolio.percentageHUF !== 0) {
+                        data.push(['🇭🇺HUF', portfolio.percentageHUF]);
+                    }
+
+                    if (portfolio.percentageIDR !== 0) {
+                        data.push(['🇮🇩IDR', portfolio.percentageIDR]);
+                    }
+
+                    if (portfolio.percentageILS !== 0) {
+                        data.push(['🇮🇱ILS', portfolio.percentageILS]);
+                    }
+
+                    if (portfolio.percentageINR !== 0) {
+                        data.push(['🇮🇳INR', portfolio.percentageINR]);
+                    }
+
+                    if (portfolio.percentageJPY !== 0) {
+                        data.push(['🇯🇵JPY', portfolio.percentageJPY]);
+                    }
+
+                    if (portfolio.percentageKWD !== 0) {
+                        data.push(['🇰🇼KWD', portfolio.percentageKWD]);
+                    }
+
+                    if (portfolio.percentageMXN !== 0) {
+                        data.push(['🇲🇽MXN', portfolio.percentageMXN]);
+                    }
+
+                    if (portfolio.percentageMYR !== 0) {
+                        data.push(['🇲🇾MYR', portfolio.percentageMYR]);
+                    }
+
+                    if (portfolio.percentageNOK !== 0) {
+                        data.push(['🇳🇴NOK', portfolio.percentageNOK]);
+                    }
+
+                    if (portfolio.percentageNZD !== 0) {
+                        data.push(['🇳🇿NZD', portfolio.percentageNZD]);
+                    }
+
+                    if (portfolio.percentagePHP !== 0) {
+                        data.push(['🇵🇭PHP', portfolio.percentagePHP]);
+                    }
+
+                    if (portfolio.percentagePKR !== 0) {
+                        data.push(['🇵🇰PKR', portfolio.percentagePKR]);
+                    }
+
+                    if (portfolio.percentagePLN !== 0) {
+                        data.push(['🇵🇱PLN', portfolio.percentagePLN]);
+                    }
+
+                    if (portfolio.percentageQAR !== 0) {
+                        data.push(['🇶🇦QAR', portfolio.percentageQAR]);
+                    }
+
+                    if (portfolio.percentageRUB !== 0) {
+                        data.push(['🇷🇺RUB', portfolio.percentageRUB]);
+                    }
+
+                    if (portfolio.percentageSAR !== 0) {
+                        data.push(['🇸🇦SAR', portfolio.percentageSAR]);
+                    }
+
+                    if (portfolio.percentageSEK !== 0) {
+                        data.push(['🇸🇪SEK', portfolio.percentageSEK]);
+                    }
+
+                    if (portfolio.percentageSGD !== 0) {
+                        data.push(['🇸🇬SGD', portfolio.percentageSGD]);
+                    }
+
+                    if (portfolio.percentageTHB !== 0) {
+                        data.push(['🇹🇭THB', portfolio.percentageTHB]);
+                    }
+
+                    if (portfolio.percentageTRY !== 0) {
+                        data.push(['🇹🇷TRY', portfolio.percentageTRY]);
+                    }
+
+                    if (portfolio.percentageTWD !== 0) {
+                        data.push(['🇹🇼TWD', portfolio.percentageTWD]);
+                    }
+
+                    if (portfolio.percentageUSD !== 0) {
+                        data.push(['🇺🇸USD', portfolio.percentageUSD]);
+                    }
+
+                    if (portfolio.percentageVND !== 0) {
+                        data.push(['🇻🇳VND', portfolio.percentageVND]);
+                    }
+
+                    if (portfolio.percentageZAR !== 0) {
+                        data.push(['🇿🇦ZAR', portfolio.percentageZAR]);
+                    }
+
+                    return data;
+                }
+            }
+
+            let drawChart = function (dd) {
+                let currencyData = getData(dd);
+                console.log(currencyData);
 
                 let data = google.visualization.arrayToDataTable([
                     ['Currency', 'Ratio'],
@@ -40,307 +251,9 @@
                 chart.draw(data, options);
             }
 
-            function getData() {
-                data = [];
-
-                if (${portfolio.percentageAED} !=
-                0
-            )
-                {
-                    data.push(['🇦🇪AED', ${portfolio.percentageAED}]);
-                }
-
-
-                if (${portfolio.percentageARS} !=
-                0
-            )
-                {
-                    data.push(['🇦🇷ARS', ${portfolio.percentageARS}]);
-                }
-
-
-                if (${portfolio.percentageAUD} !=
-                0
-            )
-                {
-                    data.push(['🇦🇺AUD', ${portfolio.percentageAUD}]);
-                }
-
-
-                if (${portfolio.percentageBHD} !=
-                0
-            )
-                {
-                    data.push(['🇧🇭BHD', ${portfolio.percentageBHD}]);
-                }
-
-
-                if (${portfolio.percentageCAD} !=
-                0
-            )
-                {
-                    data.push(['🇨🇦CAD', ${portfolio.percentageCAD}]);
-                }
-
-
-                if (${portfolio.percentageCHF} !=
-                0
-            )
-                {
-                    data.push(['🇨🇭CHF', ${portfolio.percentageCHF}]);
-                }
-
-
-                if (${portfolio.percentageCNY} !=
-                0
-            )
-                {
-                    data.push(['🇨🇳CNY', ${portfolio.percentageCNY}]);
-                }
-
-
-                if (${portfolio.percentageDKK} !=
-                0
-            )
-                {
-                    data.push(['🇩🇰DKK', ${portfolio.percentageDKK}]);
-                }
-
-                if (${portfolio.percentageEUR} !=
-                0
-            )
-                {
-                    data.push(['🇪🇺EUR', ${portfolio.percentageEUR}]);
-                }
-
-                if (${portfolio.percentageGBP} !=
-                0
-            )
-                {
-                    data.push(['🇬🇧GBP', ${portfolio.percentageGBP}]);
-                }
-
-                if (${portfolio.percentageHKD} !=
-                0
-            )
-                {
-                    data.push(['🇭🇰HKD', ${portfolio.percentageHKD}]);
-                }
-
-                if (${portfolio.percentageHUF} !=
-                0
-            )
-                {
-                    data.push(['🇭🇺HUF', ${portfolio.percentageHUF}]);
-                }
-
-                if (${portfolio.percentageIDR} !=
-                0
-            )
-                {
-                    data.push(['🇮🇩IDR', ${portfolio.percentageIDR}]);
-                }
-
-                if (${portfolio.percentageILS} !=
-                0
-            )
-                {
-                    data.push(['🇮🇱ILS', ${portfolio.percentageILS}]);
-                }
-
-                if (${portfolio.percentageINR} !=
-                0
-            )
-                {
-                    data.push(['🇮🇳INR', ${portfolio.percentageINR}]);
-                }
-
-                if (${portfolio.percentageJPY} !=
-                0
-            )
-                {
-                    data.push(['🇯🇵JPY', ${portfolio.percentageJPY}]);
-                }
-
-                if (${portfolio.percentageKWD} !=
-                0
-            )
-                {
-                    data.push(['🇰🇼KWD', ${portfolio.percentageKWD}]);
-                }
-
-                if (${portfolio.percentageMXN} !=
-                0
-            )
-                {
-                    data.push(['🇲🇽MXN', ${portfolio.percentageMXN}]);
-                }
-
-                if (${portfolio.percentageMYR} !=
-                0
-            )
-                {
-                    data.push(['🇲🇾MYR', ${portfolio.percentageMYR}]);
-                }
-
-                if (${portfolio.percentageNOK} !=
-                0
-            )
-                {
-                    data.push(['🇳🇴NOK', ${portfolio.percentageNOK}]);
-                }
-
-                if (${portfolio.percentageNZD} !=
-                0
-            )
-                {
-                    data.push(['🇳🇿NZD', ${portfolio.percentageNZD}]);
-                }
-
-                if (${portfolio.percentagePHP} !=
-                0
-            )
-                {
-                    data.push(['🇵🇭PHP', ${portfolio.percentagePHP}]);
-                }
-
-                if (${portfolio.percentagePKR} !=
-                0
-            )
-                {
-                    data.push(['🇵🇰PKR', ${portfolio.percentagePKR}]);
-                }
-
-                if (${portfolio.percentagePLN} !=
-                0
-            )
-                {
-                    data.push(['🇵🇱PLN', ${portfolio.percentagePLN}]);
-                }
-
-                if (${portfolio.percentageQAR} !=
-                0
-            )
-                {
-                    data.push(['🇶🇦QAR', ${portfolio.percentageQAR}]);
-                }
-
-                if (${portfolio.percentageRUB} !=
-                0
-            )
-                {
-                    data.push(['🇷🇺RUB', ${portfolio.percentageRUB}]);
-                }
-
-                if (${portfolio.percentageSAR} !=
-                0
-            )
-                {
-                    data.push(['🇸🇦SAR', ${portfolio.percentageSAR}]);
-                }
-
-                if (${portfolio.percentageSEK} !=
-                0
-            )
-                {
-                    data.push(['🇸🇪SEK', ${portfolio.percentageSEK}]);
-                }
-
-                if (${portfolio.percentageSGD} !=
-                0
-            )
-                {
-                    data.push(['🇸🇬SGD', ${portfolio.percentageSGD}]);
-                }
-
-                if (${portfolio.percentageTHB} !=
-                0
-            )
-                {
-                    data.push(['🇹🇭THB', ${portfolio.percentageTHB}]);
-                }
-
-                if (${portfolio.percentageTRY} !=
-                0
-            )
-                {
-                    data.push(['🇹🇷TRY', ${portfolio.percentageTRY}]);
-                }
-
-                if (${portfolio.percentageTWD} !=
-                0
-            )
-                {
-                    data.push(['🇹🇼TWD', ${portfolio.percentageTWD}]);
-                }
-
-                if (${portfolio.percentageUSD} !=
-                0
-            )
-                {
-                    data.push(['🇺🇸USD', ${portfolio.percentageUSD}]);
-                }
-
-                if (${portfolio.percentageVND} !=
-                0
-            )
-                {
-                    data.push(['🇻🇳VND', ${portfolio.percentageVND}]);
-                }
-
-                if (${portfolio.percentageZAR} !=
-                0
-            )
-                {
-                    data.push(['🇿🇦ZAR', ${portfolio.percentageZAR}]);
-                }
-
-                return data;
-            }
         }
     };
-    $(function () {
-        $('#startDate').monthpicker({
-            startYear: 2000,
-            finalYear: new Date().getFullYear(),
-            monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
-            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            showOn: "button",
-            buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
-            buttonImageOnly: true,
-            changeYear: true,
-            minDate: new Date(2000, 0),
-            maxDate: new Date(),
-            yearRange: '2000:c',
-            dateFormat: 'yy-mm',
-            onSelect: function (selected) {
-                let selectedMonth = $('#startDate').monthpicker('getDate');
-                selectedMonth.setMonth(selectedMonth.getMonth() + 1);
-                $('#endDate').monthpicker('option', 'minDate', selectedMonth);
-                $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
-            }
-        });
-        $('#endDate').monthpicker({
-            startYear: 2000,
-            finalYear: new Date().getFullYear(),
-            monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
-            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            showOn: "button",
-            buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
-            buttonImageOnly: true,
-            changeYear: true,
-            minDate: new Date(2000, 0),
-            maxDate: new Date(),
-            yearRange: '2000:c',
-            dateFormat: 'yy-mm',
-            onSelect: function (selected) {
-                let selectedMonth = $('#endDate').monthpicker('getDate');
-                selectedMonth.setMonth(selectedMonth.getMonth() - 1);
-                $('#startDate').monthpicker('option', 'maxDate', selectedMonth);
-                $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
-            }
-        });
-    });
+
     $(function () {
         result.init();
     });
