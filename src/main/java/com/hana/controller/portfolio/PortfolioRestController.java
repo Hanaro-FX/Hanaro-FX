@@ -34,10 +34,12 @@ public class PortfolioRestController {
     }
 
     @RequestMapping("/testImpl")
-    public Object calcResult(@RequestBody PortfolioQueryDTO[] requestData) {
+    public Object calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
         // requestData를 사용하여 필요한 작업 수행
         for (PortfolioQueryDTO requestDatum : requestData) {
-            log.info(requestDatum.toString());
+            PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).initialAmount(requestDatum.getPercentage() * requestDatum.getInitialAmount() / 100).build();
+            log.info(portfolioQueryDTO.toString());
+            log.info(String.valueOf(portfolioService.getCurrencyByCountryDate(portfolioQueryDTO)));
         }
 
         return null;
