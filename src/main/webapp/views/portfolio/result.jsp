@@ -23,8 +23,12 @@
                 buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
                 buttonImageOnly: true,
                 minDate: new Date(2000, 0),
-                maxDate: new Date(),
+                maxDate: new Date(2024, 2, 31),
                 yearRange: '2000:c',
+                beforeShowDay: function(date) {
+                    let day = date.getDay();
+                    return [(day !== 0 && day !== 6), ''];
+                },
                 onSelect: function(selected) {
                     let selectedDate = $('#startDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() + 1);
@@ -46,8 +50,12 @@
                 buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
                 buttonImageOnly: true,
                 minDate: new Date(2000, 0),
-                maxDate: new Date(),
+                maxDate: new Date(2024, 2, 31),
                 yearRange: '2000:c',
+                beforeShowDay: function(date) {
+                    let day = date.getDay();
+                    return [(day !== 0 && day !== 6), ''];
+                },
                 onSelect: function(selected) {
                     let selectedDate = $('#endDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() - 1);
