@@ -10,34 +10,35 @@
     <br/>
     <table class="table" id="board_table">
         <thead>
-            <tr>
-                <th>생성일</th>
-                <th>이름</th>
-                <th>설명</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>생성일</th>
+            <th>이름</th>
+            <th>설명</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            <c:forEach var="portfolio" items="${portfolioList}">
-                <tr>
-                    <td>${portfolio.portfolioDate}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${empty portfolio.portfolioName}">
-                                제목 없는 포트폴리오
-                            </c:when>
-                            <c:otherwise>
-                                ${portfolio.portfolioName}
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td>${portfolio.portfolioDesc}</td>
-                    <td>
-                        <i class="fa-regular fa-pen-to-square" style="color: #316ed8;"></i>&nbsp;&nbsp;
-                        <i class="fa-regular fa-trash-can" onclick="deletePortfolio(${portfolio.id})" style="color: #ff0000;"></i>
-                    </td>
-                </tr>
-            </c:forEach>
+        <c:forEach var="portfolio" items="${portfolioList}">
+            <tr onclick="redirectResult(${portfolio.id})">
+                <td>${portfolio.portfolioDate}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${empty portfolio.portfolioName}">
+                            제목 없는 포트폴리오
+                        </c:when>
+                        <c:otherwise>
+                            ${portfolio.portfolioName}
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>${portfolio.portfolioDesc}</td>
+                <td>
+                    <i class="fa-regular fa-pen-to-square" style="color: #316ed8;"></i>&nbsp;&nbsp;
+                    <i class="fa-regular fa-trash-can" onclick="deletePortfolio(event, ${portfolio.id})"
+                       style="color: #ff0000;"></i>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
@@ -55,16 +56,22 @@
         this.classList.add('fa-regular');
     }
 
-    icons.forEach(function(icon) {
+    icons.forEach(function (icon) {
         icon.addEventListener('mouseover', onMouseOver);
         icon.addEventListener('mouseout', onMouseOut);
     });
 
+    // 결과 페이지 이동
+    function redirectResult(id) {
+        window.location.href = '<c:url value="/portfolio/result"/>?id=' + id;
+    }
+
     // delete
-    function deletePortfolio(id) {
+    function deletePortfolio(event, id) {
+        event.stopPropagation(); // 이벤트 버블링 중지
         let check = confirm('포트폴리오를 삭제하시겠습니까?');
         if (check == true) {
-            location.href = '<c:url value="/portfolio/delete"/>?id='+id;
+            location.href = '<c:url value="/portfolio/delete"/>?id=' + id;
         }
     }
 </script>

@@ -52,5 +52,16 @@
 
 
     <!-- Update and Delete not required -->
+    <select id="selectOne" parameterType="Integer" resultType="PortfolioDTO">
+        SELECT *
+        FROM portfolio
+        WHERE id = #{id}
+    </select>
 
+    <select id="selectByUserId" parameterType="Integer" resultType="PortfolioDTO">
+        SELECT *
+        FROM portfolio
+        WHERE user_id = #{userId}
+        ORDER BY id DESC
+    </select>
 </mapper>

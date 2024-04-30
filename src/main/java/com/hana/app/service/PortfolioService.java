@@ -30,8 +30,8 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     }
 
     @Override
-    public PortfolioDTO selectOne(Integer integer) throws Exception {
-        return portfolioRepository.selectOne(integer);
+    public PortfolioDTO selectOne(Integer id) throws Exception {
+        return portfolioRepository.selectOne(id);
     }
 
     @Override
