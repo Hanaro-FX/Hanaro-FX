@@ -200,6 +200,46 @@
                 this.sumPercentages();
             }
 
+            $('#submitButton').click(() => {
+                let dict = {};
+                let total = 0;
+                dict['userId'] = 1;
+                dict['portfolioName'] = $('#portfolioName').val();
+                dict['portfolioDesc'] = $('#portfolioDescription').val();
+                dict['rebalancing'] = $('#rebalancing').val();
+
+                for (let j = 1; j < i; j++) {
+                    let key = $('#asset' + j).val();
+                    let v = Number.parseFloat($('#allocation' + j).val());
+                    total += v;
+                    if (dict.hasOwnProperty(key)) {
+                        alert("Duplicate input");
+                        return;
+                    }
+                    dict[key] = v;
+                    if (key == "Select Currency" || v == 0) {
+                        alert("Invalid Input");
+                        return;
+                    }
+                }
+                if (total != 100) {
+                    alert("Should be summed up to 100");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/portfolio/updateImpl?id=' + ${portfolio.id},
+                    data: dict,
+                    success: function (data) {
+                        alert("수정되었습니다.");
+                        window.location.href = "/portfolio/result?id=" + ${portfolio.id};
+                    },
+                    error: function () {
+
+                    },
+                });
+            });
+
             $('#addButton').click(() => {
                 this.dummy(i++);
             });
