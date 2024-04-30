@@ -2,6 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <style>
+    .delete-button {
+        /* 버튼 높이를 행의 다른 요소들과 동일하게 설정 */
+        height: 100%;
+        /* 버튼 내용을 수직 가운데 정렬 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* 버튼의 내용이 한 줄로만 표시되도록 설정 */
+        white-space: nowrap;
+    }
+
     .main-content {
         padding: 0px 100px 20px 100px;
     }
@@ -140,6 +151,7 @@
             this.dummy(i++);
             $('#submitButton').click(() => {
                 let dict = {};
+                let total = 0;
                 dict['userId'] = 1;
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
@@ -147,6 +159,7 @@
                 for (let j = 1; j < i; j++) {
                     let key = $('#asset' + j).val();
                     let v = Number.parseFloat($('#allocation' + j).val());
+                    total += v;
                     if (dict.hasOwnProperty(key)) {
                         alert("Duplicate input");
                         return;
@@ -157,12 +170,17 @@
                         return;
                     }
                 }
+                if (total != 100) {
+                    alert("Should be summed up to 100");
+                    return;
+                }
 
                 $.ajax({
                     url: '/portfolio/createImpl',
                     data: dict,
                     success: function (data) {
                         console.log(data);
+                        window.location.href = "/";
                         alert("COMPLETE");
                     },
                     error: function () {
@@ -182,6 +200,7 @@
             rowDiv.classList.add("row", "asset-row");
 
             let assetNum = document.createElement("div");
+            assetNum.id = "assetText" + i;
             assetNum.classList.add("col-md-4", "separateTop", "asset-num");
             assetNum.textContent = "Asset" + i;
             assetNum.style.fontWeight = "bold";
@@ -227,6 +246,8 @@
             percentage.append(input_group);
 
             rowDiv.append(percentage);
+
+            addDeleteButton(rowDiv);
 
             document.getElementById("pfSection").append(rowDiv);
         },
@@ -277,7 +298,7 @@
 
             totalCell.value = total;
 
-            if (total > 100) {
+            if (total > 100 || total < 0) {
                 totalCell.style.backgroundColor = 'lightcoral';
             } else {
                 totalCell.style.backgroundColor = 'rgb(223, 240, 216)';
@@ -317,8 +338,42 @@
                 this.style.backgroundColor = "lightcoral";
                 otherSelect.style.backgroundColor = "lightcoral";
                 return;
+            } else {
+                this.style.backgroundColor = "";
+                otherSelect.style.backgroundColor = "";
             }
         }
+    }
+
+    // delete button 추가 함수
+    function addDeleteButton(rowDiv) {
+        // 삭제 버튼 생성
+        let deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("btn", "delete-button");
+        deleteButton.addEventListener("mouseover", function() {
+            deleteButton.style.backgroundColor = "red";
+            deleteButton.style.color = "black";
+        });
+        deleteButton.addEventListener("mouseout", function() {
+            deleteButton.style.backgroundColor = "transparent";
+            deleteButton.style.color = "black";
+        });
+        // 삭제 버튼 클릭 이벤트 핸들러 등록
+        deleteButton.addEventListener("click", function() {
+            // 삭제할 행(rowDiv) 제거
+            rowDiv.remove();
+            i--;
+            let dummyIdx = 1;
+            // 삭제된 후에 남은 모든 행의 innerText를 재설정하여 숫자순으로 정렬
+            let assetTextElements = document.querySelectorAll('[id^="assetText"]');
+            assetTextElements.forEach((element, index) => {
+                element.innerText = "Asset" + (index + 1);
+            });
+        });
+
+        // 행의 맨 오른쪽에 삭제 버튼 추가
+        rowDiv.append(deleteButton);
     }
 </script>
 <div>
