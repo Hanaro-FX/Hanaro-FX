@@ -197,8 +197,8 @@
                 let value = percentages[key];
                 $('#asset' + j).val(key);
                 $('#allocation' + j).val(value);
-                this.sumPercentages();
             }
+            this.sumPercentages();
 
             $('#submitButton').click(() => {
                 let dict = {};
@@ -251,13 +251,13 @@
 
             let assetNum = document.createElement("div");
             assetNum.id = "assetText" + i;
-            assetNum.classList.add("col-md-4", "separateTop", "asset-num");
+            assetNum.classList.add("col-md-3", "separateTop", "asset-num");
             assetNum.textContent = "Asset" + i;
             assetNum.style.fontWeight = "bold";
 
 
             let assetColumn = document.createElement("div");
-            assetColumn.classList.add("col-md-4", "asset-column");
+            assetColumn.classList.add("col-md-5", "asset-column");
 
             let assetLabel = document.createElement("label");
             assetLabel.style.display = "none";
@@ -349,11 +349,10 @@
             totalCell.value = total;
 
             if (total > 100 || total < 0) {
-                totalCell.style.backgroundColor = 'lightcoral';
+                totalCell.style.backgroundColor = 'rgb(255, 200, 200)';
             } else {
                 totalCell.style.backgroundColor = 'rgb(223, 240, 216)';
             }
-
         }
     };
     $(function () {
@@ -385,8 +384,8 @@
             let otherValue = otherSelect.value;
             if (selectedValue === otherValue) {
                 // 중복된 값을 선택한 경우, 해당 select 요소들의 배경 색을 변경
-                this.style.backgroundColor = "lightcoral";
-                otherSelect.style.backgroundColor = "lightcoral";
+                this.style.backgroundColor = "rgb(255, 200, 200)";
+                otherSelect.style.backgroundColor = "rgb(255, 200, 200)";
                 return;
             } else {
                 this.style.backgroundColor = "";
@@ -402,8 +401,7 @@
         deleteButton.textContent = "X";
         deleteButton.classList.add("btn", "delete-button");
         deleteButton.addEventListener("mouseover", function() {
-            deleteButton.style.backgroundColor = "red";
-            deleteButton.style.color = "black";
+            deleteButton.style.color = "red";
         });
         deleteButton.addEventListener("mouseout", function() {
             deleteButton.style.backgroundColor = "transparent";
@@ -426,74 +424,76 @@
         rowDiv.append(deleteButton);
     }
 </script>
-<div>
-    <div class="form-group">
-        <label for="portfolioName">포트폴리오 이름</label>
-        <input type="text" id="portfolioName">
-    </div>
 
-    <div class="form-group">
-        <label for="portfolioDescription">포트폴리오 상세</label>
-        <input type="text" id="portfolioDescription">
-    </div>
-
-    <div class="form-group">
-        <label for="rebalancing">리밸런싱 주기</label>
-        <select id="rebalancing" name="rebalancing" class="form-control form-select">
-            <option value="0" selected>No rebalancing</option>
-            <option value="12">Rebalance annually</option>
-            <option value="6">Rebalance semi-annually</option>
-            <option value="3">Rebalance quarterly</option>
-            <option value="1">Rebalance monthly</option>
-        </select>
-    </div>
-</div>
-<hr>
-<div
-        id="pfSection"
-        class="portfolio-section pv-asset-classes pv-allow-expansion pv-multiple"
-        data-count="3"
-        data-maxrows="50"
-        data-advanced="false"
->
-    <div class="row bottomBorder">
-        <div class="col-md-4 separateTop text-nowrap">
-            <b>Asset Allocation</b>
+<div class="container">
+    <div>
+        <div class="form-group">
+            <label for="portfolioName">포트폴리오 이름</label>
+            <input type="text" id="portfolioName">
         </div>
-        <div class="col-md-4 separateTop"><b>Asset Class</b></div>
-        <div class="col-md-4 separateTop text-nowrap">
-            <b>Portfolio</b>
-            <div id="allocation-menu-1" class="dropdown d-inline-block allocation-menu px-2"></div>
+
+        <div class="form-group">
+            <label for="portfolioDescription">포트폴리오 상세</label>
+            <input type="text" id="portfolioDescription">
+        </div>
+
+        <div class="form-group">
+            <label for="rebalancing">리밸런싱 주기</label>
+            <select id="rebalancing" name="rebalancing" class="form-control form-select">
+                <option value="0" selected>No rebalancing</option>
+                <option value="12">Rebalance annually</option>
+                <option value="6">Rebalance semi-annually</option>
+                <option value="3">Rebalance quarterly</option>
+                <option value="1">Rebalance monthly</option>
+            </select>
+        </div>
+    </div>
+    <hr>
+    <div
+            id="pfSection"
+            class="portfolio-section pv-asset-classes pv-allow-expansion pv-multiple"
+            data-count="3"
+            data-maxrows="50"
+            data-advanced="false"
+    >
+        <div class="row bottomBorder">
+            <div class="col-md-3 separateTop text-nowrap">
+                <b>Asset Allocation</b>
+            </div>
+            <div class="col-md-5 separateTop"><b>Asset Class</b></div>
+            <div class="col-md-4 separateTop text-nowrap">
+                <b>Portfolio</b>
+                <div id="allocation-menu-1" class="dropdown d-inline-block allocation-menu px-2"></div>
+            </div>
+        </div>
+
+        <hr>
+
+    </div>
+
+    <button id="addButton"><b>+ ADD</b></button>
+    <hr>
+    <div class="row topBorder totals-row">
+        <div class="col-md-2 separateTop custom-label"><b>Total</b></div>
+        <div class="col-md-2 offset-md-4 totals-column"></div>
+        <div class="col-md-2 totals-column"> <!-- 변경된 열 -->
+            <div class="input-group flex-nowrap smallMargin">
+                <input
+                        type="number"
+                        id="total1"
+                        name="total1"
+                        class="form-control"
+                        readonly=""
+                        autocomplete="off"
+                        style="background-color: rgb(223, 240, 216)"
+                />
+                <label class="visually-hidden custom-label" for="total1" style="display: none">Total allocation for
+                    portfolio 1</label>
+                <span class="input-group-text custom-label">%</span>
+            </div>
         </div>
     </div>
 
     <hr>
-
+    <button id="submitButton">UPDATE</button>
 </div>
-
-<button id="addButton"><b>ADD</b></button>
-<hr>
-<div class="row topBorder totals-row">
-    <div class="col-md-2 separateTop custom-label"><b>Total</b></div>
-    <div class="col-md-2 offset-md-4 totals-column"></div>
-    <div class="col-md-2 totals-column"> <!-- 변경된 열 -->
-        <div class="input-group flex-nowrap smallMargin">
-            <input
-                    type="number"
-                    id="total1"
-                    name="total1"
-                    class="form-control"
-                    readonly=""
-                    autocomplete="off"
-                    style="background-color: rgb(223, 240, 216)"
-            />
-            <label class="visually-hidden custom-label" for="total1" style="display: none">Total allocation for
-                portfolio 1</label>
-            <span class="input-group-text custom-label">%</span>
-        </div>
-    </div>
-</div>
-
-
-<hr>
-<button id="submitButton">UPDATE</button>
