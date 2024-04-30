@@ -18,6 +18,17 @@ spring:
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PW}
 
+  kakao:
+    client-id: ef23dced22e76efea82d016f173ed3f1
+    login-redirect: /user/oauth/kakao
+    logout-redirect: /user/logout/kakao
+    url:
+      login: https://kauth.kakao.com/oauth/authorize
+      logout: https://kauth.kakao.com/oauth/logout
+      token: https://kauth.kakao.com/oauth/token
+      profile: https://kapi.kakao.com/v2/user/me
+      unlink: https://kapi.kakao.com/v1/user/unlink
+
 mybatis:
   type-aliases-package: com.hana.app.data.dto
   mapper-locations: classpath:/mapper/*.xml
