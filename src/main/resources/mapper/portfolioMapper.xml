@@ -50,7 +50,16 @@
                 #{percentageZAR})
     </insert>
 
+    <select id="selectOne" parameterType="Integer" resultType="PortfolioDTO">
+        SELECT * FROM portfolio WHERE id=#{id}
+    </select>
 
-    <!-- Update and Delete not required -->
+    <select id="selectByUserId" parameterType="Integer" resultType="PortfolioDTO">
+        SELECT * FROM portfolio WHERE user_id=#{userId}
+        ORDER BY id DESC
+    </select>
 
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM portfolio WHERE id=#{id}
+    </delete>
 </mapper>
