@@ -62,4 +62,10 @@
     <delete id="delete" parameterType="Integer">
         DELETE FROM portfolio WHERE id=#{id}
     </delete>
+
+    <select id="getCurrencyByCountryDate" parameterType="PortfolioQueryDTO" resultType="Double">
+        SELECT standard_rate
+        FROM #{tableName}
+        WHERE currency_date = #{startDate};
+    </select>
 </mapper>

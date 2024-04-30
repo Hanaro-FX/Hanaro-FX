@@ -6,6 +6,7 @@ import com.hana.app.repository.PortfolioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -42,5 +43,10 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     // 마이페이지 - 사용자의 포트폴리오 목록 가져오기
     public List<PortfolioDTO> getPortfolioList(Integer userId) throws Exception {
         return portfolioRepository.selectByUserId(userId);
+    }
+
+    public Double getCurrencyByCountryDate(String tableName, LocalDate targetDate) throws Exception {
+        return 0.0;
+//        return portfolioRepository.getCurrencyByCountryDate(tableName, targetDate);
     }
 }

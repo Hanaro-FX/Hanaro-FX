@@ -9,6 +9,33 @@
 
     let result = {
         init: function () {
+            let resultData;
+            $('#test-btn').click(() => {
+                let dArr = [];
+
+                resultData.forEach((x) => {
+                    dArr.push({
+                        startDate: $('#startDate').val(),
+                        endDate: $('#endDate').val(),
+                        tableName: x[0].slice(-3),
+                        percentage: x[1],
+                        initialAmount: Number.parseFloat($('#initialAmount').val()),
+                    })
+                })
+                console.log(dArr);
+                console.log(typeof dArr);
+                console.log(JSON.stringify(dArr));
+                $.ajax({
+                    type: "POST",
+                    url: '/portfolio/testImpl',
+                    contentType: 'application/json', // 전송하는 데이터의 타입을 명시
+                    data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
+                    success: function (response) {
+                        alert(response);
+                    }
+                });
+            });
+
             $('#startDate').datepicker({
                 startYear: 2000,
                 finalYear: new Date().getFullYear(),
@@ -25,7 +52,7 @@
                 minDate: new Date(2000, 0),
                 maxDate: new Date(),
                 yearRange: '2000:c',
-                onSelect: function(selected) {
+                onSelect: function (selected) {
                     let selectedDate = $('#startDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() + 1);
                     $('#endDate').datepicker('option', 'minDate', selectedDate);
@@ -48,7 +75,7 @@
                 minDate: new Date(2000, 0),
                 maxDate: new Date(),
                 yearRange: '2000:c',
-                onSelect: function(selected) {
+                onSelect: function (selected) {
                     let selectedDate = $('#endDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() - 1);
                     $('#startDate').datepicker('option', 'maxDate', selectedDate);
@@ -217,8 +244,7 @@
 
             let drawChart = function (dd) {
                 let currencyData = getData(dd);
-                console.log(currencyData);
-
+                resultData = currencyData;
                 let data = google.visualization.arrayToDataTable([
                     ['Currency', 'Ratio'],
                     ...currencyData
@@ -250,7 +276,7 @@
         result.init();
     });
 </script>
-
+<div style="display: none" id="validData"></div>
 <div class="container">
     <h3>
         <c:choose>
@@ -338,6 +364,11 @@
     </div>
 
     <div class="test-btn-box">
-        <div class="test-btn">TEST</div>
+        <div class="test-btn" id="test-btn">TEST</div>
     </div>
 </div>
+
+
+<%-- 1. won_amount = Initial amount * portfolio percentage --%>
+<%-- 2. 외화 수 = won_amount / (start date) 기준환율 --%>
+<%-- 3. 현재 가치 = 외화 수 * (end date) 기준환율 --%>
