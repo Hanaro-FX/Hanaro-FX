@@ -67,7 +67,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="<c:url value="/"/>" class="menu-item"><img src="https://i.ibb.co/PcsvJQ2/home-icon.png" alt="home" style="margin-top: -5px; width: 30px">&nbsp; HOME</a>
             <a href="<c:url value="/mypage"/>" class="menu-item"><img src="https://i.ibb.co/7tPN2jx/mypage-icon.png" alt="mypage" width="30px">&nbsp; MYPAGE</a>
-            <a href="#" class="menu-item"><img src="https://i.ibb.co/MB36wd6/portfolio-icon.png" alt="portfolio" width="30px">&nbsp; PORTFOLIO</a>
+            <a href="<c:url value="/portfolio/create"/>" class="menu-item"><img src="https://i.ibb.co/MB36wd6/portfolio-icon.png" alt="portfolio" width="30px">&nbsp; PORTFOLIO</a>
         </div>
 
         <!-- Login / Logout -->

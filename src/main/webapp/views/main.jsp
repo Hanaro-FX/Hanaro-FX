@@ -4,5 +4,7 @@
 
 <div class="banner">
     <img src="<c:url value="/img/banner.png"/>" alt="banner" style="width: 100%; max-width: 100vw; height: auto;"/>
-    <div><img class="banner-btn" src="<c:url value="/img/banner_icon.png"/>" alt="banner" style="width: 9%; height: auto;"/></div>
+    <a href="<c:url value="/portfolio/create"/>">
+        <div><img class="banner-btn" src="<c:url value="/img/banner_icon.png"/>" alt="banner" style="width: 9%; height: auto;"/></div>
+    </a>
 </div>
