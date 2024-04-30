@@ -46,7 +46,7 @@
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
     let i = 1;
-    let edit = {
+    let update = {
         init: function () {
             // 값 불러오기
             $('#portfolioName').val("${portfolio.portfolioName}");
@@ -317,7 +317,7 @@
         }
     };
     $(function () {
-        edit.init();
+        update.init();
     });
 
     function checkTotal(input) {
@@ -456,4 +456,4 @@
 
 
 <hr>
-<button id="submitButton">EDIT</button>
+<button id="submitButton">UPDATE</button>

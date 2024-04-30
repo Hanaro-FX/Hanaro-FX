@@ -40,13 +40,13 @@ public class PortfolioController {
     }
 
     // 포트폴리오 수정
-    @RequestMapping("/edit")
-    public String editPortfolio(@RequestParam("id") Integer id, Model model) throws Exception {
+    @RequestMapping("/update")
+    public String updatePortfolio(@RequestParam("id") Integer id, Model model) throws Exception {
         // 포트폴리오 데이터 불러오기
         PortfolioDTO portfolio = portfolioService.selectOne(id);
         model.addAttribute("portfolio", portfolio);
 
-        model.addAttribute("center", dir + "edit");
+        model.addAttribute("center", dir + "update");
         return "index";
     }
 }

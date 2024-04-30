@@ -33,7 +33,7 @@
                 </td>
                 <td>${portfolio.portfolioDesc}</td>
                 <td>
-                    <i class="fa-regular fa-pen-to-square" onclick="editPortfolio(event, ${portfolio.id})" style="color: #316ed8;"></i>&nbsp;&nbsp;
+                    <i class="fa-regular fa-pen-to-square" onclick="updatePortfolio(event, ${portfolio.id})" style="color: #316ed8;"></i>&nbsp;&nbsp;
                     <i class="fa-regular fa-trash-can" onclick="deletePortfolio(event, ${portfolio.id})"
                        style="color: #ff0000;"></i>
                 </td>
@@ -66,10 +66,10 @@
         window.location.href = '<c:url value="/portfolio/result"/>?id=' + id;
     }
 
-    // edit
-    function editPortfolio(event, id) {
+    // update
+    function updatePortfolio(event, id) {
         event.stopPropagation(); // 이벤트 버블링 중지
-        location.href = '<c:url value="/portfolio/edit"/>?id=' + id;
+        location.href = '<c:url value="/portfolio/update"/>?id=' + id;
     }
 
     // delete
