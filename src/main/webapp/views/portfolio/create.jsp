@@ -278,7 +278,7 @@
             totalCell.value = total;
 
             if (total > 100) {
-                totalCell.style.backgroundColor = 'rgb(255, 200, 200)';
+                totalCell.style.backgroundColor = 'lightcoral';
             } else {
                 totalCell.style.backgroundColor = 'rgb(223, 240, 216)';
             }
