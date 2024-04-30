@@ -12,11 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
 
-    private final PortfolioRepository portfolioRepository;
+    final PortfolioRepository portfolioRepository;
 
     @Override
     public int insert(PortfolioDTO portfolioDTO) throws Exception {
-        return 0;
+        return portfolioRepository.insert(portfolioDTO);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
 
     @Override
     public int update(PortfolioDTO portfolioDTO) throws Exception {
-        return 0;
+        return portfolioRepository.update(portfolioDTO);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
 
     @Override
     public List<PortfolioDTO> selectAll() throws Exception {
-        return null;
+        return portfolioRepository.selectAll();
     }
 
     // 마이페이지 - 사용자의 포트폴리오 목록 가져오기
