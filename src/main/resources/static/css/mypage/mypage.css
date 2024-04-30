@@ -1,0 +1,16 @@
+.main-content {
+    padding: 30px 200px 50px 200px;
+}
+
+thead {
+    background-color: #FAFAFA;
+}
+
+th, td {
+    text-align: center;
+}
+
+#board_table tbody tr:hover {
+    background-color: rgba(2, 135, 92, 0.2);
+    cursor: pointer;
+}

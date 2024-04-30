@@ -20,8 +20,8 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     }
 
     @Override
-    public int delete(Integer integer) throws Exception {
-        return portfolioRepository.delete(integer);
+    public int delete(Integer id) throws Exception {
+        return portfolioRepository.delete(id);
     }
 
     @Override
@@ -37,5 +37,10 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     @Override
     public List<PortfolioDTO> selectAll() throws Exception {
         return portfolioRepository.selectAll();
+    }
+
+    // 마이페이지 - 사용자의 포트폴리오 목록 가져오기
+    public List<PortfolioDTO> getPortfolioList(Integer userId) throws Exception {
+        return portfolioRepository.selectByUserId(userId);
     }
 }
