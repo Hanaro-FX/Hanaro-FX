@@ -1,0 +1,86 @@
+.main-content {
+    padding: 30px 100px 50px 220px;
+}
+
+.info {
+    color: #A0A0A0;
+    margin-top: -15px;
+    margin-bottom: 30px;
+}
+
+#rebalanceType {
+    width: 200px;
+}
+
+.test-btn-box {
+    text-align: center;
+}
+
+.test-btn {
+    border: 1.5px solid #02875C;
+    border-radius: 20px;
+    width: 60px;
+    height: 30px;
+    font-weight: normal;
+    text-align: center;
+    color: #02875C;
+    line-height: 30px;
+    display: inline-block;
+    margin-right: 120px;
+    margin-top: 20px;
+}
+
+.test-btn:hover {
+    cursor: pointer;
+    background-color: #02875C;
+    color: white;
+}
+
+/* Month Picker */
+.ui-monthpicker-trigger {
+    width: 24px;
+    margin-left: 5px;
+    margin-bottom: 7px;
+}
+
+#startDate, #endDate {
+    margin-top: 5px;
+    width: 173px;
+    padding-left: 10px;
+}
+
+.ui-monthpicker-trigger:hover {
+    cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-title .ui-datepicker-year {
+    text-align: center;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default,
+.ui-button,
+html .ui-button.ui-state-disabled:hover,
+html .ui-button.ui-state-disabled:active {
+    text-align: center;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    /* 오늘일자 */
+    border: 1px solid #C2C2C2;
+    background-color: #F5F5F5;
+    color: #02875C;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+    /* 선택 일자 */
+    border: #02875C;
+    background-color: #02875C;
+    color: #ffffff;
+}
