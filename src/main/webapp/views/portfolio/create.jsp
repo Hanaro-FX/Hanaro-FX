@@ -84,6 +84,9 @@
         margin-bottom: 10px;
     }
 
+    .asset-num {
+        width: calc((100% - 20px) / 3); /* 각 열의 너비를 동일하게 설정하는 부분 */
+    }
 
 </style>
 
@@ -144,15 +147,16 @@
                 for (let j = 1; j < i; j++) {
                     let key = $('#asset' + j).val();
                     let v = Number.parseFloat($('#allocation' + j).val());
-                    dict[key] = v;
-                    if (key == "Select Currency" || v == 0) {
-                        alert("Wrong Input");
+                    if (dict.hasOwnProperty(key)) {
+                        alert("Duplicate input");
                         return;
                     }
-
+                    dict[key] = v;
+                    if (key == "Select Currency" || v == 0) {
+                        alert("Invalid Input");
+                        return;
+                    }
                 }
-
-                console.log(dict);
 
                 $.ajax({
                     url: '/portfolio/createImpl',
@@ -178,8 +182,10 @@
             rowDiv.classList.add("row", "asset-row");
 
             let assetNum = document.createElement("div");
-            assetNum.classList.add("col-md-2", "separateTop");
+            assetNum.classList.add("col-md-4", "separateTop", "asset-num");
             assetNum.textContent = "Asset" + i;
+            assetNum.style.fontWeight = "bold";
+
 
             let assetColumn = document.createElement("div");
             assetColumn.classList.add("col-md-4", "asset-column");
@@ -230,7 +236,7 @@
             assetSelect.id = "asset" + i;
             assetSelect.name = "asset" + i;
             assetSelect.classList.add("form-control", "form-select");
-
+            assetSelect.addEventListener("change", checkDuplicate);
             let defaultOption = document.createElement("option");
             defaultOption.innerText = "Select Currency";
 
@@ -292,6 +298,28 @@
             input.style.backgroundColor = 'rgb(255, 200, 200)';
         }
     }
+
+    function checkDuplicate() {
+        let selectedValue = this.value; // 현재 선택된 값
+
+        // 모든 asset select 요소를 순회하며 현재 선택된 값과 비교
+        for (let j = 1; j < i; j++) {
+            // 현재 select 요소는 비교하지 않음
+            if (this.id === "asset" + j) {
+                continue;
+            }
+
+            // 다른 asset select 요소의 값과 비교하여 중복 여부 확인
+            let otherSelect = document.getElementById("asset" + j);
+            let otherValue = otherSelect.value;
+            if (selectedValue === otherValue) {
+                // 중복된 값을 선택한 경우, 해당 select 요소들의 배경 색을 변경
+                this.style.backgroundColor = "lightcoral";
+                otherSelect.style.backgroundColor = "lightcoral";
+                return;
+            }
+        }
+    }
 </script>
 <div>
     <div class="form-group">
@@ -324,19 +352,16 @@
         data-advanced="false"
 >
     <div class="row bottomBorder">
-        <div class="col-md-2 separateTop text-nowrap">
+        <div class="col-md-4 separateTop text-nowrap">
             <b>Asset Allocation</b>
         </div>
         <div class="col-md-4 separateTop"><b>Asset Class</b></div>
-        <div class="col-md-2 separateTop text-nowrap">
+        <div class="col-md-4 separateTop text-nowrap">
             <b>Portfolio</b>
-            <div
-                    id="allocation-menu-1"
-                    class="dropdown d-inline-block allocation-menu px-2"
-            >
-            </div>
+            <div id="allocation-menu-1" class="dropdown d-inline-block allocation-menu px-2"></div>
         </div>
     </div>
+
     <hr>
 
 </div>
@@ -344,8 +369,9 @@
 <button id="addButton"><b>ADD</b></button>
 <hr>
 <div class="row topBorder totals-row">
-    <div class="col-md-2 separateTop"><b>Total</b></div>
-    <div class="col-md-2 offset-md-4 totals-column">
+    <div class="col-md-2 separateTop custom-label"><b>Total</b></div>
+    <div class="col-md-2 offset-md-4 totals-column"></div>
+    <div class="col-md-2 totals-column"> <!-- 변경된 열 -->
         <div class="input-group flex-nowrap smallMargin">
             <input
                     type="number"
@@ -356,10 +382,13 @@
                     autocomplete="off"
                     style="background-color: rgb(223, 240, 216)"
             />
-            <label class="visually-hidden" for="total1" style="display: none">Total allocation for portfolio 1</label>
-            <span class="input-group-text">%</span>
+            <label class="visually-hidden custom-label" for="total1" style="display: none">Total allocation for
+                portfolio 1</label>
+            <span class="input-group-text custom-label">%</span>
         </div>
     </div>
 </div>
+
+
 <hr>
 <button id="submitButton">CREATE</button>
