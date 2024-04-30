@@ -75,16 +75,13 @@
                         initialAmount: Number.parseFloat($('#initialAmount').val()),
                     })
                 })
-                console.log(dArr);
-                console.log(typeof dArr);
-                console.log(JSON.stringify(dArr));
                 $.ajax({
                     type: "POST",
                     url: '/portfolio/testImpl',
                     contentType: 'application/json', // 전송하는 데이터의 타입을 명시
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
-                        alert(response.toString());
+                        console.log(response);
                     }
                 });
             });

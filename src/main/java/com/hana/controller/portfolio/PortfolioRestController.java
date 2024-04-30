@@ -44,29 +44,26 @@ public class PortfolioRestController {
         HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
 
         for (PortfolioQueryDTO requestDatum : requestData) {
-            String tableName = requestDatum.getTableName();
-            log.info(tableName);
-
             PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).endDate(requestDatum.getEndDate()).build();
             List<PortfolioResultDTO> x = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);
-            log.info(x.toString());
 
+            // 이 국가에 대한 초기 자본: 원
+            double initValue = requestDatum.getInitialAmount() * requestDatum.getPercentage() / 100;
+
+            // 초기 자본으로 구매한 외화 수
+            double cnt_foreign = initValue / x.get(0).getStandardRate();
+
+            String tableName = requestDatum.getTableName();
+
+            HashMap<LocalDate, Double> minimap = new HashMap<>();
             x.forEach((xx) -> {
-                HashMap<LocalDate, Double> minimap = new HashMap<>();
-                minimap.put(xx.getCurrencyDate(), xx.getStandardRate());
-                map.put(tableName, minimap);
+                // 초기에 구매한 외화의 현 시점에서의 가격
+                minimap.put(xx.getCurrencyDate(), xx.getStandardRate() * cnt_foreign);
             });
+            map.put(tableName, minimap);
 
             // TODO: Rebalancing 적용하기. => front 단에서 해야하려나.
             // TODO: 가져온 데이터 활용한 그래프로의 시각화
-
-//            double initValue = requestDatum.getInitialAmount() * requestDatum.getPercentage() / 100;
-
-//            double cnt_foreign = initValue / past_currency;
-//
-//            PortfolioQueryDTO portfolioQueryDTO1 = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getEndDate()).build();
-//            double finalValue = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO1) * cnt_foreign;
-//            log.info(String.valueOf(finalValue - initValue));
         }
 
         return map;
