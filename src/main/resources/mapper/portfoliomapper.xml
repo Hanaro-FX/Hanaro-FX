@@ -9,6 +9,7 @@
 
     <select id="selectByUserId" parameterType="Integer" resultType="PortfolioDTO">
         SELECT * FROM portfolio WHERE user_id=#{userId}
+        ORDER BY id DESC
     </select>
 
     <delete id="delete" parameterType="Integer">

@@ -31,7 +31,7 @@
                         '#689F38', '#558B2F', '#33691E'
                     ],
                     'width':400,
-                    'height':350,
+                    'height':280,
                     'chartArea':{left:10, right:10, top:20, bottom:10}
                 };
 
@@ -194,6 +194,47 @@
         }
     };
     $(function () {
+        $('#startDate').monthpicker({
+            startYear: 2000,
+            finalYear: new Date().getFullYear(),
+            monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
+            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            showOn: "button",
+            buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
+            buttonImageOnly: true,
+            changeYear: true,
+            minDate: new Date(2000, 0),
+            maxDate: new Date(),
+            yearRange: '2000:c',
+            dateFormat: 'yy-mm',
+            onSelect: function(selected) {
+                let selectedMonth = $('#startDate').monthpicker('getDate');
+                selectedMonth.setMonth(selectedMonth.getMonth() + 1);
+                $('#endDate').monthpicker('option', 'minDate', selectedMonth);
+                $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
+            }
+        });
+        $('#endDate').monthpicker({
+            startYear: 2000,
+            finalYear: new Date().getFullYear(),
+            monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
+            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            showOn: "button",
+            buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
+            buttonImageOnly: true,
+            changeYear: true,
+            minDate: new Date(2000, 0),
+            maxDate: new Date(),
+            yearRange: '2000:c',
+            dateFormat: 'yy-mm',
+            onSelect: function(selected) {
+                let selectedMonth = $('#endDate').monthpicker('getDate');
+                selectedMonth.setMonth(selectedMonth.getMonth() - 1);
+                $('#startDate').monthpicker('option', 'maxDate', selectedMonth);
+                $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
+            }
+        });
+
         result.init();
     });
 </script>
@@ -214,93 +255,30 @@
 
     <div class="row">
         <div class="col">
-            <!-- Start Year -->
+            <div class="info">
+                포트폴리오 생성일: ${portfolio.portfolioDate}
+                <c:if test="${not empty portfolio.portfolioDesc}">
+                    <br/>
+                    전략 설명: ${portfolio.portfolioDesc}
+                </c:if>
+            </div>
+            <!-- Start Date -->
             <div class="form-group row">
-                <label for="startYear" class="col-form-label col-md-3">
-                    Start Year
+                <label for="startDate" class="col-form-label col-md-3">
+                    Start Date
                 </label>
-                <div class="col-md-2">
-                    <div class="select-parent">
-                        <select id="startYear" name="startYear" class="form-control form-select">
-                            <%
-                                // Create options
-                                for (int year = 2000; year <= 2024; year++) {
-                            %>
-                            <option value="<%= year %>" <%= year == 2024 ? "selected" : "" %>><%= year %>
-                            </option>
-                            <%
-                                }
-                            %>
-                        </select>
-                    </div>
+                <div class="col-md">
+                    <input type="text" id="startDate">
                 </div>
             </div>
 
-            <!-- First Month -->
+            <!-- End Date -->
             <div class="form-group row">
-                <label for="firstMonth" class="col-form-label col-md-3"
-                >First Month
+                <label for="endDate" class="col-form-label col-md-3">
+                    End Date
                 </label>
-                <div class="col-md-2">
-                    <div class="select-parent">
-                        <select id="firstMonth" name="firstMonth" class="form-control form-select">
-                            <%
-                                // 반복문을 사용하여 옵션을 생성합니다.
-                                String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-                                for (int i = 0; i < months.length; i++) {
-                            %>
-                            <option value="<%= i + 1 %>" <%= i == 0 ? "selected" : "" %>><%= months[i] %>
-                            </option>
-                            <%
-                                }
-                            %>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- End Year -->
-            <div class="form-group row">
-                <label for="endYear" class="col-form-label col-md-3"
-                >End Year
-                </label>
-                <div class="col-md-2">
-                    <div class="select-parent">
-                        <select id="endYear" name="startYear" class="form-control form-select">
-                            <%
-                                // Create options
-                                for (int year = 2000; year <= 2024; year++) {
-                            %>
-                            <option value="<%= year %>" <%= year == 2024 ? "selected" : "" %>><%= year %>
-                            </option>
-                            <%
-                                }
-                            %>
-                        </select>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Last Month -->
-            <div class="form-group row">
-                <label for="lastMonth" class="col-form-label col-md-3"
-                >Last Month
-                </label>
-                <div class="col-md-2">
-                    <div class="select-parent">
-                        <select id="lastMonth" name="lastMonth" class="form-control form-select">
-                            <%
-                                // 반복문을 사용하여 옵션을 생성합니다.
-                                for (int i = 0; i < months.length; i++) {
-                            %>
-                            <option value="<%= i + 1 %>" <%= i == 0 ? "selected" : "" %>><%= months[i] %>
-                            </option>
-                            <%
-                                }
-                            %>
-                        </select>
-                    </div>
+                <div class="col-md">
+                    <input type="text" id="endDate">
                 </div>
             </div>
 
