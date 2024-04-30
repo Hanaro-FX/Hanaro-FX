@@ -1,105 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
-<style>
-    .delete-button {
-        /* 버튼 높이를 행의 다른 요소들과 동일하게 설정 */
-        height: 100%;
-        /* 버튼 내용을 수직 가운데 정렬 */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        /* 버튼의 내용이 한 줄로만 표시되도록 설정 */
-        white-space: nowrap;
-    }
-
-    .main-content {
-        padding: 0px 100px 20px 100px;
-    }
-
-    #addButton {
-        /* 테이블의 너비와 같은 너비 */
-        width: 100%;
-        /* 버튼 높이 설정 */
-        height: 30px;
-        /* 배경 색상 및 글자색 설정 */
-        background-color: #ffffff;
-        color: #808080;
-        /* 테두리 제거 */
-        border: none;
-        /* 커서가 버튼 위에 있을 때 포인터로 변경 */
-        cursor: pointer;
-        text-align: left;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* 버튼에 마우스를 갖다대면 */
-    #addButton:hover {
-        /* 배경색과 글자색 변경 */
-        background-color: #808080;
-        color: #ffffff;
-    }
-
-    #submitButton {
-        /* 너비 설정 */
-        width: 100%;
-        /* 높이 설정 */
-        height: 40px;
-        /* 배경색 및 글자색 설정 */
-        background-color: #4CAF50; /* 녹색 */
-        color: #ffffff; /* 흰색 */
-        /* 테두리 및 테두리 반경 설정 */
-        border: none;
-        border-radius: 5px;
-        /* 마우스 커서를 포인터로 변경 */
-        cursor: pointer;
-        /* 글꼴과 글꼴 크기 설정 */
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        /* 버튼 안의 텍스트 정렬 */
-        text-align: center;
-        /* 텍스트 세로 중앙 정렬 */
-        line-height: 40px;
-        /* 그림자 효과 */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* transition 효과 설정 */
-        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-    }
-
-    /* 마우스를 버튼 위로 이동했을 때 */
-    #submitButton:hover {
-        /* 배경색과 글자색 변경 */
-        background-color: #45a049; /* 어두운 녹색 */
-        color: #ffffff; /* 흰색 */
-        /* 그림자 효과 강화 */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    input[type="text"],
-    select {
-        width: calc(100% - 10px);
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-    }
-
-    .asset-num {
-        width: calc((100% - 20px) / 3); /* 각 열의 너비를 동일하게 설정하는 부분 */
-    }
-
-</style>
+<link rel="stylesheet" href="<c:url value="/css/portfolio/create-edit.css"/>"/>
 
 <%-- TODO: Data input verification--%>
 
@@ -201,13 +103,13 @@
 
             let assetNum = document.createElement("div");
             assetNum.id = "assetText" + i;
-            assetNum.classList.add("col-md-4", "separateTop", "asset-num");
+            assetNum.classList.add("col-md-3", "separateTop", "asset-num");
             assetNum.textContent = "Asset" + i;
             assetNum.style.fontWeight = "bold";
 
 
             let assetColumn = document.createElement("div");
-            assetColumn.classList.add("col-md-4", "asset-column");
+            assetColumn.classList.add("col-md-5", "asset-column");
 
             let assetLabel = document.createElement("label");
             assetLabel.style.display = "none";
@@ -299,7 +201,7 @@
             totalCell.value = total;
 
             if (total > 100 || total < 0) {
-                totalCell.style.backgroundColor = 'lightcoral';
+                totalCell.style.backgroundColor = 'rgb(255, 200, 200)';
             } else {
                 totalCell.style.backgroundColor = 'rgb(223, 240, 216)';
             }
@@ -335,8 +237,8 @@
             let otherValue = otherSelect.value;
             if (selectedValue === otherValue) {
                 // 중복된 값을 선택한 경우, 해당 select 요소들의 배경 색을 변경
-                this.style.backgroundColor = "lightcoral";
-                otherSelect.style.backgroundColor = "lightcoral";
+                this.style.backgroundColor = "rgb(255, 200, 200)";
+                otherSelect.style.backgroundColor = "rgb(255, 200, 200)";
                 return;
             } else {
                 this.style.backgroundColor = "";
@@ -352,8 +254,7 @@
         deleteButton.textContent = "X";
         deleteButton.classList.add("btn", "delete-button");
         deleteButton.addEventListener("mouseover", function() {
-            deleteButton.style.backgroundColor = "red";
-            deleteButton.style.color = "black";
+            deleteButton.style.color = "red";
         });
         deleteButton.addEventListener("mouseout", function() {
             deleteButton.style.backgroundColor = "transparent";
@@ -376,74 +277,77 @@
         rowDiv.append(deleteButton);
     }
 </script>
-<div>
-    <div class="form-group">
-        <label for="portfolioName">포트폴리오 이름</label>
-        <input type="text" id="portfolioName">
-    </div>
 
-    <div class="form-group">
-        <label for="portfolioDescription">포트폴리오 상세</label>
-        <input type="text" id="portfolioDescription">
-    </div>
-
-    <div class="form-group">
-        <label for="rebalancing">리밸런싱 주기</label>
-        <select id="rebalancing" name="rebalancing" class="form-control form-select">
-            <option value="0" selected>No rebalancing</option>
-            <option value="12">Rebalance annually</option>
-            <option value="6">Rebalance semi-annually</option>
-            <option value="3">Rebalance quarterly</option>
-            <option value="1">Rebalance monthly</option>
-        </select>
-    </div>
-</div>
-<hr>
-<div
-        id="pfSection"
-        class="portfolio-section pv-asset-classes pv-allow-expansion pv-multiple"
-        data-count="3"
-        data-maxrows="50"
-        data-advanced="false"
->
-    <div class="row bottomBorder">
-        <div class="col-md-4 separateTop text-nowrap">
-            <b>Asset Allocation</b>
+<div class="container">
+    <div>
+        <div class="form-group">
+            <label for="portfolioName">포트폴리오 이름</label>
+            <input type="text" id="portfolioName">
         </div>
-        <div class="col-md-4 separateTop"><b>Asset Class</b></div>
-        <div class="col-md-4 separateTop text-nowrap">
-            <b>Portfolio</b>
-            <div id="allocation-menu-1" class="dropdown d-inline-block allocation-menu px-2"></div>
+
+        <div class="form-group">
+            <label for="portfolioDescription">포트폴리오 상세</label>
+            <input type="text" id="portfolioDescription">
+        </div>
+
+        <div class="form-group">
+            <label for="rebalancing">리밸런싱 주기</label>
+            <select id="rebalancing" name="rebalancing" class="form-control form-select">
+                <option value="0" selected>No rebalancing</option>
+                <option value="12">Rebalance annually</option>
+                <option value="6">Rebalance semi-annually</option>
+                <option value="3">Rebalance quarterly</option>
+                <option value="1">Rebalance monthly</option>
+            </select>
         </div>
     </div>
+    <hr>
+    <div
+            id="pfSection"
+            class="portfolio-section pv-asset-classes pv-allow-expansion pv-multiple"
+            data-count="3"
+            data-maxrows="50"
+            data-advanced="false"
+    >
+        <div class="row bottomBorder">
+            <div class="col-md-3 separateTop text-nowrap">
+                <b>Asset Allocation</b>
+            </div>
+            <div class="col-md-5 separateTop"><b>Asset Class</b></div>
+            <div class="col-md-4 separateTop text-nowrap">
+                <b>Portfolio</b>
+                <div id="allocation-menu-1" class="dropdown d-inline-block allocation-menu px-2"></div>
+            </div>
+        </div>
+
+        <hr>
+
+    </div>
+
+    <button id="addButton"><b>+ ADD</b></button>
+    <hr>
+    <div class="row topBorder totals-row">
+        <div class="col-md-2 separateTop custom-label"><b>Total</b></div>
+        <div class="col-md-2 offset-md-4 totals-column"></div>
+        <div class="col-md-2 totals-column"> <!-- 변경된 열 -->
+            <div class="input-group flex-nowrap smallMargin">
+                <input
+                        type="number"
+                        id="total1"
+                        name="total1"
+                        class="form-control"
+                        readonly=""
+                        autocomplete="off"
+                        style="background-color: rgb(223, 240, 216)"
+                />
+                <label class="visually-hidden custom-label" for="total1" style="display: none">Total allocation for
+                    portfolio 1</label>
+                <span class="input-group-text custom-label">%</span>
+            </div>
+        </div>
+    </div>
+
 
     <hr>
-
+    <button id="submitButton">CREATE</button>
 </div>
-
-<button id="addButton"><b>ADD</b></button>
-<hr>
-<div class="row topBorder totals-row">
-    <div class="col-md-2 separateTop custom-label"><b>Total</b></div>
-    <div class="col-md-2 offset-md-4 totals-column"></div>
-    <div class="col-md-2 totals-column"> <!-- 변경된 열 -->
-        <div class="input-group flex-nowrap smallMargin">
-            <input
-                    type="number"
-                    id="total1"
-                    name="total1"
-                    class="form-control"
-                    readonly=""
-                    autocomplete="off"
-                    style="background-color: rgb(223, 240, 216)"
-            />
-            <label class="visually-hidden custom-label" for="total1" style="display: none">Total allocation for
-                portfolio 1</label>
-            <span class="input-group-text custom-label">%</span>
-        </div>
-    </div>
-</div>
-
-
-<hr>
-<button id="submitButton">CREATE</button>
