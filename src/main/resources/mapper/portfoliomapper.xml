@@ -50,8 +50,11 @@
                 #{percentageZAR})
     </insert>
 
+<<<<<<< HEAD
 
     <!-- Update and Delete not required -->
+=======
+>>>>>>> d4682815bf7f9b044991d7a84440ba831ab9bcae
     <select id="selectOne" parameterType="Integer" resultType="PortfolioDTO">
         SELECT *
         FROM portfolio

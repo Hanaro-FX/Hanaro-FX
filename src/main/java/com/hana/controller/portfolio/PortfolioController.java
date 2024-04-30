@@ -29,7 +29,6 @@ public class PortfolioController {
         model.addAttribute("portfolio", portfolio);
 
         model.addAttribute("center", dir + "result");
-
         return "index";
     }
 
