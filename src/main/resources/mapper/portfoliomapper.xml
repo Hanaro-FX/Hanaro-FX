@@ -63,9 +63,9 @@
         DELETE FROM portfolio WHERE id=#{id}
     </delete>
 
-    <select id="getCurrencyByCountryDate" parameterType="PortfolioQueryDTO" resultType="double">
-        SELECT standard_rate
+    <select id="getCurrencyByCountryDate" parameterType="PortfolioQueryDTO">
+        SELECT currency_date, standard_rate
         FROM ${tableName}
-        WHERE currency_date = #{startDate};
+        WHERE currency_date BETWEEN #{startDate} AND #{endDate};
     </select>
 </mapper>

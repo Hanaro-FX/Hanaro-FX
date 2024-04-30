@@ -2,6 +2,7 @@ package com.hana.app.service;
 
 import com.hana.app.data.dto.PortfolioDTO;
 import com.hana.app.data.dto.PortfolioQueryDTO;
+import com.hana.app.data.dto.PortfolioResultDTO;
 import com.hana.app.frame.BaseService;
 import com.hana.app.repository.PortfolioRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
         return portfolioRepository.selectByUserId(userId);
     }
 
-    public Double getCurrencyByCountryDate(PortfolioQueryDTO portfolioQueryDTO) throws Exception {
+    public List<PortfolioResultDTO> getCurrencyByCountryDate(PortfolioQueryDTO portfolioQueryDTO) throws Exception {
         return portfolioRepository.getCurrencyByCountryDate(portfolioQueryDTO);
     }
 }

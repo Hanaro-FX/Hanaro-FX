@@ -2,6 +2,7 @@ package com.hana.controller.portfolio;
 
 import com.hana.app.data.dto.PortfolioDTO;
 import com.hana.app.data.dto.PortfolioQueryDTO;
+import com.hana.app.data.dto.PortfolioResultDTO;
 import com.hana.app.service.PortfolioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,11 +38,22 @@ public class PortfolioRestController {
 
     @RequestMapping("/testImpl")
     public Object calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
-        // requestData를 사용하여 필요한 작업 수행
         for (PortfolioQueryDTO requestDatum : requestData) {
-            PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).initialAmount(requestDatum.getPercentage() * requestDatum.getInitialAmount() / 100).build();
-            log.info(portfolioQueryDTO.toString());
-            log.info(String.valueOf(portfolioService.getCurrencyByCountryDate(portfolioQueryDTO)));
+            log.info(requestDatum.getTableName());
+
+            PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).endDate(requestDatum.getEndDate()).build();
+            List<PortfolioResultDTO> x = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);
+            log.info(x.toString());
+            // TODO: Rebalancing 적용하기. => front 단에서 해야하려나.
+            // TODO: 가져온 데이터 활용한 그래프로의 시각화
+
+//            double initValue = requestDatum.getInitialAmount() * requestDatum.getPercentage() / 100;
+
+//            double cnt_foreign = initValue / past_currency;
+//
+//            PortfolioQueryDTO portfolioQueryDTO1 = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getEndDate()).build();
+//            double finalValue = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO1) * cnt_foreign;
+//            log.info(String.valueOf(finalValue - initValue));
         }
 
         return null;
