@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,13 +40,23 @@ public class PortfolioRestController {
     }
 
     @RequestMapping("/testImpl")
-    public Object calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
+    public Map<String, HashMap<LocalDate, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
+        HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
+
         for (PortfolioQueryDTO requestDatum : requestData) {
-            log.info(requestDatum.getTableName());
+            String tableName = requestDatum.getTableName();
+            log.info(tableName);
 
             PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).endDate(requestDatum.getEndDate()).build();
             List<PortfolioResultDTO> x = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);
             log.info(x.toString());
+
+            x.forEach((xx) -> {
+                HashMap<LocalDate, Double> minimap = new HashMap<>();
+                minimap.put(xx.getCurrencyDate(), xx.getStandardRate());
+                map.put(tableName, minimap);
+            });
+
             // TODO: Rebalancing 적용하기. => front 단에서 해야하려나.
             // TODO: 가져온 데이터 활용한 그래프로의 시각화
 
@@ -56,6 +69,6 @@ public class PortfolioRestController {
 //            log.info(String.valueOf(finalValue - initValue));
         }
 
-        return null;
+        return map;
     }
 }
