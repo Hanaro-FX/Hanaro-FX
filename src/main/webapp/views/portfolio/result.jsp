@@ -195,44 +195,51 @@
         }
     };
     $(function () {
-        $('#startDate').monthpicker({
+        $('#startDate').datepicker({
             startYear: 2000,
             finalYear: new Date().getFullYear(),
-            monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
             monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            showOn: "button",
+            dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            dateFormat: 'yy-mm-dd',
+            showOtherMonths: true,
+            showMonthAfterYear: true,
+            changeYear: true,
+            changeMonth: true,
+            showOn: 'both',
             buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
             buttonImageOnly: true,
-            changeYear: true,
             minDate: new Date(2000, 0),
             maxDate: new Date(),
             yearRange: '2000:c',
-            dateFormat: 'yy-mm',
             onSelect: function(selected) {
-                let selectedMonth = $('#startDate').monthpicker('getDate');
-                selectedMonth.setMonth(selectedMonth.getMonth() + 1);
-                $('#endDate').monthpicker('option', 'minDate', selectedMonth);
-                $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
+                let selectedDate = $('#startDate').datepicker('getDate');
+                selectedDate.setDate(selectedDate.getDate() + 1);
+                $('#endDate').datepicker('option', 'minDate', selectedDate);
+                $("#ui-datepicker-div").find(".ui-state-active").removeClass("ui-state-active");
             }
         });
-        $('#endDate').monthpicker({
+        $('#endDate').datepicker({
             startYear: 2000,
             finalYear: new Date().getFullYear(),
-            monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)', '8월(AUG)', '9월(SEP)', '10월(OCT)', '11월(NOV)', '12월(DEC) '],
             monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            showOn: "button",
+            dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            dateFormat: 'yy-mm-dd',
+            showOtherMonths: true,
+            showMonthAfterYear: true,
+            changeYear: true,
+            changeMonth: true,
+            showOn: 'both',
             buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
             buttonImageOnly: true,
-            changeYear: true,
             minDate: new Date(2000, 0),
             maxDate: new Date(),
             yearRange: '2000:c',
-            dateFormat: 'yy-mm',
+            dateFormat: 'yy-mm-dd',
             onSelect: function(selected) {
-                let selectedMonth = $('#endDate').monthpicker('getDate');
-                selectedMonth.setMonth(selectedMonth.getMonth() - 1);
-                $('#startDate').monthpicker('option', 'maxDate', selectedMonth);
-                $("#ui-monthpicker-div").find(".ui-state-active").removeClass("ui-state-active");
+                let selectedDate = $('#endDate').datepicker('getDate');
+                selectedDate.setDate(selectedDate.getDate() - 1);
+                $('#startDate').datepicker('option', 'maxDate', selectedDate);
+                $("#ui-datepicker-div").find(".ui-state-active").removeClass("ui-state-active");
             }
         });
     });
