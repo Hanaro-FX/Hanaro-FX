@@ -5,6 +5,86 @@
     .main-content {
         padding: 0px 100px 20px 100px;
     }
+
+    #addButton {
+        /* 테이블의 너비와 같은 너비 */
+        width: 100%;
+        /* 버튼 높이 설정 */
+        height: 30px;
+        /* 배경 색상 및 글자색 설정 */
+        background-color: #ffffff;
+        color: #808080;
+        /* 테두리 제거 */
+        border: none;
+        /* 커서가 버튼 위에 있을 때 포인터로 변경 */
+        cursor: pointer;
+        text-align: left;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* 버튼에 마우스를 갖다대면 */
+    #addButton:hover {
+        /* 배경색과 글자색 변경 */
+        background-color: #808080;
+        color: #ffffff;
+    }
+
+    #submitButton {
+        /* 너비 설정 */
+        width: 100%;
+        /* 높이 설정 */
+        height: 40px;
+        /* 배경색 및 글자색 설정 */
+        background-color: #4CAF50; /* 녹색 */
+        color: #ffffff; /* 흰색 */
+        /* 테두리 및 테두리 반경 설정 */
+        border: none;
+        border-radius: 5px;
+        /* 마우스 커서를 포인터로 변경 */
+        cursor: pointer;
+        /* 글꼴과 글꼴 크기 설정 */
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        /* 버튼 안의 텍스트 정렬 */
+        text-align: center;
+        /* 텍스트 세로 중앙 정렬 */
+        line-height: 40px;
+        /* 그림자 효과 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* transition 효과 설정 */
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    /* 마우스를 버튼 위로 이동했을 때 */
+    #submitButton:hover {
+        /* 배경색과 글자색 변경 */
+        background-color: #45a049; /* 어두운 녹색 */
+        color: #ffffff; /* 흰색 */
+        /* 그림자 효과 강화 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    select {
+        width: calc(100% - 10px);
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+
 </style>
 
 <%-- TODO: Data input verification--%>
@@ -54,6 +134,7 @@
     let i = 1;
     let create = {
         init: function () {
+            this.dummy(i++);
             $('#submitButton').click(() => {
                 let dict = {};
                 dict['userId'] = 1;
@@ -213,29 +294,26 @@
     }
 </script>
 <div>
-    <label for="portfolioName">포트폴리오 이름</label>
-    <br>
-    <input id="portfolioName"/>
-    <br>
-    <br>
-    <label for="portfolioDescription">포트폴리오 상세</label>
-    <br>
-    <input id="portfolioDescription"/>
-    <br>
-    <br>
-    <label for="rebalancing">리밸런싱 주기</label>
-    <select
-            id="rebalancing"
-            name="rebalancing"
-            class="form-control form-select"
-            style="width: auto"
-    >
-        <option value="0" selected="">No rebalancing</option>
-        <option value="12">Rebalance annually</option>
-        <option value="6">Rebalance semi-annually</option>
-        <option value="3">Rebalance quarterly</option>
-        <option value="1">Rebalance monthly</option>
-    </select>
+    <div class="form-group">
+        <label for="portfolioName">포트폴리오 이름</label>
+        <input type="text" id="portfolioName">
+    </div>
+
+    <div class="form-group">
+        <label for="portfolioDescription">포트폴리오 상세</label>
+        <input type="text" id="portfolioDescription">
+    </div>
+
+    <div class="form-group">
+        <label for="rebalancing">리밸런싱 주기</label>
+        <select id="rebalancing" name="rebalancing" class="form-control form-select">
+            <option value="0" selected>No rebalancing</option>
+            <option value="12">Rebalance annually</option>
+            <option value="6">Rebalance semi-annually</option>
+            <option value="3">Rebalance quarterly</option>
+            <option value="1">Rebalance monthly</option>
+        </select>
+    </div>
 </div>
 <hr>
 <div
@@ -259,9 +337,12 @@
             </div>
         </div>
     </div>
+    <hr>
+
 </div>
 
-<button id="addButton">ADD</button>
+<button id="addButton"><b>ADD</b></button>
+<hr>
 <div class="row topBorder totals-row">
     <div class="col-md-2 separateTop"><b>Total</b></div>
     <div class="col-md-2 offset-md-4 totals-column">
@@ -280,5 +361,5 @@
         </div>
     </div>
 </div>
-
+<hr>
 <button id="submitButton">CREATE</button>
