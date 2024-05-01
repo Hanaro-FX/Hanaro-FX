@@ -138,6 +138,18 @@
                 url: '<c:url value="/portfolio/resultImpl"/>',
                 data: {'id': ${id}},
                 success: function (data) {
+
+                    let portfolioName = data.portfolioName;
+                    let portfolioDesc = data.portfolioDesc;
+                    let portfolioDate = data.portfolioDate;
+                    let nameSpace = document.getElementById('portfolioName');
+                    let descSpace = document.getElementById('portfolioDesc');
+                    let dateSpace = document.getElementById('portfolioDate');
+
+                    nameSpace.innerText = portfolioName;
+                    descSpace.innerText = portfolioDesc;
+                    dateSpace.innerText = portfolioDate;
+                    console.log(portfolioName, portfolioDesc, portfolioDate);
                     google.charts.load('current', {'packages': ['corechart']});
                     google.charts.setOnLoadCallback(function () {
                         drawChart(data);
@@ -329,15 +341,15 @@
 </script>
 <div style="display: none" id="validData"></div>
 <div class="container">
-    <h3>
-        <c:choose>
-            <c:when test="${empty portfolio.portfolioName}">
-                제목 없는 포트폴리오
-            </c:when>
-            <c:otherwise>
-                ${portfolio.portfolioName}
-            </c:otherwise>
-        </c:choose>
+    <h3 id="portfolioName">
+<%--        <c:choose>--%>
+<%--            <c:when test="${empty portfolio.portfolioName}">--%>
+<%--                제목 없는 포트폴리오--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--                ${portfolio.portfolioName}--%>
+<%--            </c:otherwise>--%>
+<%--        </c:choose>--%>
     </h3>
 
     <br/>
@@ -345,11 +357,14 @@
     <div class="row">
         <div class="col">
             <div class="info">
-                포트폴리오 생성일: ${portfolio.portfolioDate}
-                <c:if test="${not empty portfolio.portfolioDesc}">
+                <%-- ${portfolio.portfolioDate} --%>
+                포트폴리오 생성일: <span id="portfolioDate"></span>
                     <br/>
-                    전략 설명: ${portfolio.portfolioDesc}
-                </c:if>
+                    <span id="portfolioDesc"></span>
+<%--                <c:if test="${not empty portfolio.portfolioDesc}">--%>
+<%--                    <br/>--%>
+<%--                    전략 설명: ${portfolio.portfolioDesc}--%>
+<%--                </c:if>--%>
             </div>
             <!-- Start Date -->
             <div class="form-group row">
