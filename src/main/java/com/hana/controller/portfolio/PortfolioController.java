@@ -33,6 +33,14 @@ public class PortfolioController {
         return "index";
     }
 
+    @RequestMapping("/createImpl")
+    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
+        log.info(portfolioDTO.toString());
+        portfolioService.insert(portfolioDTO);
+        model.addAttribute("center", "/");
+        return "index";
+    }
+
     // 프트폴리오 삭제
     @RequestMapping("/delete")
     public String deletePortfolio(@RequestParam("id") Integer id) throws Exception {

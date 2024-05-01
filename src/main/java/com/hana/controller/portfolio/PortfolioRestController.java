@@ -25,14 +25,6 @@ public class PortfolioRestController {
     String dir = "portfolio/";
     final PortfolioService portfolioService;
 
-    @RequestMapping("/createImpl")
-    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
-        log.info(portfolioDTO.toString());
-        portfolioService.insert(portfolioDTO);
-        model.addAttribute("center", "/");
-        return "index";
-    }
-
     @RequestMapping("/resultImpl")
     public PortfolioDTO resultPage(@RequestParam("id") Integer id, Model model) throws Exception {
         // 포트폴리오 데이터 불러오기
