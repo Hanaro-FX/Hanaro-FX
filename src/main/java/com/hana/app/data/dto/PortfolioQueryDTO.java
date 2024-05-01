@@ -17,4 +17,5 @@ public class PortfolioQueryDTO {
     private String tableName;
     private Double percentage;
     private Double initialAmount;
+    private Integer rebalance;
 }

@@ -34,7 +34,7 @@ public class PortfolioRestController {
     @RequestMapping("/testImpl")
     public Map<String, HashMap<LocalDate, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
         HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
-
+        int rebalance = requestData[0].getRebalance();
         for (PortfolioQueryDTO requestDatum : requestData) {
             PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).endDate(requestDatum.getEndDate()).build();
             List<PortfolioResultDTO> x = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);

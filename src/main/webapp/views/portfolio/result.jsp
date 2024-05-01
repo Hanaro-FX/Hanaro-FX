@@ -73,6 +73,7 @@
                         tableName: tableName,
                         percentage: x[1],
                         initialAmount: Number.parseFloat($('#initialAmount').val()),
+                        rebalance: $('#rebalanceType').val()
                     })
                 })
                 $.ajax({
