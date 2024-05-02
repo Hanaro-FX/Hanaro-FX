@@ -26,7 +26,8 @@ public class UserService implements BaseService<Integer, UserDTO> {
 
     @Override
     public int insert(UserDTO userDTO) throws Exception {
-        return userRepository.insert(userDTO);
+        userRepository.insert(userDTO);
+        return getUserId(userDTO);
     }
 
     @Override

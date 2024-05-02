@@ -7,10 +7,7 @@
         SELECT * FROM user WHERE name=#{name} AND email=#{email}
     </select>
 
-    <insert id="save" parameterType="UserDTO">
-        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-        INSERT INTO user (name, email) VALUES (#{name}, #{email})
+    <insert id="insert" parameterType="UserDTO">
+        INSERT INTO user VALUES (0, #{name}, #{email})
     </insert>
 </mapper>
