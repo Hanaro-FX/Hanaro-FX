@@ -70,6 +70,7 @@
                             tableName = country.name + "_" + country.currencyCode;
                         }
                     })
+
                     dArr.push({
                         startDate: $('#startDate').val(),
                         endDate: $('#endDate').val(),
@@ -86,7 +87,32 @@
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
                         // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
+                        let result_portfolio_name = document.getElementById('portfolioName2');
+                        result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
+
+                        let result_initial_value = document.getElementById('initialValue');
+                        result_initial_value.innerText = Number.parseFloat($('#initialAmount').val()) + ' ₩';
+
+                        let result_final_value = document.getElementById('finalValue');
+
+                        let lastDay = $('#endDate').datepicker('getDate');
+                        let year = lastDay.getFullYear();
+                        let month = String(lastDay.getMonth() + 1).padStart(2, '0');
+                        let day = String(lastDay.getDate()).padStart(2, '0');
+                        let formattedDate = year + '-' + month + '-' + day;
+
                         console.log(response);
+
+                        let info_of_last_day = response[formattedDate];
+                        console.log(info_of_last_day);
+                        let total = 0;
+                        for (const key in info_of_last_day) {
+                            total += info_of_last_day[key];
+                        }
+
+                        result_final_value.innerText = total + ' ₩';
+
+
                     }
                 });
             });
@@ -493,6 +519,21 @@
         });
     }
 </script>
+
+<div class="container">
+    <table id="resultTable" class="table">
+        <tr>
+            <th scope="col">Portfolio Name</th>
+            <th scope="col">Initial Balance</th>
+            <th scope="col">Final Balance</th>
+        </tr>
+        <tr>
+            <td id="portfolioName2"></td>
+            <td id="initialValue"></td>
+            <td id="finalValue"></td>
+        </tr>
+    </table>
+</div>
 
 <%-- 1. won_amount = Initial amount * portfolio percentage --%>
 <%-- 2. 외화 수 = won_amount / (start date) 기준환율 --%>
