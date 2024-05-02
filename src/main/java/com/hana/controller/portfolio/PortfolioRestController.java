@@ -87,14 +87,14 @@ public class PortfolioRestController {
                 cc.put(country, dateValue.get(date));
             });
             long dateDiff = ChronoUnit.DAYS.between(date, startDate);
-            boolean rebalanceTime = dateDiff % rebalance == 0;
+            boolean rebalanceTime = dateDiff % (rebalance * 30L) == 0;
             if (rebalanceTime) {
                 double sum = cc.values().stream().mapToDouble(Double::doubleValue).sum();
                 cc.forEach((country, value) -> {
                     cc.put(country, sum * countryPortion.get(country));
                 });
             }
-            
+
             dcc.put(date, cc);
         }
         log.info(dcc.toString());
