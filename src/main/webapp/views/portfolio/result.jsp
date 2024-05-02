@@ -5,6 +5,9 @@
 
 <link rel="stylesheet" href="<c:url value="/css/portfolio/result.css"/>"/>
 
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
+        integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01" crossorigin="anonymous"></script>
+
 <script>
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
@@ -350,17 +353,25 @@
 </script>
 <div style="display: none" id="validData"></div>
 <div class="container">
-    <h3 id="portfolioName">
-<%--        <c:choose>--%>
-<%--            <c:when test="${empty portfolio.portfolioName}">--%>
-<%--                제목 없는 포트폴리오--%>
-<%--            </c:when>--%>
-<%--            <c:otherwise>--%>
-<%--                ${portfolio.portfolioName}--%>
-<%--            </c:otherwise>--%>
-<%--        </c:choose>--%>
-    </h3>
-
+    <div style="display: flex">
+        <h3 id="portfolioName">
+            <%--        <c:choose>--%>
+            <%--            <c:when test="${empty portfolio.portfolioName}">--%>
+            <%--                제목 없는 포트폴리오--%>
+            <%--            </c:when>--%>
+            <%--            <c:otherwise>--%>
+            <%--                ${portfolio.portfolioName}--%>
+            <%--            </c:otherwise>--%>
+            <%--        </c:choose>--%>
+        </h3>
+        <a id="kakaotalk-sharing-btn" href="javascript:;">
+            <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                 alt="카카오톡 공유 보내기 버튼"
+                 style="height: 30px; margin-left: 10px"
+                 onclick="share()"
+            />
+        </a>
+    </div>
     <br/>
 
     <div class="row">
@@ -443,6 +454,45 @@
     </div>
 </div>
 
+<script>
+    let share = function(){
+        let nameSpace = document.getElementById('portfolioName');
+        let descSpace = document.getElementById('portfolioDesc');
+        let title = nameSpace.innerText;
+        let description = descSpace.innerText;
+        let url = window.location.href;
+
+        Kakao.init('825ac3e00ada1cf630540be763bf07e6'); // JavaScript key
+        Kakao.Share.createDefaultButton({
+            container: '#kakaotalk-sharing-btn',
+            objectType: 'feed',
+            content: {
+                title: title,
+                description: description,
+                imageUrl:
+                    '<c:url value="http://localhost:8080/img/Hanaro-FX.png"/>',
+                link: {
+                    mobileWebUrl: url,
+                    webUrl: url,
+                },
+            },
+            social: {
+                likeCount: 286,
+                commentCount: 45,
+                sharedCount: 845,
+            },
+            buttons: [
+                {
+                    title: '웹으로 보기',
+                    link: {
+                        mobileWebUrl: url,
+                        webUrl: url,
+                    },
+                },
+            ],
+        });
+    }
+</script>
 
 <%-- 1. won_amount = Initial amount * portfolio percentage --%>
 <%-- 2. 외화 수 = won_amount / (start date) 기준환율 --%>
