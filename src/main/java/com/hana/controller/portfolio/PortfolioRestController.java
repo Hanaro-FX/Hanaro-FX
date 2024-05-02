@@ -34,7 +34,6 @@ public class PortfolioRestController {
     @RequestMapping("/testImpl")
     public Map<LocalDate, HashMap<String, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
         int rebalance = requestData[0].getRebalance();
-        log.info(requestData.toString());
 
 //        국가 일자 가격
         HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
@@ -49,7 +48,6 @@ public class PortfolioRestController {
 
             // 이 국가에 대한 초기 자본: 원
             double initValue = requestDatum.getInitialAmount() * requestDatum.getPercentage() / 100;
-            log.info(x.toString());
             // 초기 자본으로 구매한 외화 수
             double cnt_foreign = initValue / x.get(0).getStandardRate();
 
@@ -73,24 +71,18 @@ public class PortfolioRestController {
 
         for (LocalDate date : allDates) {
             HashMap<String, Double> cc = new HashMap<>();
-            // map 순회
-            log.info(map.toString());
 
             map.forEach((country, dateValue) -> {
-                LocalDate yesterday = date.minusDays(1);
                 if (!dateValue.containsKey(date)) {
                     // Cold Start Issue
+                    LocalDate yesterday = date.minusDays(1);
                     dateValue.put(date, dateValue.get(yesterday));
                 }
-                log.info(country);
-                log.info(dateValue.toString());
-
                 cc.put(country, dateValue.get(date));
-
-                dcc.put(date, cc);
             });
-        }
 
+            dcc.put(date, cc);
+        }
         log.info(dcc.toString());
 
         return dcc;
