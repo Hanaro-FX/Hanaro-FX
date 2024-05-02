@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hana.app.repository.PortfolioRepository">
+    <insert id="insert" parameterType="portfolioDTO">
+        INSERT INTO portfolio
+        VALUES (0,
+                #{userId},
+                #{portfolioName},
+                #{portfolioDesc},
+                NOW(),
+                #{rebalancing},
+                #{percentageAED},
+                #{percentageARS},
+                #{percentageAUD},
+                #{percentageBHD},
+                #{percentageCAD},
+                #{percentageCHF},
+                #{percentageCNY},
+                #{percentageDKK},
+                #{percentageEUR},
+                #{percentageGBP},
+                #{percentageHKD},
+                #{percentageHUF},
+                #{percentageIDR},
+                #{percentageILS},
+                #{percentageINR},
+                #{percentageJPY},
+                #{percentageKWD},
+                #{percentageMXN},
+                #{percentageMYR},
+                #{percentageNOK},
+                #{percentageNZD},
+                #{percentagePHP},
+                #{percentagePKR},
+                #{percentagePLN},
+                #{percentageQAR},
+                #{percentageRUB},
+                #{percentageSAR},
+                #{percentageSEK},
+                #{percentageSGD},
+                #{percentageTHB},
+                #{percentageTRY},
+                #{percentageTWD},
+                #{percentageUSD},
+                #{percentageVND},
+                #{percentageXAG},
+                #{percentageXAU},
+                #{percentageZAR})
+    </insert>
+
+    <select id="selectOne" parameterType="Integer" resultType="PortfolioDTO">
+        SELECT * FROM portfolio WHERE id=#{id}
+    </select>
+
+    <select id="selectByUserId" parameterType="Integer" resultType="PortfolioDTO">
+        SELECT * FROM portfolio WHERE user_id=#{userId}
+        ORDER BY id DESC
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM portfolio WHERE id=#{id}
+    </delete>
+
+    <update id="update" parameterType="PortfolioDTO">
+        UPDATE portfolio
+        SET
+            portfolio_name = #{portfolioName},
+            portfolio_desc = #{portfolioDesc},
+            rebalancing = #{rebalancing},
+            percentage_AED = #{percentageAED},
+            percentage_ARS = #{percentageARS},
+            percentage_AUD = #{percentageAUD},
+            percentage_BHD = #{percentageBHD},
+            percentage_CAD = #{percentageCAD},
+            percentage_CHF = #{percentageCHF},
+            percentage_CNY = #{percentageCNY},
+            percentage_DKK = #{percentageDKK},
+            percentage_EUR = #{percentageEUR},
+            percentage_GBP = #{percentageGBP},
+            percentage_HKD = #{percentageHKD},
+            percentage_HUF = #{percentageHUF},
+            percentage_IDR = #{percentageIDR},
+            percentage_ILS = #{percentageILS},
+            percentage_INR = #{percentageINR},
+            percentage_JPY = #{percentageJPY},
+            percentage_KWD = #{percentageKWD},
+            percentage_MXN = #{percentageMXN},
+            percentage_MYR = #{percentageMYR},
+            percentage_NOK = #{percentageNOK},
+            percentage_NZD = #{percentageNZD},
+            percentage_PHP = #{percentagePHP},
+            percentage_PKR = #{percentagePKR},
+            percentage_PLN = #{percentagePLN},
+            percentage_QAR = #{percentageQAR},
+            percentage_RUB = #{percentageRUB},
+            percentage_SAR = #{percentageSAR},
+            percentage_SEK = #{percentageSEK},
+            percentage_SGD = #{percentageSGD},
+            percentage_THB = #{percentageTHB},
+            percentage_TRY = #{percentageTRY},
+            percentage_TWD = #{percentageTWD},
+            percentage_USD = #{percentageUSD},
+            percentage_VND = #{percentageVND},
+            percentage_XAG = #{percentageXAG},
+            percentage_XAU = #{percentageXAU},
+            percentage_ZAR = #{percentageZAR}
+        WHERE
+            id = #{id}
+    </update>
+</mapper>
