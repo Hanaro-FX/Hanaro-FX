@@ -1,8 +1,10 @@
 package com.hana.controller.portfolio;
 
 import com.hana.app.data.dto.PortfolioDTO;
+import com.hana.app.service.KakaoService;
 import com.hana.app.data.dto.PortfolioQueryDTO;
 import com.hana.app.service.PortfolioService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,12 +25,22 @@ import java.util.Map;
 @Slf4j
 public class PortfolioController {
 
+    private final KakaoService kakaoService;
     private final PortfolioService portfolioService;
 
     String dir = "portfolio/";
 
     @RequestMapping("/create")
-    public String portfolioCreateView(Model model) {
+    public String portfolioCreateView(
+            Model model,
+            HttpSession httpSession
+    ) {
+        // 사용자의 로그인 여부 확인
+        Object accessToken = httpSession.getAttribute("accessToken");
+        if(accessToken == null){
+            String loginRedirectUrl = kakaoService.getLoginRedirectUrl();
+            return "redirect:" + loginRedirectUrl;
+        }
         model.addAttribute("center", dir + "create");
         return "index";
     }
