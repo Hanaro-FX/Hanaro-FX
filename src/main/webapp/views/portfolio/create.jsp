@@ -152,7 +152,7 @@
             $('#submitButton').click(() => {
                 let dict = {};
                 let total = 0;
-                dict['userId'] = 1;
+                dict['userId'] = 2;
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
 
@@ -164,11 +164,11 @@
                         alert("Duplicate input");
                         return;
                     }
-                    dict[key] = v;
                     if (key == "Select Currency" || v == 0) {
                         alert("Invalid Input");
                         return;
                     }
+                    dict[key] = v;
                 }
                 if (total != 100) {
                     alert("Should be summed up to 100");

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,12 +34,13 @@ public class PortfolioRestController {
     }
 
     @RequestMapping("/testImpl")
-    public Map<String, HashMap<LocalDate, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
-        HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
+    public Map<LocalDate, HashMap<String, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
         int rebalance = requestData[0].getRebalance();
         log.info(requestData.toString());
-        // {Date: {Country: Currency}}
-        // 만약 특정 일자에 어느 국가는 환율이 없다면, 이 국가에의 투자는 0이라 치고, 그 국가의 투자금액을 다른 국가들이 사전 설정된 비율에 비례하게 받아간다.
+
+//        국가 일자 가격
+        HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
+//         만약 특정 일자에 어느 국가는 환율이 없다면, 이 국가에의 투자는 0이라 치고, 그 국가의 투자금액을 다른 국가들이 사전 설정된 비율에 비례하게 받아간다.
         for (PortfolioQueryDTO requestDatum : requestData) {
             String tableName = requestDatum.getTableName();
             LocalDate startDate = requestDatum.getStartDate();
@@ -53,16 +56,35 @@ public class PortfolioRestController {
             double cnt_foreign = initValue / x.get(0).getStandardRate();
 
             HashMap<LocalDate, Double> minimap = new HashMap<>();
-            // Rebalance 연산을 위한 인덱
 
             for (int i = 0; i < x.size(); i++) {
                 PortfolioResultDTO result = x.get(i);
                 Double currentValue = result.getStandardRate() * cnt_foreign;
                 minimap.put(result.getCurrencyDate(), currentValue);
             }
+
             map.put(tableName, minimap);
         }
 
-        return map;
+
+        // 1. Map DCC = {Date: {Country: 그 시점 환율}}을 구성한다.
+        Map<LocalDate, HashMap<String, Double>> dcc = new HashMap<>();
+
+        // 2. 범위의 모든 일자들을 순회하면서 리밸런싱 관련 작업을 수행한다
+        PortfolioQueryDTO dummy = requestData[0];
+        List<LocalDate> allDates = dummy.getStartDate().datesUntil(dummy.getEndDate()).toList();
+
+        for (LocalDate date : allDates) {
+            HashMap<String, Double> cc = new HashMap<>();
+            // map 순회
+            map.forEach((country, dateValue) -> {
+                cc.put(country, dateValue.get(date));
+                dcc.put(date, cc);
+            });
+        }
+
+        log.info(dcc.toString());
+
+        return dcc;
     }
 }
