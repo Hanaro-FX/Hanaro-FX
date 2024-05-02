@@ -18,35 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-    @Value("${spring.kakao.url.login}")
-    private String kakaoLoginUri;
-
-    @Value("${spring.kakao.url.logout}")
-    private String kakaoLogoutUri;
-
-    @Value("${spring.kakao.client-id}")
-    private String kakaoClientId;
-
-    @Value("${spring.kakao.login-redirect}")
-    private String kakaoLoginRedirectUri;
-
-    @Value("${spring.kakao.logout-redirect}")
-    private String kakaoLogoutRedirectUri;
-
     final KakaoService kakaoService;
     final UserService userService;
 
     @GetMapping("/login")
     @ResponseBody
     public String login(){ // (1) 인가 코드 발급 받기
-        StringBuilder loginView = new StringBuilder()
-                .append(kakaoLoginUri)
-                .append("?response_type=code")
-                .append("&client_id=").append(kakaoClientId)
-                .append("&redirect_uri=").append("http://localhost:8080").append(kakaoLoginRedirectUri);
-
-        log.info(String.valueOf(loginView));
-        return loginView.toString();
+        return kakaoService.getLoginRedirectUrl();
     }
 
     @RequestMapping("/oauth/kakao")
@@ -61,19 +39,14 @@ public class UserController {
 
         httpSession.setAttribute("accessToken", accessToken);
         httpSession.setAttribute("userId", userId);
+        httpSession.setAttribute("userName", userInfo.getName());
         return "redirect:/";
     }
 
     @GetMapping("/logout")
     @ResponseBody
-    public String logout(HttpSession httpSession) { // (1) 인가 코드 발급 받기
-        StringBuilder logout = new StringBuilder() // 1-1. 카카오 api 로그아웃
-                .append(kakaoLogoutUri)
-                .append("?client_id=").append(kakaoClientId)
-                .append("&logout_redirect_uri=").append("http://localhost:8080").append(kakaoLogoutRedirectUri);
-
-        log.info(String.valueOf(logout));
-        return logout.toString();
+    public String logout() { // (1) 인가 코드 발급 받기
+        return kakaoService.getLogoutRedirectUrl();
     }
 
     @RequestMapping("/logout/kakao")
