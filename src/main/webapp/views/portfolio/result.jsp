@@ -529,7 +529,9 @@
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
 
-    <div id="line-chart"></div>
+    <div class="line-chart">
+        <div id="line-chart"></div>
+    </div>
 </div>
 
 
