@@ -51,7 +51,7 @@ public class PortfolioRestController {
 
             // 이 국가에 대한 초기 자본: 원
             double initValue = requestDatum.getInitialAmount() * requestDatum.getPercentage() / 100;
-
+            log.info(x.toString());
             // 초기 자본으로 구매한 외화 수
             double cnt_foreign = initValue / x.get(0).getStandardRate();
 

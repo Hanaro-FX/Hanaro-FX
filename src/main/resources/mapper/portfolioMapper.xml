@@ -51,24 +51,29 @@
     </insert>
 
     <select id="selectOne" parameterType="Integer" resultType="PortfolioDTO">
-        SELECT * FROM portfolio WHERE id=#{id}
+        SELECT *
+        FROM portfolio
+        WHERE id = #{id}
     </select>
 
     <select id="selectByUserId" parameterType="Integer" resultType="PortfolioDTO">
-        SELECT * FROM portfolio WHERE user_id=#{userId}
+        SELECT *
+        FROM portfolio
+        WHERE user_id = #{userId}
         ORDER BY id DESC
     </select>
 
     <delete id="delete" parameterType="Integer">
-        DELETE FROM portfolio WHERE id=#{id}
+        DELETE
+        FROM portfolio
+        WHERE id = #{id}
     </delete>
 
     <update id="update" parameterType="PortfolioDTO">
         UPDATE portfolio
-        SET
-            portfolio_name = #{portfolioName},
+        SET portfolio_name = #{portfolioName},
             portfolio_desc = #{portfolioDesc},
-            rebalancing = #{rebalancing},
+            rebalancing    = #{rebalancing},
             percentage_AED = #{percentageAED},
             percentage_ARS = #{percentageARS},
             percentage_AUD = #{percentageAUD},
@@ -106,7 +111,12 @@
             percentage_XAG = #{percentageXAG},
             percentage_XAU = #{percentageXAU},
             percentage_ZAR = #{percentageZAR}
-        WHERE
-            id = #{id}
+        WHERE id = #{id}
     </update>
+
+    <select id="getCurrencyByCountryDate" parameterType="PortfolioQueryDTO" resultType="PortfolioResultDTO">
+        SELECT currency_date, standard_rate
+        FROM ${tableName}
+        WHERE currency_date BETWEEN #{startDate} AND #{endDate};
+    </select>
 </mapper>
