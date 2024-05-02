@@ -13,24 +13,12 @@
     <!-- Main CSS : Navbar, Main, Footer -->
     <link rel="stylesheet" href="<c:url value="/css/main.css"/>"/>
 
-    <!-- Bootstrap CSS -->
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
-            integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
-            crossorigin="anonymous"
-    />
-    <!-- Bootstarp JS -->
-    <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"
-    ></script>
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
-            crossorigin="anonymous"
-    ></script>
+    <link rel="stylesheet" href="<c:url value="/bootstrap-4.1.3-dist/css/bootstrap.css"/>" >
+    <link rel="stylesheet" href="<c:url value="/bootstrap-4.1.3-dist/css/bootstrap-grid.css"/>" >
+    <link rel="stylesheet" href="<c:url value="/bootstrap-4.1.3-dist/css/bootstrap-reboot.css"/>" >
+    <script src="<c:url value="/bootstrap-4.1.3-dist/js/bootstrap.js"/>"></script>
+    <script src="<c:url value="/bootstrap-4.1.3-dist/js/bootstrap.bundle.js"/>"></script>
+    <script src="<c:url value="/bootstrap-4.1.3-dist/js/jquery-3.7.1.min.js"/>"></script>
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/aa90a3ea04.js" crossorigin="anonymous"></script>
