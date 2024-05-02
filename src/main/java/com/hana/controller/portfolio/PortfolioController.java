@@ -41,6 +41,9 @@ public class PortfolioController {
             String loginRedirectUrl = kakaoService.getLoginRedirectUrl();
             return "redirect:" + loginRedirectUrl;
         }
+        int id = (int) httpSession.getAttribute("userId");
+        model.addAttribute("userId", id);
+
         model.addAttribute("center", dir + "create");
         return "index";
     }
