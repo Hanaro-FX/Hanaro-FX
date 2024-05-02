@@ -85,3 +85,13 @@ a.ui-button:active,
     background-color: #02875C;
     color: #ffffff;
 }
+
+.ui-datepicker-week-end:last-child,
+.ui-datepicker-week-end:last-child .ui-state-default {
+    color: blue;
+}
+
+.ui-datepicker-week-end:first-child,
+.ui-datepicker-week-end:first-child .ui-state-default {
+    color: red;
+}
