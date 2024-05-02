@@ -94,8 +94,7 @@ public class PortfolioRestController {
                     cc.put(country, sum * countryPortion.get(country));
                 });
             }
-
-
+            
             dcc.put(date, cc);
         }
         log.info(dcc.toString());
