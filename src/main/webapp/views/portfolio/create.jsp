@@ -262,6 +262,8 @@
         });
         // 삭제 버튼 클릭 이벤트 핸들러 등록
         deleteButton.addEventListener("click", function() {
+            // total에서 삭제할 행의 값 제거
+            document.getElementById("total1").value -= rowDiv.querySelector("input[type='number']").value;
             // 삭제할 행(rowDiv) 제거
             rowDiv.remove();
             i--;
