@@ -82,7 +82,7 @@ public class PortfolioRestController {
                 if (!dateValue.containsKey(date)) {
                     // Cold Start Issue
                     LocalDate yesterday = date.minusDays(1);
-                    dateValue.put(date, dateValue.get(yesterday));
+                    dateValue.put(date, dateValue.get(yesterday) == null ? 0 : dateValue.get(yesterday));
                 }
                 cc.put(country, dateValue.get(date));
             });
