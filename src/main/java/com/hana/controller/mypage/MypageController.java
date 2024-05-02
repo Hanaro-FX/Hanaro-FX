@@ -39,7 +39,7 @@ public class MypageController {
         model.addAttribute("name", name);
 
         // 포트폴리오 목록 불러오기
-        List<PortfolioDTO> portfolioList = portfolioService.getPortfolioList(1); // 임의 데이터 사용(사용자 아이디)
+        List<PortfolioDTO> portfolioList = portfolioService.getPortfolioList(2); // 임의 데이터 사용(사용자 아이디)
         model.addAttribute("portfolioList", portfolioList);
 
         model.addAttribute("center", dir + "mypage");
