@@ -82,7 +82,7 @@
                     data: dict,
                     success: function (data) {
                         console.log(data);
-                        window.location.href = "/";
+                        window.location.href = "/portfolio/result?id=" + parseInt(data);
                         alert("COMPLETE");
                     },
                     error: function () {

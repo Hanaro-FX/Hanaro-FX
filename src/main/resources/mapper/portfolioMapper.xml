@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hana.app.repository.PortfolioRepository">
-    <insert id="insert" parameterType="portfolioDTO">
+    <insert id="insert" parameterType="portfolioDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO portfolio
-        VALUES (0,
+        VALUES (NULL,
                 #{userId},
                 #{portfolioName},
                 #{portfolioDesc},
