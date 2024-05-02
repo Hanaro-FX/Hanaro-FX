@@ -424,7 +424,7 @@
                                 name="rebalanceType"
                                 class="form-control form-select"
                         >
-                            <option value="13" selected="">No rebalancing</option>
+                            <option value="9000" selected="">No rebalancing</option>
                             <option value="12">년마다</option>
                             <option value="6">반년마다</option>
                             <option value="3">분기마다</option>
