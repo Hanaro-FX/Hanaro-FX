@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hana.app.repository.UserRepository">
+    <select id="selectByNameAndEmail" parameterType="UserDTO" resultType="UserDTO">
+        SELECT * FROM user WHERE name=#{name} AND email=#{email}
+    </select>
+
+    <insert id="insert" parameterType="UserDTO">
+        INSERT INTO user VALUES (0, #{name}, #{email})
+    </insert>
+</mapper>
