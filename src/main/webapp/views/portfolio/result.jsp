@@ -84,6 +84,93 @@
                     success: function (response) {
                         // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
                         console.log(response);
+
+                        var chart = Highcharts.chart('line-chart', {
+
+                            title: {
+                                text: 'Portfolio Growth',
+                                align: 'left'
+                            },
+
+                            yAxis: {
+                                title: {
+                                    text: 'Portfolio Balance'
+                                },
+                                min: 0,
+                                max: null,
+                                tickInterval: 100
+                            },
+
+                            xAxis: {
+                                type: 'datetime',
+                                title: {
+                                    text: 'Date'
+                                },
+                                rangeSelector: {
+                                    inputDateFormat: '%b %e, %Y'
+                                }
+                            },
+
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle'
+                            },
+
+                            plotOptions: {
+                                series: {
+                                    label: {
+                                        connectorAllowed: false
+                                    },
+                                    pointStart: 2010
+                                }
+                            },
+
+                            series: [],
+
+                            responsive: {
+                                rules: [{
+                                    condition: {
+                                        maxWidth: 500
+                                    },
+                                    chartOptions: {
+                                        legend: {
+                                            layout: 'horizontal',
+                                            align: 'center',
+                                            verticalAlign: 'bottom'
+                                        }
+                                    }
+                                }]
+                            }
+                        });
+
+                        const keys = Object.keys(response);
+                        const nameArray = [];
+                        keys.forEach(key => {
+                            const currencies = response[key];
+                            Object.keys(currencies).forEach(currency => {
+                                if (!nameArray.includes(currency)) {
+                                    nameArray.push(currency);
+                                }
+                            });
+                        });
+
+                        nameArray.forEach(function(currency) {
+                            series = chart.addSeries({
+                                name: currency,
+                                data: []
+                            }, false);
+                        })
+
+                        Object.keys(response).forEach(function(date) {
+                            Object.keys(response[date]).forEach(function(currency) {
+                                const seriesIndex = nameArray.indexOf(currency);
+                                const series = chart.series[seriesIndex];
+                                series.addPoint([Date.parse(date), response[date][currency]], false);
+                            });
+                        });
+
+                        chart.redraw();
                     }
                 });
             });
@@ -441,6 +528,8 @@
     <div class="test-btn-box">
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
+
+    <div id="line-chart"></div>
 </div>
 
 
