@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,7 +64,6 @@ public class PortfolioRestController {
             map.put(tableName, minimap);
         }
 
-
         // 1. Map DCC = {Date: {Country: 그 시점 환율}}을 구성한다.
         Map<LocalDate, HashMap<String, Double>> dcc = new HashMap<>();
 
@@ -77,8 +74,19 @@ public class PortfolioRestController {
         for (LocalDate date : allDates) {
             HashMap<String, Double> cc = new HashMap<>();
             // map 순회
+            log.info(map.toString());
+
             map.forEach((country, dateValue) -> {
+                LocalDate yesterday = date.minusDays(1);
+                if (!dateValue.containsKey(date)) {
+                    // Cold Start Issue
+                    dateValue.put(date, dateValue.get(yesterday));
+                }
+                log.info(country);
+                log.info(dateValue.toString());
+
                 cc.put(country, dateValue.get(date));
+
                 dcc.put(date, cc);
             });
         }
