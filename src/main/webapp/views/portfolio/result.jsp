@@ -158,7 +158,7 @@
                     let descSpace = document.getElementById('portfolioDesc');
                     let dateSpace = document.getElementById('portfolioDate');
 
-                    nameSpace.innerText = portfolioName;
+                    nameSpace.innerText = portfolioName.trim() === "" ? "제목 없는 포트폴리오" : portfolioName;
                     descSpace.innerText = portfolioDesc;
                     dateSpace.innerText = portfolioDate;
                     console.log(portfolioName, portfolioDesc, portfolioDate);
