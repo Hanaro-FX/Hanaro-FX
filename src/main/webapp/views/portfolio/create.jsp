@@ -54,7 +54,7 @@
             $('#submitButton').click(() => {
                 let dict = {};
                 let total = 0;
-                dict['userId'] = 2;
+                dict['userId'] = ${userId};
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
 

@@ -34,12 +34,13 @@ public class MypageController {
             return "redirect:" + loginRedirectUrl;
         }
 
-        // 로그인한 사용자 받아오기 - 수정 예정
+        // 로그인한 사용자 받아오기
         String name = (String) httpSession.getAttribute("userName");
         model.addAttribute("name", name);
 
         // 포트폴리오 목록 불러오기
-        List<PortfolioDTO> portfolioList = portfolioService.getPortfolioList(2); // 임의 데이터 사용(사용자 아이디)
+        int id = (int) httpSession.getAttribute("userId");
+        List<PortfolioDTO> portfolioList = portfolioService.getPortfolioList(id);
         model.addAttribute("portfolioList", portfolioList);
 
         model.addAttribute("center", dir + "mypage");
