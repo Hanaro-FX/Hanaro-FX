@@ -35,8 +35,15 @@ public class PortfolioRestController {
     public Map<String, HashMap<LocalDate, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
         HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
         int rebalance = requestData[0].getRebalance();
+        log.info(requestData.toString());
+        // {Date: {Country: Currency}}
+        // 만약 특정 일자에 어느 국가는 환율이 없다면, 이 국가에의 투자는 0이라 치고, 그 국가의 투자금액을 다른 국가들이 사전 설정된 비율에 비례하게 받아간다.
         for (PortfolioQueryDTO requestDatum : requestData) {
-            PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(requestDatum.getTableName()).startDate(requestDatum.getStartDate()).endDate(requestDatum.getEndDate()).build();
+            String tableName = requestDatum.getTableName();
+            LocalDate startDate = requestDatum.getStartDate();
+            LocalDate endDate = requestDatum.getEndDate();
+
+            PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(tableName).startDate(startDate).endDate(endDate).build();
             List<PortfolioResultDTO> x = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);
 
             // 이 국가에 대한 초기 자본: 원
@@ -45,17 +52,15 @@ public class PortfolioRestController {
             // 초기 자본으로 구매한 외화 수
             double cnt_foreign = initValue / x.get(0).getStandardRate();
 
-            String tableName = requestDatum.getTableName();
-
             HashMap<LocalDate, Double> minimap = new HashMap<>();
-            x.forEach((xx) -> {
-                // 초기에 구매한 외화의 현 시점에서의 가격
-                minimap.put(xx.getCurrencyDate(), xx.getStandardRate() * cnt_foreign);
-            });
-            map.put(tableName, minimap);
+            // Rebalance 연산을 위한 인덱
 
-            // TODO: Rebalancing 적용하기. => front 단에서 해야하려나.
-            // TODO: 가져온 데이터 활용한 그래프로의 시각화
+            for (int i = 0; i < x.size(); i++) {
+                PortfolioResultDTO result = x.get(i);
+                Double currentValue = result.getStandardRate() * cnt_foreign;
+                minimap.put(result.getCurrencyDate(), currentValue);
+            }
+            map.put(tableName, minimap);
         }
 
         return map;
