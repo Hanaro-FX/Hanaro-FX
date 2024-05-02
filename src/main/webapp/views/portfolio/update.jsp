@@ -3,8 +3,6 @@
 
 <link rel="stylesheet" href="<c:url value="/css/portfolio/create-edit.css"/>"/>
 
-<%-- TODO: Data input verification--%>
-
 <script>
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
@@ -48,15 +46,167 @@
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
     let i = 1;
-    let create = {
+    let update = {
         init: function () {
-            this.dummy(i++);
+            // 값 불러오기
+            $('#portfolioName').val("${portfolio.portfolioName}");
+            $('#portfolioDescription').val("${portfolio.portfolioDesc}");
+            $('#rebalancing').val(${portfolio.rebalancing});
+
+            let percentages = {};
+
+            if (${portfolio.percentageARS} != 0) {
+                percentages['percentageARS'] = ${portfolio.percentageARS};
+            }
+
+            if (${portfolio.percentageAUD} != 0) {
+                percentages['percentageAUD'] = ${portfolio.percentageAUD};
+            }
+
+            if (${portfolio.percentageBHD} != 0) {
+                percentages['percentageBHD'] = ${portfolio.percentageBHD};
+            }
+
+            if (${portfolio.percentageCAD} != 0) {
+                percentages['percentageCAD'] = ${portfolio.percentageCAD};
+            }
+
+            if (${portfolio.percentageCHF} != 0) {
+                percentages['percentageCHF'] = ${portfolio.percentageCHF};
+            }
+
+            if (${portfolio.percentageCNY} != 0) {
+                percentages['percentageCNY'] = ${portfolio.percentageCNY};
+            }
+
+            if (${portfolio.percentageDKK} != 0) {
+                percentages['percentageDKK'] = ${portfolio.percentageDKK};
+            }
+
+            if (${portfolio.percentageEUR} != 0) {
+                percentages['percentageEUR'] = ${portfolio.percentageEUR};
+            }
+
+            if (${portfolio.percentageGBP} != 0) {
+                percentages['percentageGBP'] = ${portfolio.percentageGBP};
+            }
+
+            if (${portfolio.percentageHKD} != 0) {
+                percentages['percentageHKD'] = ${portfolio.percentageHKD};
+            }
+
+            if (${portfolio.percentageHUF} != 0) {
+                percentages['percentageHUF'] = ${portfolio.percentageHUF};
+            }
+
+            if (${portfolio.percentageIDR} != 0) {
+                percentages['percentageIDR'] = ${portfolio.percentageIDR};
+            }
+
+            if (${portfolio.percentageILS} != 0) {
+                percentages['percentageILS'] = ${portfolio.percentageILS};
+            }
+
+            if (${portfolio.percentageINR} != 0) {
+                percentages['percentageINR'] = ${portfolio.percentageINR};
+            }
+
+            if (${portfolio.percentageJPY} != 0) {
+                percentages['percentageJPY'] = ${portfolio.percentageJPY};
+            }
+
+            if (${portfolio.percentageKWD} != 0) {
+                percentages['percentageKWD'] = ${portfolio.percentageKWD};
+            }
+
+            if (${portfolio.percentageMXN} != 0) {
+                percentages['percentageMXN'] = ${portfolio.percentageMXN};
+            }
+
+            if (${portfolio.percentageMYR} != 0) {
+                percentages['percentageMYR'] = ${portfolio.percentageMYR};
+            }
+
+            if (${portfolio.percentageNOK} != 0) {
+                percentages['percentageNOK'] = ${portfolio.percentageNOK};
+            }
+
+            if (${portfolio.percentageNZD} != 0) {
+                percentages['percentageNZD'] = ${portfolio.percentageNZD};
+            }
+
+            if (${portfolio.percentagePHP} != 0) {
+                percentages['percentagePHP'] = ${portfolio.percentagePHP};
+            }
+
+            if (${portfolio.percentagePKR} != 0) {
+                percentages['percentagePKR'] = ${portfolio.percentagePKR};
+            }
+
+            if (${portfolio.percentagePLN} != 0) {
+                percentages['percentagePLN'] = ${portfolio.percentagePLN};
+            }
+
+            if (${portfolio.percentageQAR} != 0) {
+                percentages['percentageQAR'] = ${portfolio.percentageQAR};
+            }
+
+            if (${portfolio.percentageRUB} != 0) {
+                percentages['percentageRUB'] = ${portfolio.percentageRUB};
+            }
+
+            if (${portfolio.percentageSAR} != 0) {
+                percentages['percentageSAR'] = ${portfolio.percentageSAR};
+            }
+
+            if (${portfolio.percentageSEK} != 0) {
+                percentages['percentageSEK'] = ${portfolio.percentageSEK};
+            }
+
+            if (${portfolio.percentageSGD} != 0) {
+                percentages['percentageSGD'] = ${portfolio.percentageSGD};
+            }
+
+            if (${portfolio.percentageTHB} != 0) {
+                percentages['percentageTHB'] = ${portfolio.percentageTHB};
+            }
+
+            if (${portfolio.percentageTRY} != 0) {
+                percentages['percentageTRY'] = ${portfolio.percentageTRY};
+            }
+
+            if (${portfolio.percentageTWD} != 0) {
+                percentages['percentageTWD'] = ${portfolio.percentageTWD};
+            }
+
+            if (${portfolio.percentageUSD} != 0) {
+                percentages['percentageUSD'] = ${portfolio.percentageUSD};
+            }
+
+            if (${portfolio.percentageVND} != 0) {
+                percentages['percentageVND'] = ${portfolio.percentageVND};
+            }
+
+            if (${portfolio.percentageZAR} != 0) {
+                percentages['percentageZAR'] = ${portfolio.percentageZAR};
+            }
+
+            for (let j = 1; j <= Object.keys(percentages).length; j++) {
+                this.dummy(i++);
+                let key = Object.keys(percentages)[j - 1];
+                let value = percentages[key];
+                $('#asset' + j).val(key);
+                $('#allocation' + j).val(value);
+            }
+            this.sumPercentages();
+
             $('#submitButton').click(() => {
                 let dict = {};
                 let total = 0;
-                dict['userId'] = 2;
+                dict['userId'] = 1;
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
+                dict['rebalancing'] = $('#rebalancing').val();
 
                 for (let j = 1; j < i; j++) {
                     let key = $('#asset' + j).val();
@@ -66,11 +216,11 @@
                         alert("Duplicate input");
                         return;
                     }
+                    dict[key] = v;
                     if (key == "Select Currency" || v == 0) {
                         alert("Invalid Input");
                         return;
                     }
-                    dict[key] = v;
                 }
                 if (total != 100) {
                     alert("Should be summed up to 100");
@@ -78,20 +228,18 @@
                 }
 
                 $.ajax({
-                    url: '/portfolio/createImpl',
+                    url: '/portfolio/updateImpl?id=' + ${portfolio.id},
                     data: dict,
                     success: function (data) {
-                        console.log(data);
-                        window.location.href = "/";
-                        alert("COMPLETE");
+                        alert("수정되었습니다.");
+                        window.location.href = "/portfolio/result?id=" + ${portfolio.id};
                     },
                     error: function () {
 
                     },
                 });
-
-
             });
+
             $('#addButton').click(() => {
                 this.dummy(i++);
             });
@@ -205,11 +353,10 @@
             } else {
                 totalCell.style.backgroundColor = 'rgb(223, 240, 216)';
             }
-
         }
     };
     $(function () {
-        create.init();
+        update.init();
     });
 
     function checkTotal(input) {
@@ -347,7 +494,6 @@
         </div>
     </div>
 
-
     <hr>
-    <button id="submitButton">CREATE</button>
+    <button id="submitButton">UPDATE</button>
 </div>

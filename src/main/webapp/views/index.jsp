@@ -35,6 +35,36 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/aa90a3ea04.js" crossorigin="anonymous"></script>
 
+    <script>
+        var login = function () {
+            $.ajax({
+                type: 'GET',
+                url: '/user/login',
+                success: function(res) {
+                    console.log('success load login view');
+                    location.href = res;
+                },
+                error: function() {
+                    console.error('fail load login view');
+                }
+            });
+        }
+
+        var logout = function (){
+            $.ajax({
+                type: 'GET',
+                url: '/user/logout',
+                success: function(res) {
+                    console.log('success logout');
+                    location.href = res;
+                },
+                error: function() {
+                    console.error('fail logout');
+                }
+            });
+        }
+    </script>
+
     <!--PieChart API -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -70,7 +100,14 @@
         </div>
 
         <!-- Login / Logout -->
-        <div class="login-btn">LOGIN</div>
+        <c:choose>
+            <c:when test="${sessionScope.userId == null}">
+                <div class="login-btn" onclick="login()">LOGIN</div>
+            </c:when>
+            <c:otherwise>
+                <div class="login-btn" onclick="logout()">LOGOUT</div>
+            </c:otherwise>
+        </c:choose>
     </div>
 </nav>
 <br/>
