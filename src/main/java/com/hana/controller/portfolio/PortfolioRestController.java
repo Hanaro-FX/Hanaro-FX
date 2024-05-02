@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,21 +34,27 @@ public class PortfolioRestController {
 
     @RequestMapping("/testImpl")
     public Map<LocalDate, HashMap<String, Double>> calcResult(@RequestBody PortfolioQueryDTO[] requestData) throws Exception {
-        int rebalance = requestData[0].getRebalance();
+        PortfolioQueryDTO dummy = requestData[0];
+        int rebalance = dummy.getRebalance();
+        log.info("dummyData");
+        log.info(dummy.toString());
+        LocalDate startDate = dummy.getStartDate();
+        LocalDate endDate = dummy.getEndDate();
+        HashMap<String, Double> countryPortion = new HashMap<>();
 
 //        국가 일자 가격
         HashMap<String, HashMap<LocalDate, Double>> map = new HashMap<>();
 //         만약 특정 일자에 어느 국가는 환율이 없다면, 이 국가에의 투자는 0이라 치고, 그 국가의 투자금액을 다른 국가들이 사전 설정된 비율에 비례하게 받아간다.
         for (PortfolioQueryDTO requestDatum : requestData) {
             String tableName = requestDatum.getTableName();
-            LocalDate startDate = requestDatum.getStartDate();
-            LocalDate endDate = requestDatum.getEndDate();
+            double percentage = requestDatum.getPercentage() / 100;
+            countryPortion.put(tableName, percentage);
 
             PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(tableName).startDate(startDate).endDate(endDate).build();
             List<PortfolioResultDTO> x = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);
 
             // 이 국가에 대한 초기 자본: 원
-            double initValue = requestDatum.getInitialAmount() * requestDatum.getPercentage() / 100;
+            double initValue = requestDatum.getInitialAmount() * percentage;
             // 초기 자본으로 구매한 외화 수
             double cnt_foreign = initValue / x.get(0).getStandardRate();
 
@@ -66,7 +73,6 @@ public class PortfolioRestController {
         Map<LocalDate, HashMap<String, Double>> dcc = new HashMap<>();
 
         // 2. 범위의 모든 일자들을 순회하면서 리밸런싱 관련 작업을 수행한다
-        PortfolioQueryDTO dummy = requestData[0];
         List<LocalDate> allDates = dummy.getStartDate().datesUntil(dummy.getEndDate()).toList();
 
         for (LocalDate date : allDates) {
@@ -80,6 +86,15 @@ public class PortfolioRestController {
                 }
                 cc.put(country, dateValue.get(date));
             });
+            long dateDiff = ChronoUnit.DAYS.between(date, startDate);
+            boolean rebalanceTime = dateDiff % rebalance == 0;
+            if (rebalanceTime) {
+                double sum = cc.values().stream().mapToDouble(Double::doubleValue).sum();
+                cc.forEach((country, value) -> {
+                    cc.put(country, sum * countryPortion.get(country));
+                });
+            }
+
 
             dcc.put(date, cc);
         }
