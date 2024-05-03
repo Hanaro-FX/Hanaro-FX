@@ -53,6 +53,15 @@ public class PortfolioRestController {
             List<PortfolioResultDTO> dateCurrency = portfolioService.getCurrencyByCountryDate(portfolioQueryDTO);
             double initialCnt = partialAmount / dateCurrency.get(0).getStandardRate();
 
+            // 환율 데이터가 없는 국가 처리
+            if (x.isEmpty()) {
+                throw new Exception("해당 날짜에 " + tableName + "의 환율 데이터가 존재하지 않습니다.");
+            }
+
+            // 이 국가에 대한 초기 자본: 원
+            double initValue = requestDatum.getInitialAmount() * percentage;
+            // 초기 자본으로 구매한 외화 수
+            double cnt_foreign = initValue / x.get(0).getStandardRate();
             countryCnt.put(tableName, initialCnt);
             countryPercentage.put(tableName, percentage);
 
