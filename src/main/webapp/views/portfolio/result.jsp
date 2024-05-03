@@ -12,6 +12,7 @@
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
         {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
+        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
         {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
         {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
         {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
@@ -27,7 +28,8 @@
         {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
         {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
         {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"}
+        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
+        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
     ];
     const africanCountries = [
         {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
@@ -50,19 +52,23 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
+    const oceaniaCountries = [
+        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
+        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
+    ]
     let allCountries = [
         ...africanCountries,
         ...asianCountries,
         ...europeanCountries,
         ...northAmericanCountries,
-        ...southAmericanCountries
+        ...southAmericanCountries,
+        ...oceaniaCountries
     ];
     let result = {
         init: function () {
             let resultData;
             $('#test-btn').click(() => {
                 let dArr = [];
-
                 resultData.forEach((x) => {
                     let startDate = $('#startDate').val();
                     let endDate = $('#endDate').val();
@@ -77,10 +83,9 @@
                     let tableName = '';
                     allCountries.forEach((country) => {
                         if (country.currencyCode === x[0].slice(-3)) {
-                            tableName = country.name + "_" + country.currencyCode;
+                            tableName = country.name.split(' ').join('') + "_" + country.currencyCode;
                         }
                     })
-
                     dArr.push({
                         startDate: startDate,
                         endDate: endDate,
