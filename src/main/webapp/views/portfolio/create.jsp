@@ -9,6 +9,7 @@
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
         {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
+        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
         {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
         {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
         {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
@@ -24,7 +25,8 @@
         {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
         {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
         {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"}
+        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
+        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
     ];
     const africanCountries = [
         {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
@@ -47,10 +49,15 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
-    let i = 1;
+    const oceaniaCountries = [
+        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
+        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
+    ]
+    let portfolio_id = 0;
+    let portfolio_text = 0;
     let create = {
         init: function () {
-            this.dummy(i++);
+            this.addRow();
             $('#submitButton').click(() => {
                 let dict = {};
                 let total = 0;
@@ -58,7 +65,7 @@
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
 
-                for (let j = 1; j < i; j++) {
+                for (let j = 1; j < portfolio_id; j++) {
                     let key = $('#asset' + j).val();
                     let v = Number.parseFloat($('#allocation' + j).val());
                     total += v;
@@ -82,7 +89,7 @@
                     data: dict,
                     success: function (data) {
                         console.log(data);
-                        window.location.href = "/";
+                        window.location.href = "/portfolio/result?id=" + parseInt(data);
                         alert("COMPLETE");
                     },
                     error: function () {
@@ -93,33 +100,34 @@
 
             });
             $('#addButton').click(() => {
-                this.dummy(i++);
+                this.addRow();
             });
         },
 
-        dummy: function (i) {
+        addRow: function () {
+            portfolio_id += 1;
+            portfolio_text += 1;
             let rowDiv = document.createElement("div");
             rowDiv.classList.add("row", "asset-row");
 
             let assetNum = document.createElement("div");
-            assetNum.id = "assetText" + i;
+            assetNum.id = "assetText" + portfolio_id;
             assetNum.classList.add("col-md-3", "separateTop", "asset-num");
-            assetNum.textContent = "Asset" + i;
+            assetNum.textContent = "Asset" + portfolio_text;
             assetNum.style.fontWeight = "bold";
-
 
             let assetColumn = document.createElement("div");
             assetColumn.classList.add("col-md-5", "asset-column");
 
             let assetLabel = document.createElement("label");
             assetLabel.style.display = "none";
-            assetLabel.htmlFor = "asset" + i;
-            assetLabel.textContent = "Select asset " + i;
+            assetLabel.htmlFor = "asset" + portfolio_id;
+            assetLabel.textContent = "Select asset " + portfolio_text;
 
             let selectParent = document.createElement("div");
             selectParent.classList.add("select-parent");
 
-            let select = this.addSelect(i);
+            let select = this.addSelect();
 
             selectParent.append(select);
             assetColumn.append(assetLabel);
@@ -135,8 +143,8 @@
 
             let input = document.createElement("input");
             input.type = "number";
-            input.id = "allocation" + i;
-            input.name = "allocation" + i;
+            input.id = "allocation" + portfolio_id;
+            input.name = "allocation" + portfolio_id;
             input.classList.add("form-control", "fmt-pospct", "asset-weight");
             input.onchange = this.sumPercentages;
 
@@ -156,8 +164,8 @@
 
         addSelect: function (i) {
             let assetSelect = document.createElement("select");
-            assetSelect.id = "asset" + i;
-            assetSelect.name = "asset" + i;
+            assetSelect.id = "asset" + portfolio_id;
+            assetSelect.name = "asset" + portfolio_id;
             assetSelect.classList.add("form-control", "form-select");
             assetSelect.addEventListener("change", checkDuplicate);
             let defaultOption = document.createElement("option");
@@ -168,8 +176,9 @@
             let northAmericaGroup = this.addCountries("North America", northAmericanCountries);
             let southAmericaGroup = this.addCountries("South America", southAmericanCountries);
             let europeGroup = this.addCountries("Europe", europeanCountries);
+            let oceaniaGroup = this.addCountries("Oceania", oceaniaCountries);
 
-            assetSelect.append(defaultOption, asiaGroup, africaGroup, northAmericaGroup, southAmericaGroup, europeGroup);
+            assetSelect.append(defaultOption, asiaGroup, africaGroup, northAmericaGroup, southAmericaGroup, europeGroup, oceaniaGroup);
             return assetSelect;
         },
 
@@ -187,7 +196,7 @@
 
         sumPercentages: function () {
             let total = 0;
-            for (let j = 1; j <= i; j++) {
+            for (let j = 1; j <= portfolio_id; j++) {
                 let allocationInput = document.getElementById("allocation" + j);
                 if (allocationInput) {
                     let value = parseFloat(allocationInput.value);
@@ -226,7 +235,7 @@
         let selectedValue = this.value; // 현재 선택된 값
 
         // 모든 asset select 요소를 순회하며 현재 선택된 값과 비교
-        for (let j = 1; j < i; j++) {
+        for (let j = 1; j <= portfolio_id; j++) {
             // 현재 select 요소는 비교하지 않음
             if (this.id === "asset" + j) {
                 continue;
@@ -234,6 +243,7 @@
 
             // 다른 asset select 요소의 값과 비교하여 중복 여부 확인
             let otherSelect = document.getElementById("asset" + j);
+            if (otherSelect == null) continue;
             let otherValue = otherSelect.value;
             if (selectedValue === otherValue) {
                 // 중복된 값을 선택한 경우, 해당 select 요소들의 배경 색을 변경
@@ -262,10 +272,10 @@
         });
         // 삭제 버튼 클릭 이벤트 핸들러 등록
         deleteButton.addEventListener("click", function() {
-            // 삭제할 행(rowDiv) 제거
+            rowDiv.querySelector("input[type='number']").value = 0;
             rowDiv.remove();
-            i--;
-            let dummyIdx = 1;
+            portfolio_text--;
+            create.sumPercentages();
             // 삭제된 후에 남은 모든 행의 innerText를 재설정하여 숫자순으로 정렬
             let assetTextElements = document.querySelectorAll('[id^="assetText"]');
             assetTextElements.forEach((element, index) => {
@@ -288,17 +298,6 @@
         <div class="form-group">
             <label for="portfolioDescription">포트폴리오 상세</label>
             <input type="text" id="portfolioDescription">
-        </div>
-
-        <div class="form-group">
-            <label for="rebalancing">리밸런싱 주기</label>
-            <select id="rebalancing" name="rebalancing" class="form-control form-select">
-                <option value="0" selected>No rebalancing</option>
-                <option value="12">Rebalance annually</option>
-                <option value="6">Rebalance semi-annually</option>
-                <option value="3">Rebalance quarterly</option>
-                <option value="1">Rebalance monthly</option>
-            </select>
         </div>
     </div>
     <hr>

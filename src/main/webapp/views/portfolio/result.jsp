@@ -5,6 +5,10 @@
 
 <link rel="stylesheet" href="<c:url value="/css/portfolio/result.css"/>"/>
 
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
+        integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
+        crossorigin="anonymous"></script>
+
 <script>
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
@@ -61,15 +65,26 @@
                 let dArr = [];
 
                 resultData.forEach((x) => {
+                    let startDate = $('#startDate').val();
+                    let endDate = $('#endDate').val();
+                    if (startDate === "") {
+                        alert("Start Date를 입력해주세요.");
+                        return;
+                    }
+                    if (endDate === "") {
+                        alert("End Date를 입력해주세요.");
+                        return;
+                    }
                     let tableName = '';
                     allCountries.forEach((country) => {
                         if (country.currencyCode === x[0].slice(-3)) {
                             tableName = country.name + "_" + country.currencyCode;
                         }
                     })
+
                     dArr.push({
-                        startDate: $('#startDate').val(),
-                        endDate: $('#endDate').val(),
+                        startDate: startDate,
+                        endDate: endDate,
                         tableName: tableName,
                         percentage: x[1],
                         initialAmount: Number.parseFloat($('#initialAmount').val()),
@@ -83,7 +98,19 @@
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
                         // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
-                        console.log(response);
+                        let result_portfolio_name = document.getElementById('portfolioName2');
+                        result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
+
+                        let result_initial_value = document.getElementById('initialValue');
+                        result_initial_value.innerText = Number.parseFloat($('#initialAmount').val()) + ' ₩';
+
+                        let result_final_value = document.getElementById('finalValue');
+
+                        let lastDay = $('#endDate').datepicker('getDate');
+                        let year = lastDay.getFullYear();
+                        let month = String(lastDay.getMonth() + 1).padStart(2, '0');
+                        let day = String(lastDay.getDate()).padStart(2, '0');
+                        let formattedDate = year + '-' + month + '-' + day;
 
                         var chart = Highcharts.chart('line-chart', {
 
@@ -171,6 +198,14 @@
                         });
 
                         chart.redraw();
+                        let info_of_last_day = response[formattedDate];
+                        console.log(info_of_last_day);
+                        let total = 0;
+                        for (const key in info_of_last_day) {
+                            total += info_of_last_day[key];
+                        }
+
+                        result_final_value.innerText = total + ' ₩';
                     }
                 });
             });
@@ -242,7 +277,7 @@
                     let descSpace = document.getElementById('portfolioDesc');
                     let dateSpace = document.getElementById('portfolioDate');
 
-                    nameSpace.innerText = portfolioName;
+                    nameSpace.innerText = portfolioName.trim() === "" ? "제목 없는 포트폴리오" : portfolioName;
                     descSpace.innerText = portfolioDesc;
                     dateSpace.innerText = portfolioDate;
                     console.log(portfolioName, portfolioDesc, portfolioDate);
@@ -438,7 +473,25 @@
 </script>
 <div style="display: none" id="validData"></div>
 <div class="container">
-    <h3 id="portfolioName"></h3>
+    <div style="display: flex">
+        <h3 id="portfolioName">
+            <%--        <c:choose>--%>
+            <%--            <c:when test="${empty portfolio.portfolioName}">--%>
+            <%--                제목 없는 포트폴리오--%>
+            <%--            </c:when>--%>
+            <%--            <c:otherwise>--%>
+            <%--                ${portfolio.portfolioName}--%>
+            <%--            </c:otherwise>--%>
+            <%--        </c:choose>--%>
+        </h3>
+        <a id="kakaotalk-sharing-btn" href="javascript:;">
+            <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                 alt="카카오톡 공유 보내기 버튼"
+                 style="height: 30px; margin-left: 10px"
+                 onclick="share()"
+            />
+        </a>
+    </div>
     <br/>
     <div class="row">
         <div class="col">
@@ -513,8 +566,62 @@
     <div class="test-btn-box">
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
-
+    
     <div class="line-chart">
         <div id="line-chart"></div>
     </div>
+</div>
+<script>
+    let share = function () {
+        let nameSpace = document.getElementById('portfolioName');
+        let descSpace = document.getElementById('portfolioDesc');
+        let title = nameSpace.innerText;
+        let description = descSpace.innerText;
+        let url = window.location.href;
+
+        Kakao.init('825ac3e00ada1cf630540be763bf07e6'); // JavaScript key
+        Kakao.Share.createDefaultButton({
+            container: '#kakaotalk-sharing-btn',
+            objectType: 'feed',
+            content: {
+                title: title,
+                description: description,
+                imageUrl:
+                    '<c:url value="http://localhost:8080/img/Hanaro-FX.png"/>',
+                link: {
+                    mobileWebUrl: url,
+                    webUrl: url,
+                },
+            },
+            social: {
+                likeCount: 286,
+                commentCount: 45,
+                sharedCount: 845,
+            },
+            buttons: [
+                {
+                    title: '웹으로 보기',
+                    link: {
+                        mobileWebUrl: url,
+                        webUrl: url,
+                    },
+                },
+            ],
+        });
+    }
+</script>
+
+<div class="container">
+    <table id="resultTable" class="table">
+        <tr>
+            <th scope="col">Portfolio Name</th>
+            <th scope="col">Initial Balance</th>
+            <th scope="col">Final Balance</th>
+        </tr>
+        <tr>
+            <td id="portfolioName2"></td>
+            <td id="initialValue"></td>
+            <td id="finalValue"></td>
+        </tr>
+    </table>
 </div>

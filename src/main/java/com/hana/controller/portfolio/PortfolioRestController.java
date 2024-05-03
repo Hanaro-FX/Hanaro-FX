@@ -39,7 +39,7 @@ public class PortfolioRestController {
         log.info("dummyData");
         log.info(dummy.toString());
         LocalDate startDate = dummy.getStartDate();
-        LocalDate endDate = dummy.getEndDate();
+        LocalDate endDate = dummy.getEndDate().plusDays(2);
         HashMap<String, Double> countryPortion = new HashMap<>();
 
 //        국가 일자 가격
@@ -73,7 +73,7 @@ public class PortfolioRestController {
         Map<LocalDate, HashMap<String, Double>> dcc = new HashMap<>();
 
         // 2. 범위의 모든 일자들을 순회하면서 리밸런싱 관련 작업을 수행한다
-        List<LocalDate> allDates = dummy.getStartDate().datesUntil(dummy.getEndDate()).toList();
+        List<LocalDate> allDates = dummy.getStartDate().datesUntil(dummy.getEndDate().plusDays(1)).toList();
 
         for (LocalDate date : allDates) {
             HashMap<String, Double> cc = new HashMap<>();
@@ -82,7 +82,7 @@ public class PortfolioRestController {
                 if (!dateValue.containsKey(date)) {
                     // Cold Start Issue
                     LocalDate yesterday = date.minusDays(1);
-                    dateValue.put(date, dateValue.get(yesterday));
+                    dateValue.put(date, dateValue.get(yesterday) == null ? 0 : dateValue.get(yesterday));
                 }
                 cc.put(country, dateValue.get(date));
             });
@@ -97,7 +97,6 @@ public class PortfolioRestController {
 
             dcc.put(date, cc);
         }
-        log.info(dcc.toString());
 
         return dcc;
     }
