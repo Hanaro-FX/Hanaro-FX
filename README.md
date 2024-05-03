@@ -2,6 +2,8 @@
 [디지털 하나로 금융 서비스 개발 2기]-FX 시뮬레이션 프로젝트
 
 ## ⚡️ 아키텍처
+![hanaro-fx-architecture](https://github.com/Hanaro-FX/Hanaro-FX/assets/123241025/4fa5d6be-cd76-4dbd-8842-d6b1f9473068)
+
 ## ⚡️ ERD
 ![hanaro-fx-erd](https://github.com/Hanaro-FX/Hanaro-FX/assets/123241025/a3fc533d-3fa8-48e2-83f5-dcecb5562f57)
 
