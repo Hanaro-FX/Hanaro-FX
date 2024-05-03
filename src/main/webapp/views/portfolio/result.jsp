@@ -13,6 +13,7 @@
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
         {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
+        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
         {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
         {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
         {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
@@ -28,7 +29,8 @@
         {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
         {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
         {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"}
+        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
+        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
     ];
     const africanCountries = [
         {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
@@ -51,12 +53,17 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
+    const oceaniaCountries = [
+        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
+        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
+    ]
     let allCountries = [
         ...africanCountries,
         ...asianCountries,
         ...europeanCountries,
         ...northAmericanCountries,
-        ...southAmericanCountries
+        ...southAmericanCountries,
+        ...oceaniaCountries
     ];
     let result = {
         init: function () {
@@ -171,33 +178,48 @@
                             }
                         });
 
+                        /* Date Info */
                         const keys = Object.keys(response);
+                        // 국가명을 담은 배열
                         const nameArray = [];
                         keys.forEach(key => {
+                            /* Country, currency */
                             const currencies = response[key];
-                            Object.keys(currencies).forEach(currency => {
-                                if (!nameArray.includes(currency)) {
-                                    nameArray.push(currency);
+                            Object.keys(currencies).forEach(country => {
+                                if (!nameArray.includes(country)) {
+                                    nameArray.push(country);
                                 }
                             });
                         });
 
-                        nameArray.forEach(function (currency) {
+                        // TODO: currency에 total 추가
+                        nameArray.push("TOTAL");
+
+                        nameArray.forEach(function (country) {
+
                             series = chart.addSeries({
-                                name: currency,
+                                name: country,
                                 data: []
                             }, false);
                         })
 
+
                         Object.keys(response).forEach(function (date) {
-                            Object.keys(response[date]).forEach(function (currency) {
-                                const seriesIndex = nameArray.indexOf(currency);
+                            let totalValue = 0;
+                            Object.keys(response[date]).forEach(function (country) {
+                                totalValue += response[date][country]; // 각 나라의 값을 총합에 더합니다.
+                                const seriesIndex = nameArray.indexOf(country);
                                 const series = chart.series[seriesIndex];
-                                series.addPoint([Date.parse(date), response[date][currency]], false);
+
+                                series.addPoint([Date.parse(date), response[date][country]], false);
                             });
+                            const seriesIndex = nameArray.indexOf("TOTAL"); // "Total"이라는 가상의 나라를 추가합니다.
+                            const series = chart.series[seriesIndex];
+                            series.addPoint([Date.parse(date), totalValue], false); // 각 날짜별 총합을 차트에 추가합니다.
                         });
 
                         chart.redraw();
+
                         let info_of_last_day = response[formattedDate];
                         console.log(info_of_last_day);
                         let total = 0;
@@ -550,10 +572,10 @@
                                 class="form-control form-select"
                         >
                             <option value="9000" selected="">No rebalancing</option>
-                            <option value="12">년마다</option>
-                            <option value="6">반년마다</option>
-                            <option value="3">분기마다</option>
-                            <option value="1">매달</option>
+                            <option value="365">년마다</option>
+                            <option value="180">반년마다</option>
+                            <option value="90">분기마다</option>
+                            <option value="30">매달</option>
                         </select>
                     </div>
                 </div>
@@ -566,7 +588,7 @@
     <div class="test-btn-box">
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
-    
+
     <div class="line-chart">
         <div id="line-chart"></div>
     </div>

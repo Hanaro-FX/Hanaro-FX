@@ -117,6 +117,7 @@
     <select id="getCurrencyByCountryDate" parameterType="PortfolioQueryDTO" resultType="PortfolioResultDTO">
         SELECT currency_date, standard_rate
         FROM ${tableName}
-        WHERE currency_date BETWEEN #{startDate} AND #{endDate};
+        WHERE currency_date BETWEEN #{startDate} AND #{endDate}
+        ORDER BY currency_date;
     </select>
 </mapper>

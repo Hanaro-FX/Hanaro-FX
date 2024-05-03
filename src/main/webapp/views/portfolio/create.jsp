@@ -65,7 +65,7 @@
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
 
-                for (let j = 1; j < portfolio_id; j++) {
+                for (let j = 1; j <= portfolio_id; j++) {
                     let key = $('#asset' + j).val();
                     let v = Number.parseFloat($('#allocation' + j).val());
                     total += v;
@@ -80,7 +80,7 @@
                     dict[key] = v;
                 }
                 if (total != 100) {
-                    alert("Should be summed up to 100");
+                    alert("Should be summed up to 100\nCurrently " + total);
                     return;
                 }
 
