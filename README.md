@@ -11,7 +11,7 @@
 
 <table>
     <tr align="center">
-        <td><B>권준영</B></td>
+        <td><B>곽준영</B></td>
         <td><B>박소연</B></td>
         <td><B>김가원</B></td>
     </tr>
