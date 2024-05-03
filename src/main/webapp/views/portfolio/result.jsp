@@ -6,12 +6,14 @@
 <link rel="stylesheet" href="<c:url value="/css/portfolio/result.css"/>"/>
 
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
-        integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01" crossorigin="anonymous"></script>
+        integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
+        crossorigin="anonymous"></script>
 
 <script>
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
         {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
+        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
         {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
         {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
         {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
@@ -27,7 +29,8 @@
         {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
         {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
         {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"}
+        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
+        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
     ];
     const africanCountries = [
         {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
@@ -50,29 +53,43 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
+    const oceaniaCountries = [
+        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
+        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
+    ]
     let allCountries = [
         ...africanCountries,
         ...asianCountries,
         ...europeanCountries,
         ...northAmericanCountries,
-        ...southAmericanCountries
+        ...southAmericanCountries,
+        ...oceaniaCountries
     ];
     let result = {
         init: function () {
             let resultData;
             $('#test-btn').click(() => {
                 let dArr = [];
-
                 resultData.forEach((x) => {
+                    let startDate = $('#startDate').val();
+                    let endDate = $('#endDate').val();
+                    if (startDate === "") {
+                        alert("Start Date를 입력해주세요.");
+                        return;
+                    }
+                    if (endDate === "") {
+                        alert("End Date를 입력해주세요.");
+                        return;
+                    }
                     let tableName = '';
                     allCountries.forEach((country) => {
                         if (country.currencyCode === x[0].slice(-3)) {
-                            tableName = country.name + "_" + country.currencyCode;
+                            tableName = country.name.split(' ').join('') + "_" + country.currencyCode;
                         }
                     })
                     dArr.push({
-                        startDate: $('#startDate').val(),
-                        endDate: $('#endDate').val(),
+                        startDate: startDate,
+                        endDate: endDate,
                         tableName: tableName,
                         percentage: x[1],
                         initialAmount: Number.parseFloat($('#initialAmount').val()),
@@ -86,7 +103,133 @@
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
                         // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
-                        console.log(response);
+                        let result_portfolio_name = document.getElementById('portfolioName2');
+                        result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
+
+                        let result_initial_value = document.getElementById('initialValue');
+                        result_initial_value.innerText = Number.parseFloat($('#initialAmount').val()) + ' ₩';
+
+                        let result_final_value = document.getElementById('finalValue');
+
+                        let lastDay = $('#endDate').datepicker('getDate');
+                        let year = lastDay.getFullYear();
+                        let month = String(lastDay.getMonth() + 1).padStart(2, '0');
+                        let day = String(lastDay.getDate()).padStart(2, '0');
+                        let formattedDate = year + '-' + month + '-' + day;
+
+                        var chart = Highcharts.chart('line-chart', {
+
+                            title: {
+                                text: 'Portfolio Growth',
+                                align: 'left'
+                            },
+
+                            yAxis: {
+                                title: {
+                                    text: 'Portfolio Balance'
+                                },
+                                min: 0,
+                                max: null,
+                                tickInterval: 100
+                            },
+
+                            xAxis: {
+                                type: 'datetime',
+                                title: {
+                                    text: 'Date'
+                                },
+                                rangeSelector: {
+                                    inputDateFormat: '%b %e, %Y'
+                                }
+                            },
+
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle'
+                            },
+
+                            plotOptions: {
+                                series: {
+                                    label: {
+                                        connectorAllowed: false
+                                    },
+                                    pointStart: 2010
+                                }
+                            },
+
+                            series: [],
+
+                            responsive: {
+                                rules: [{
+                                    condition: {
+                                        maxWidth: 500
+                                    },
+                                    chartOptions: {
+                                        legend: {
+                                            layout: 'horizontal',
+                                            align: 'center',
+                                            verticalAlign: 'bottom'
+                                        }
+                                    }
+                                }]
+                            }
+                        });
+
+                        /* Date Info */
+                        const keys = Object.keys(response);
+                        // 국가명을 담은 배열
+                        const nameArray = [];
+                        keys.forEach(key => {
+                            /* Country, currency */
+                            const currencies = response[key];
+                            Object.keys(currencies).forEach(country => {
+                                if (!nameArray.includes(country)) {
+                                    nameArray.push(country);
+                                }
+                            });
+                        });
+
+                        // TODO: currency에 total 추가
+                        nameArray.push("TOTAL");
+
+                        nameArray.forEach(function (country) {
+
+                            series = chart.addSeries({
+                                name: country,
+                                data: []
+                            }, false);
+                        })
+
+
+                        Object.keys(response).forEach(function (date) {
+                            let totalValue = 0;
+                            Object.keys(response[date]).forEach(function (country) {
+                                totalValue += response[date][country]; // 각 나라의 값을 총합에 더합니다.
+                                const seriesIndex = nameArray.indexOf(country);
+                                const series = chart.series[seriesIndex];
+
+                                series.addPoint([Date.parse(date), response[date][country]], false);
+                            });
+                            const seriesIndex = nameArray.indexOf("TOTAL"); // "Total"이라는 가상의 나라를 추가합니다.
+                            const series = chart.series[seriesIndex];
+                            series.addPoint([Date.parse(date), totalValue], false); // 각 날짜별 총합을 차트에 추가합니다.
+                        });
+
+                        chart.redraw();
+
+                        let info_of_last_day = response[formattedDate];
+                        console.log(info_of_last_day);
+                        let total = 0;
+                        for (const key in info_of_last_day) {
+                            total += info_of_last_day[key];
+                        }
+
+                        result_final_value.innerText = total + ' ₩';
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = JSON.parse(xhr.responseText).message;
+                        alert(errorMessage);
                     }
                 });
             });
@@ -107,11 +250,11 @@
                 minDate: new Date(2000, 0),
                 maxDate: new Date(2024, 2, 31),
                 yearRange: '2000:c',
-                beforeShowDay: function(date) {
+                beforeShowDay: function (date) {
                     let day = date.getDay();
                     return [(day !== 0 && day !== 6), ''];
                 },
-                onSelect: function(selected) {
+                onSelect: function (selected) {
                     let selectedDate = $('#startDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() + 1);
                     $('#endDate').datepicker('option', 'minDate', selectedDate);
@@ -134,11 +277,11 @@
                 minDate: new Date(2000, 0),
                 maxDate: new Date(2024, 2, 31),
                 yearRange: '2000:c',
-                beforeShowDay: function(date) {
+                beforeShowDay: function (date) {
                     let day = date.getDay();
                     return [(day !== 0 && day !== 6), ''];
                 },
-                onSelect: function(selected) {
+                onSelect: function (selected) {
                     let selectedDate = $('#endDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() - 1);
                     $('#startDate').datepicker('option', 'maxDate', selectedDate);
@@ -158,7 +301,7 @@
                     let descSpace = document.getElementById('portfolioDesc');
                     let dateSpace = document.getElementById('portfolioDate');
 
-                    nameSpace.innerText = portfolioName;
+                    nameSpace.innerText = portfolioName.trim() === "" ? "제목 없는 포트폴리오" : portfolioName;
                     descSpace.innerText = portfolioDesc;
                     dateSpace.innerText = portfolioDate;
                     console.log(portfolioName, portfolioDesc, portfolioDate);
@@ -317,6 +460,7 @@
                 }
             }
 
+            // Pie Chart
             let drawChart = function (dd) {
                 let currencyData = getData(dd);
                 resultData = currencyData;
@@ -373,18 +517,12 @@
         </a>
     </div>
     <br/>
-
     <div class="row">
         <div class="col">
             <div class="info">
-                <%-- ${portfolio.portfolioDate} --%>
                 포트폴리오 생성일: <span id="portfolioDate"></span>
-                    <br/>
-                    <span id="portfolioDesc"></span>
-<%--                <c:if test="${not empty portfolio.portfolioDesc}">--%>
-<%--                    <br/>--%>
-<%--                    전략 설명: ${portfolio.portfolioDesc}--%>
-<%--                </c:if>--%>
+                <br/>
+                <span id="portfolioDesc"></span>
             </div>
             <!-- Start Date -->
             <div class="form-group row">
@@ -436,10 +574,10 @@
                                 class="form-control form-select"
                         >
                             <option value="9000" selected="">No rebalancing</option>
-                            <option value="12">년마다</option>
-                            <option value="6">반년마다</option>
-                            <option value="3">분기마다</option>
-                            <option value="1">매달</option>
+                            <option value="365">년마다</option>
+                            <option value="180">반년마다</option>
+                            <option value="90">분기마다</option>
+                            <option value="30">매달</option>
                         </select>
                     </div>
                 </div>
@@ -452,10 +590,13 @@
     <div class="test-btn-box">
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
-</div>
 
+    <div class="line-chart">
+        <div id="line-chart"></div>
+    </div>
+</div>
 <script>
-    let share = function(){
+    let share = function () {
         let nameSpace = document.getElementById('portfolioName');
         let descSpace = document.getElementById('portfolioDesc');
         let title = nameSpace.innerText;
@@ -494,6 +635,17 @@
     }
 </script>
 
-<%-- 1. won_amount = Initial amount * portfolio percentage --%>
-<%-- 2. 외화 수 = won_amount / (start date) 기준환율 --%>
-<%-- 3. 현재 가치 = 외화 수 * (end date) 기준환율 --%>
+<div class="container">
+    <table id="resultTable" class="table">
+        <tr>
+            <th scope="col">Portfolio Name</th>
+            <th scope="col">Initial Balance</th>
+            <th scope="col">Final Balance</th>
+        </tr>
+        <tr>
+            <td id="portfolioName2"></td>
+            <td id="initialValue"></td>
+            <td id="finalValue"></td>
+        </tr>
+    </table>
+</div>

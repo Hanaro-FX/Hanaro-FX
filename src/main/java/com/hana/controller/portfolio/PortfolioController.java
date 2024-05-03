@@ -2,22 +2,15 @@ package com.hana.controller.portfolio;
 
 import com.hana.app.data.dto.PortfolioDTO;
 import com.hana.app.service.KakaoService;
-import com.hana.app.data.dto.PortfolioQueryDTO;
 import com.hana.app.service.PortfolioService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,11 +42,11 @@ public class PortfolioController {
     }
 
     @RequestMapping("/createImpl")
-    public String portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
-        log.info(portfolioDTO.toString());
+    @ResponseBody
+    public int portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
         portfolioService.insert(portfolioDTO);
-//        model.addAttribute("center", "/");
-        return "index";
+        //model.addAttribute("center", "/");
+        return portfolioDTO.getId();
     }
 
     // 프트폴리오 삭제

@@ -95,3 +95,8 @@ a.ui-button:active,
 .ui-datepicker-week-end:first-child .ui-state-default {
     color: red;
 }
+
+.line-chart {
+    margin-top: 40px;
+    margin-left: -20px;
+}
