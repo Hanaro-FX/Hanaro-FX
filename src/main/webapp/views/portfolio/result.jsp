@@ -591,10 +591,24 @@
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
 
+    <table id="resultTable" class="table">
+        <tr>
+            <th scope="col">Portfolio Name</th>
+            <th scope="col">Initial Balance</th>
+            <th scope="col">Final Balance</th>
+        </tr>
+        <tr>
+            <td id="portfolioName2"></td>
+            <td id="initialValue"></td>
+            <td id="finalValue"></td>
+        </tr>
+    </table>
+
     <div class="line-chart">
         <div id="line-chart"></div>
     </div>
 </div>
+
 <script>
     let share = function () {
         let nameSpace = document.getElementById('portfolioName');
@@ -634,18 +648,3 @@
         });
     }
 </script>
-
-<div class="container">
-    <table id="resultTable" class="table">
-        <tr>
-            <th scope="col">Portfolio Name</th>
-            <th scope="col">Initial Balance</th>
-            <th scope="col">Final Balance</th>
-        </tr>
-        <tr>
-            <td id="portfolioName2"></td>
-            <td id="initialValue"></td>
-            <td id="finalValue"></td>
-        </tr>
-    </table>
-</div>

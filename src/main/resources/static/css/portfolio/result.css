@@ -96,6 +96,12 @@ a.ui-button:active,
     color: red;
 }
 
+#resultTable {
+    margin-top: 40px;
+    margin-left: -20px;
+    text-align: center;
+}
+
 .line-chart {
     margin-top: 40px;
     margin-left: -20px;
