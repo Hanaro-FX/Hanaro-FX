@@ -100,6 +100,7 @@ a.ui-button:active,
     margin-top: 40px;
     margin-left: -20px;
     text-align: center;
+    display: none;
 }
 
 .line-chart {

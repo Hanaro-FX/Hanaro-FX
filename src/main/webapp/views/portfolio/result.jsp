@@ -102,6 +102,10 @@
                     contentType: 'application/json', // 전송하는 데이터의 타입을 명시
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
+                        // 테이블 표 보이기
+                        let table = document.getElementById("resultTable");
+                        table.style.display = "table";
+
                         // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
                         let result_portfolio_name = document.getElementById('portfolioName2');
                         result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
