@@ -7,14 +7,9 @@
 ## ⚡️ ERD
 <img src="https://github.com/Hanaro-FX/Hanaro-FX/assets/123241025/a3fc533d-3fa8-48e2-83f5-dcecb5562f57" width="90%">
 
-## 👩🏻‍💻 백엔드 팀원 소개
+## 👩🏻‍💻 팀원 소개
 
 <table>
-    <tr align="center">
-        <td><B>Backend</B></td>
-        <td><B>Backend</B></td>
-        <td><B>Backend</B></td>
-    </tr>
     <tr align="center">
         <td><B>권준영</B></td>
         <td><B>박소연</B></td>
