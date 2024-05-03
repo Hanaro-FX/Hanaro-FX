@@ -44,7 +44,6 @@ public class PortfolioController {
     @RequestMapping("/createImpl")
     @ResponseBody
     public int portfolioCreate(Model model, PortfolioDTO portfolioDTO) throws Exception {
-        log.info(portfolioDTO.toString());
         portfolioService.insert(portfolioDTO);
         //model.addAttribute("center", "/");
         return portfolioDTO.getId();

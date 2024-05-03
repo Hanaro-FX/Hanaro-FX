@@ -65,7 +65,7 @@
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
 
-                for (let j = 1; j < portfolio_id; j++) {
+                for (let j = 1; j <= portfolio_id; j++) {
                     let key = $('#asset' + j).val();
                     let v = Number.parseFloat($('#allocation' + j).val());
                     total += v;
@@ -80,7 +80,7 @@
                     dict[key] = v;
                 }
                 if (total != 100) {
-                    alert("Should be summed up to 100");
+                    alert("Should be summed up to 100\nCurrently " + total);
                     return;
                 }
 
@@ -272,10 +272,7 @@
         });
         // 삭제 버튼 클릭 이벤트 핸들러 등록
         deleteButton.addEventListener("click", function() {
-            // total에서 삭제할 행의 값 제거
             rowDiv.querySelector("input[type='number']").value = 0;
-            // document.getElementById("total1").value -= rowDiv.querySelector("input[type='number']").value;
-            // 삭제할 행(rowDiv) 제거
             rowDiv.remove();
             portfolio_text--;
             create.sumPercentages();
