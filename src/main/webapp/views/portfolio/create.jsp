@@ -67,7 +67,10 @@
 
                 for (let j = 1; j <= portfolio_id; j++) {
                     let key = $('#asset' + j).val();
-                    let v = Number.parseFloat($('#allocation' + j).val());
+                    let valSpace = $('#allocation' + j).val();
+                    if (valSpace == null) continue;
+                    let v = Number.parseFloat(valSpace);
+                    console.log(v);
                     total += v;
                     if (dict.hasOwnProperty(key)) {
                         alert("Duplicate input");
