@@ -90,10 +90,10 @@
         <!-- Login / Logout -->
         <c:choose>
             <c:when test="${sessionScope.userId == null}">
-                <div class="login-btn" onclick="login()">LOGIN</div>
+                <div class="login-btn" style="width: fit-content; padding: 0px 5px" onclick="login()">LOGIN</div>
             </c:when>
             <c:otherwise>
-                <div class="login-btn" onclick="logout()">LOGOUT</div>
+                <div class="login-btn" style="width: fit-content; padding: 0px 5px" onclick="logout()">LOGOUT</div>
             </c:otherwise>
         </c:choose>
     </div>
