@@ -126,8 +126,10 @@
                         }
 
                         result_final_value.innerText = total + ' ₩';
-
-
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = JSON.parse(xhr.responseText).message;
+                        alert(errorMessage);
                     }
                 });
             });
