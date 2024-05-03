@@ -155,15 +155,15 @@
                             });
                         });
 
-                        nameArray.forEach(function(currency) {
+                        nameArray.forEach(function (currency) {
                             series = chart.addSeries({
                                 name: currency,
                                 data: []
                             }, false);
                         })
 
-                        Object.keys(response).forEach(function(date) {
-                            Object.keys(response[date]).forEach(function(currency) {
+                        Object.keys(response).forEach(function (date) {
+                            Object.keys(response[date]).forEach(function (currency) {
                                 const seriesIndex = nameArray.indexOf(currency);
                                 const series = chart.series[seriesIndex];
                                 series.addPoint([Date.parse(date), response[date][currency]], false);
@@ -191,11 +191,11 @@
                 minDate: new Date(2000, 0),
                 maxDate: new Date(2024, 2, 31),
                 yearRange: '2000:c',
-                beforeShowDay: function(date) {
+                beforeShowDay: function (date) {
                     let day = date.getDay();
                     return [(day !== 0 && day !== 6), ''];
                 },
-                onSelect: function(selected) {
+                onSelect: function (selected) {
                     let selectedDate = $('#startDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() + 1);
                     $('#endDate').datepicker('option', 'minDate', selectedDate);
@@ -218,11 +218,11 @@
                 minDate: new Date(2000, 0),
                 maxDate: new Date(2024, 2, 31),
                 yearRange: '2000:c',
-                beforeShowDay: function(date) {
+                beforeShowDay: function (date) {
                     let day = date.getDay();
                     return [(day !== 0 && day !== 6), ''];
                 },
-                onSelect: function(selected) {
+                onSelect: function (selected) {
                     let selectedDate = $('#endDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() - 1);
                     $('#startDate').datepicker('option', 'maxDate', selectedDate);
@@ -401,6 +401,7 @@
                 }
             }
 
+            // Pie Chart
             let drawChart = function (dd) {
                 let currencyData = getData(dd);
                 resultData = currencyData;
@@ -437,30 +438,14 @@
 </script>
 <div style="display: none" id="validData"></div>
 <div class="container">
-    <h3 id="portfolioName">
-<%--        <c:choose>--%>
-<%--            <c:when test="${empty portfolio.portfolioName}">--%>
-<%--                제목 없는 포트폴리오--%>
-<%--            </c:when>--%>
-<%--            <c:otherwise>--%>
-<%--                ${portfolio.portfolioName}--%>
-<%--            </c:otherwise>--%>
-<%--        </c:choose>--%>
-    </h3>
-
+    <h3 id="portfolioName"></h3>
     <br/>
-
     <div class="row">
         <div class="col">
             <div class="info">
-                <%-- ${portfolio.portfolioDate} --%>
                 포트폴리오 생성일: <span id="portfolioDate"></span>
-                    <br/>
-                    <span id="portfolioDesc"></span>
-<%--                <c:if test="${not empty portfolio.portfolioDesc}">--%>
-<%--                    <br/>--%>
-<%--                    전략 설명: ${portfolio.portfolioDesc}--%>
-<%--                </c:if>--%>
+                <br/>
+                <span id="portfolioDesc"></span>
             </div>
             <!-- Start Date -->
             <div class="form-group row">
@@ -533,8 +518,3 @@
         <div id="line-chart"></div>
     </div>
 </div>
-
-
-<%-- 1. won_amount = Initial amount * portfolio percentage --%>
-<%-- 2. 외화 수 = won_amount / (start date) 기준환율 --%>
-<%-- 3. 현재 가치 = 외화 수 * (end date) 기준환율 --%>
