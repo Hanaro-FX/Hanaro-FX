@@ -70,17 +70,19 @@
             let resultData;
             $('#test-btn').click(() => {
                 let dArr = [];
+
+                let startDate = $('#startDate').val();
+                let endDate = $('#endDate').val();
+                if (startDate === "") {
+                    alert("Start Date를 입력해주세요.");
+                    return;
+                }
+                if (endDate === "") {
+                    alert("End Date를 입력해주세요.");
+                    return;
+                }
+
                 resultData.forEach((x) => {
-                    let startDate = $('#startDate').val();
-                    let endDate = $('#endDate').val();
-                    if (startDate === "") {
-                        alert("Start Date를 입력해주세요.");
-                        return;
-                    }
-                    if (endDate === "") {
-                        alert("End Date를 입력해주세요.");
-                        return;
-                    }
                     let tableName = '';
                     allCountries.forEach((country) => {
                         if (country.currencyCode === x[0].slice(-3)) {
