@@ -653,11 +653,6 @@
                     webUrl: url,
                 },
             },
-            social: {
-                likeCount: 286,
-                commentCount: 45,
-                sharedCount: 845,
-            },
             buttons: [
                 {
                     title: '웹으로 보기',
