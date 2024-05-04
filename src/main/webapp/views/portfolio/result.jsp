@@ -512,9 +512,9 @@
             <%--            </c:otherwise>--%>
             <%--        </c:choose>--%>
         </h3>
-        <a id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none;">
+        <a id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none; cursor: default;">
             <img id="editIcon" src="https://i.ibb.co/n8LQ5Ys/edit-icon.png"
-                 style="width: 6%; margin-left: 5px; margin-top: 5px;"
+                 style="width: 6%; margin-left: 5px; margin-top: 5px; cursor: pointer;"
                  alt="edit icon"
                  onmouseover="changeImage('https://i.ibb.co/YhqtB8Q/edit-icon-hover.png')"
                  onmouseout="changeImage('https://i.ibb.co/n8LQ5Ys/edit-icon.png')"
@@ -522,10 +522,11 @@
             />
             <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
                  alt="카카오톡 공유 보내기 버튼"
-                 style="width: 7%; margin-left: 7px; margin-top: 5px;"
+                 style="width: 7%; margin-left: 7px; margin-top: 5px; cursor: pointer;"
                  onclick="share()"
             />
         </a>
+        <div class="list-btn" onclick="location.href = '<c:url value="/mypage"/>'">목록으로</div>
     </div>
     <br/>
     <div class="row">
