@@ -70,17 +70,19 @@
             let resultData;
             $('#test-btn').click(() => {
                 let dArr = [];
+
+                let startDate = $('#startDate').val();
+                let endDate = $('#endDate').val();
+                if (startDate === "") {
+                    alert("Start Date를 입력해주세요.");
+                    return;
+                }
+                if (endDate === "") {
+                    alert("End Date를 입력해주세요.");
+                    return;
+                }
+
                 resultData.forEach((x) => {
-                    let startDate = $('#startDate').val();
-                    let endDate = $('#endDate').val();
-                    if (startDate === "") {
-                        alert("Start Date를 입력해주세요.");
-                        return;
-                    }
-                    if (endDate === "") {
-                        alert("End Date를 입력해주세요.");
-                        return;
-                    }
                     let tableName = '';
                     allCountries.forEach((country) => {
                         if (country.currencyCode === x[0].slice(-3)) {
@@ -102,6 +104,10 @@
                     contentType: 'application/json', // 전송하는 데이터의 타입을 명시
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
+                        // 테이블 표 보이기
+                        let table = document.getElementById("resultTable");
+                        table.style.display = "table";
+
                         // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
                         let result_portfolio_name = document.getElementById('portfolioName2');
                         result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
@@ -508,13 +514,21 @@
             <%--            </c:otherwise>--%>
             <%--        </c:choose>--%>
         </h3>
-        <a id="kakaotalk-sharing-btn" href="javascript:;">
+        <a id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none; cursor: default;">
+            <img id="editIcon" src="https://i.ibb.co/n8LQ5Ys/edit-icon.png"
+                 style="width: 6%; margin-left: 5px; margin-top: 5px; cursor: pointer;"
+                 alt="edit icon"
+                 onmouseover="changeImage('https://i.ibb.co/YhqtB8Q/edit-icon-hover.png')"
+                 onmouseout="changeImage('https://i.ibb.co/n8LQ5Ys/edit-icon.png')"
+                 onclick="updatePortfolio(${id})"
+            />
             <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
                  alt="카카오톡 공유 보내기 버튼"
-                 style="height: 30px; margin-left: 10px"
+                 style="width: 7%; margin-left: 7px; margin-top: 5px; cursor: pointer;"
                  onclick="share()"
             />
         </a>
+        <div class="list-btn" onclick="location.href = '<c:url value="/mypage"/>'">목록으로</div>
     </div>
     <br/>
     <div class="row">
@@ -591,11 +605,33 @@
         <div class="test-btn" id="test-btn">TEST</div>
     </div>
 
+    <table id="resultTable" class="table">
+        <tr>
+            <th scope="col">Portfolio Name</th>
+            <th scope="col">Initial Balance</th>
+            <th scope="col">Final Balance</th>
+        </tr>
+        <tr>
+            <td id="portfolioName2"></td>
+            <td id="initialValue"></td>
+            <td id="finalValue"></td>
+        </tr>
+    </table>
+
     <div class="line-chart">
         <div id="line-chart"></div>
     </div>
 </div>
+
 <script>
+    function changeImage(newSrc) {
+        document.getElementById("editIcon").src = newSrc;
+    }
+
+    function updatePortfolio(id) {
+        location.href = '<c:url value="/portfolio/update"/>?id=' + id;
+    }
+
     let share = function () {
         let nameSpace = document.getElementById('portfolioName');
         let descSpace = document.getElementById('portfolioDesc');
@@ -617,11 +653,6 @@
                     webUrl: url,
                 },
             },
-            social: {
-                likeCount: 286,
-                commentCount: 45,
-                sharedCount: 845,
-            },
             buttons: [
                 {
                     title: '웹으로 보기',
@@ -634,18 +665,3 @@
         });
     }
 </script>
-
-<div class="container">
-    <table id="resultTable" class="table">
-        <tr>
-            <th scope="col">Portfolio Name</th>
-            <th scope="col">Initial Balance</th>
-            <th scope="col">Final Balance</th>
-        </tr>
-        <tr>
-            <td id="portfolioName2"></td>
-            <td id="initialValue"></td>
-            <td id="finalValue"></td>
-        </tr>
-    </table>
-</div>
