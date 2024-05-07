@@ -109,11 +109,9 @@
                         chart.redraw();
 
                         let info_of_last_day = response[formattedDate];
-                        console.log(info_of_last_day);
-                        let total = 0;
-                        for (const key in info_of_last_day) {
-                            total += info_of_last_day[key];
-                        }
+
+                        // info_of_last_day의 값들을 가져와서 합산
+                        const total = Object.values(info_of_last_day).reduce((acc, curr) => acc + curr, 0);
 
                         result_final_value.innerText = total + ' ₩';
                     },
