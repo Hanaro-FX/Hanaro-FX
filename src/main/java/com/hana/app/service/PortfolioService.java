@@ -143,6 +143,9 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
         endDate = dummy.getEndDate().plusDays(2);
         allDates = startDate.datesUntil(endDate).toList();
 
+        countryCnt = new HashMap<>();
+        countryPercentage = new HashMap<>();
+
         // 국가 일자 가격
         HashMap<String, HashMap<LocalDate, Double>> country_date_currency = calcCDC(requestData);
 
