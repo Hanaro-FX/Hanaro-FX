@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public enum ErrorMessage {
+public enum ErrorCode {
 
     TOKEN_EXPIRED(UNAUTHORIZED, "토큰이 만료되었습니다."),
     USER_NOT_EXIST(NOT_FOUND, "존재하지 않는 회원"),
