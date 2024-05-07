@@ -58,7 +58,7 @@
         },
 
         // 포트폴리오 구성 단계에서 자산을 추가.
-        addRow: function() {
+        addRow: function () {
             portfolio_id += 1;
             portfolio_text += 1;
 
@@ -81,14 +81,14 @@
         },
 
         // 자산이 추가되는 행 구성.
-        createRowElement: function() {
+        createRowElement: function () {
             let rowDiv = document.createElement("div");
             rowDiv.classList.add("row", "asset-row");
             return rowDiv;
         },
 
         // 자산에 대한 이름을 담은 부분 구성
-        createAssetNumberElement: function() {
+        createAssetNumberElement: function () {
             let assetNum = document.createElement("div");
             assetNum.id = "assetText" + portfolio_id;
             assetNum.classList.add("col-md-3", "separateTop", "asset-num");
@@ -98,14 +98,14 @@
         },
 
         // 자산에 대한 입력값을 담는 부분 구성
-        createAssetColumnElement: function() {
+        createAssetColumnElement: function () {
             let assetColumn = document.createElement("div");
             assetColumn.classList.add("col-md-5", "asset-column");
             return assetColumn;
         },
 
         // 입력값에 대한 label 구성
-        createAssetLabelElement: function() {
+        createAssetLabelElement: function () {
             let assetLabel = document.createElement("label");
             assetLabel.style.display = "none";
             assetLabel.htmlFor = "asset" + portfolio_id;
@@ -114,19 +114,19 @@
         },
 
         // 자산으로 활용할 국가 선택 부분 구성
-        createSelectParentElement: function(select) {
+        createSelectParentElement: function (select) {
             let selectParent = document.createElement("div");
             selectParent.classList.add("select-parent");
             selectParent.appendChild(select);
             return selectParent;
         },
 
-        createSelectElement: function() {
+        createSelectElement: function () {
             return this.addSelect();
         },
 
         // 자산 비율 구성
-        createPercentageElement: function() {
+        createPercentageElement: function () {
             let percentage = document.createElement("div");
             percentage.classList.add("col-md-2");
 
@@ -151,8 +151,8 @@
             return percentage;
         },
 
-
-        addSelect: function (i) {
+        // 국가 선택지 구성
+        addSelect: function () {
             let assetSelect = document.createElement("select");
             assetSelect.id = "asset" + portfolio_id;
             assetSelect.name = "asset" + portfolio_id;
@@ -172,6 +172,7 @@
             return assetSelect;
         },
 
+        // 국가 선택지 대륙별 구성
         addCountries: function (continent, countries) {
             let group = document.createElement("optgroup");
             group.label = continent
@@ -211,16 +212,7 @@
         create.init();
     });
 
-    function checkTotal(input) {
-        let total = parseFloat(input.value);
-        console.log(input.value);
-        if (isNaN(total) || total <= 100) {
-            input.style.backgroundColor = 'rgb(223, 240, 216)';
-        } else {
-            input.style.backgroundColor = 'rgb(255, 200, 200)';
-        }
-    }
-
+    // 국가에 대해 중복된 입력이 있는지 확인
     function checkDuplicate() {
         let selectedValue = this.value; // 현재 선택된 값
 
@@ -235,15 +227,10 @@
             let otherSelect = document.getElementById("asset" + j);
             if (otherSelect == null) continue;
             let otherValue = otherSelect.value;
-            if (selectedValue === otherValue) {
-                // 중복된 값을 선택한 경우, 해당 select 요소들의 배경 색을 변경
-                this.style.backgroundColor = "rgb(255, 200, 200)";
-                otherSelect.style.backgroundColor = "rgb(255, 200, 200)";
-                return;
-            } else {
-                this.style.backgroundColor = "";
-                otherSelect.style.backgroundColor = "";
-            }
+            let dupStyle = (selectedValue === otherValue) ? "rgb(255, 200, 200)" : "";
+
+            this.style.backgroundColor = dupStyle;
+            otherSelect.style.backgroundColor = dupStyle;
         }
     }
 
@@ -253,15 +240,15 @@
         let deleteButton = document.createElement("button");
         deleteButton.textContent = "X";
         deleteButton.classList.add("btn", "delete-button");
-        deleteButton.addEventListener("mouseover", function() {
+        deleteButton.addEventListener("mouseover", function () {
             deleteButton.style.color = "red";
         });
-        deleteButton.addEventListener("mouseout", function() {
+        deleteButton.addEventListener("mouseout", function () {
             deleteButton.style.backgroundColor = "transparent";
             deleteButton.style.color = "black";
         });
         // 삭제 버튼 클릭 이벤트 핸들러 등록
-        deleteButton.addEventListener("click", function() {
+        deleteButton.addEventListener("click", function () {
             rowDiv.querySelector("input[type='number']").value = 0;
             rowDiv.remove();
             portfolio_text--;
