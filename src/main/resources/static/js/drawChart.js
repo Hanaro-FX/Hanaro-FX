@@ -1,5 +1,5 @@
 // Pie Chart
-let drawChart = function (dd) {
+let drawChart = function (dd, piechart) {
     let currencyData = getData(dd);
     let data = google.visualization.arrayToDataTable([['Currency', 'Ratio'], ...currencyData]);
 
@@ -11,7 +11,7 @@ let drawChart = function (dd) {
         'chartArea': {left: 10, right: 10, top: 20, bottom: 10}
     };
 
-    let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    let chart = new google.visualization.PieChart(piechart);
     chart.draw(data, options);
 
     return currencyData;
