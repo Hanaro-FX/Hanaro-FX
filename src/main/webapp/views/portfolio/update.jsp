@@ -7,6 +7,7 @@
     const asianCountries = [
         {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
         {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
+        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
         {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
         {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
         {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
@@ -22,7 +23,8 @@
         {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
         {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
         {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"}
+        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
+        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
     ];
     const africanCountries = [
         {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
@@ -45,18 +47,25 @@
         {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
         {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
     ]
+    const oceaniaCountries = [
+        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
+        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
+    ]
     let i = 1;
     let update = {
         init: function () {
             // 값 불러오기
             $('#portfolioName').val("${portfolio.portfolioName}");
             $('#portfolioDescription').val("${portfolio.portfolioDesc}");
-            $('#rebalancing').val(${portfolio.rebalancing});
 
             let percentages = {};
 
             if (${portfolio.percentageARS} != 0) {
                 percentages['percentageARS'] = ${portfolio.percentageARS};
+            }
+
+            if (${portfolio.percentageAED} != 0) {
+                percentages['percentageAED'] = ${portfolio.percentageAED};
             }
 
             if (${portfolio.percentageAUD} != 0) {
@@ -206,7 +215,6 @@
                 dict['userId'] = 1;
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
-                dict['rebalancing'] = $('#rebalancing').val();
 
                 for (let j = 1; j < i; j++) {
                     let key = $('#asset' + j).val();
@@ -316,8 +324,9 @@
             let northAmericaGroup = this.addCountries("North America", northAmericanCountries);
             let southAmericaGroup = this.addCountries("South America", southAmericanCountries);
             let europeGroup = this.addCountries("Europe", europeanCountries);
+            let oceaniaGroup = this.addCountries("Oceania", oceaniaCountries);
 
-            assetSelect.append(defaultOption, asiaGroup, africaGroup, northAmericaGroup, southAmericaGroup, europeGroup);
+            assetSelect.append(defaultOption, asiaGroup, africaGroup, northAmericaGroup, southAmericaGroup, europeGroup, oceaniaGroup);
             return assetSelect;
         },
 
@@ -435,17 +444,6 @@
         <div class="form-group">
             <label for="portfolioDescription">포트폴리오 상세</label>
             <input type="text" id="portfolioDescription">
-        </div>
-
-        <div class="form-group">
-            <label for="rebalancing">리밸런싱 주기</label>
-            <select id="rebalancing" name="rebalancing" class="form-control form-select">
-                <option value="0" selected>No rebalancing</option>
-                <option value="12">Rebalance annually</option>
-                <option value="6">Rebalance semi-annually</option>
-                <option value="3">Rebalance quarterly</option>
-                <option value="1">Rebalance monthly</option>
-            </select>
         </div>
     </div>
     <hr>

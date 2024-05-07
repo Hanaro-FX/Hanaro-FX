@@ -96,7 +96,27 @@ a.ui-button:active,
     color: red;
 }
 
+#resultTable {
+    margin-top: 40px;
+    margin-left: -20px;
+    text-align: center;
+    display: none;
+}
+
 .line-chart {
     margin-top: 40px;
     margin-left: -20px;
+}
+
+.list-btn {
+    font-weight: normal;
+    text-align: center;
+    color: #CDCDCD;
+    line-height: 37px;
+    cursor: pointer;
+    margin-left: 350px;
+}
+
+.list-btn:hover {
+    color: #02875C;
 }
