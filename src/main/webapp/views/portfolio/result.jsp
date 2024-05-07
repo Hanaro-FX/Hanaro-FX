@@ -75,19 +75,12 @@
                         let hcOpt = highChartOption();
                         var chart = Highcharts.chart('line-chart', hcOpt);
 
-                        /* Date Info */
-                        const keys = Object.keys(response);
                         // 국가명을 담은 배열
-                        const nameArray = [];
-                        keys.forEach(key => {
-                            /* Country, currency */
-                            const currencies = response[key];
-                            Object.keys(currencies).forEach(country => {
-                                if (!nameArray.includes(country)) {
-                                    nameArray.push(country);
-                                }
-                            });
-                        });
+                        let dupNameArray = [];
+                        Object.values(response).forEach((nameValue) => {
+                            dupNameArray.push(...Object.keys(nameValue));
+                        })
+                        let nameArray = [...new Set(dupNameArray)];
 
                         // TODO: currency에 total 추가
                         nameArray.push("TOTAL");
