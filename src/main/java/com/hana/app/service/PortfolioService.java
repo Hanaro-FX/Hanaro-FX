@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +66,8 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     // get country date currency
     public HashMap<String, HashMap<LocalDate, Double>> calcCDC(PortfolioQueryDTO[] requestData) throws Exception {
 
+        LocalDate startDate = requestData[0].getStartDate();
+        LocalDate endDate = requestData[0].getEndDate();
         HashMap<String, HashMap<LocalDate, Double>> country_date_currency = new HashMap<>();
 
         for (PortfolioQueryDTO requestDatum : requestData) {
