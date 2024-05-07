@@ -208,9 +208,6 @@
 
         }
     };
-    $(function () {
-        create.init();
-    });
 
     // 국가에 대해 중복된 입력이 있는지 확인
     function checkDuplicate() {
@@ -278,6 +275,9 @@
         });
     }
 
+    $(function () {
+        create.init();
+    });
 </script>
 
 <div class="container">
