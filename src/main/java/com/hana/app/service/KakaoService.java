@@ -3,7 +3,9 @@ package com.hana.app.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hana.app.common.ErrorCode;
 import com.hana.app.data.dto.UserDTO;
+import com.hana.app.exception.BusinessException;
 import com.hana.app.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -93,6 +95,8 @@ public class KakaoService{
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
 
         return accessToken;
@@ -127,6 +131,8 @@ public class KakaoService{
 
         } catch (IOException exception) {
             exception.printStackTrace();
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.USER_NOT_EXIST);
         }
 
         return userDTO;

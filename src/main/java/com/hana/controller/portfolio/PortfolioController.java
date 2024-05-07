@@ -1,6 +1,8 @@
 package com.hana.controller.portfolio;
 
+import com.hana.app.common.ErrorCode;
 import com.hana.app.data.dto.PortfolioDTO;
+import com.hana.app.exception.BusinessException;
 import com.hana.app.service.KakaoService;
 import com.hana.app.service.PortfolioService;
 import jakarta.servlet.http.HttpSession;
@@ -51,7 +53,16 @@ public class PortfolioController {
 
     // 프트폴리오 삭제
     @RequestMapping("/delete")
-    public String deletePortfolio(@RequestParam("id") Integer id) throws Exception {
+    public String deletePortfolio(@RequestParam("id") Integer id, HttpSession httpSession) throws Exception {
+        try {
+            PortfolioDTO portfolio = portfolioService.selectOne(id);
+            if (portfolio.getUserId() != (Integer) httpSession.getAttribute("userId")) {
+                throw new BusinessException(ErrorCode.USER_NOT_HAVE_PORTFOLIO);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.PORTFOLIO_NOT_EXIST);
+        }
+
         portfolioService.delete(id);
         return "redirect:/mypage";
     }
@@ -65,10 +76,17 @@ public class PortfolioController {
 
     // 포트폴리오 수정
     @RequestMapping("/update")
-    public String updatePortfolioView(@RequestParam("id") Integer id, Model model) throws Exception {
+    public String updatePortfolioView(@RequestParam("id") Integer id, Model model, HttpSession httpSession) throws Exception {
         // 포트폴리오 데이터 불러오기
-        PortfolioDTO portfolio = portfolioService.selectOne(id);
-        model.addAttribute("portfolio", portfolio);
+        try {
+            PortfolioDTO portfolio = portfolioService.selectOne(id);
+            if (portfolio.getUserId() != (Integer) httpSession.getAttribute("userId")) {
+                throw new BusinessException(ErrorCode.USER_NOT_HAVE_PORTFOLIO);
+            }
+            model.addAttribute("portfolio", portfolio);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.PORTFOLIO_NOT_EXIST);
+        }
 
         model.addAttribute("center", dir + "update");
         return "index";
