@@ -55,7 +55,6 @@
                         let table = document.getElementById("resultTable");
                         table.style.display = "table";
 
-                        // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
                         let result_portfolio_name = document.getElementById('portfolioName2');
                         result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
 
@@ -180,7 +179,7 @@
 
                         result_final_value.innerText = total + ' ₩';
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         let errorMessage = JSON.parse(xhr.responseText).message;
                         alert(errorMessage);
                     }
@@ -207,7 +206,7 @@
                     let day = date.getDay();
                     return [(day !== 0 && day !== 6), ''];
                 },
-                onSelect: function (selected) {
+                onSelect: function () {
                     let selectedDate = $('#startDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() + 1);
                     $('#endDate').datepicker('option', 'minDate', selectedDate);
@@ -452,14 +451,6 @@
 <div class="container">
     <div style="display: flex">
         <h3 id="portfolioName">
-            <%--        <c:choose>--%>
-            <%--            <c:when test="${empty portfolio.portfolioName}">--%>
-            <%--                제목 없는 포트폴리오--%>
-            <%--            </c:when>--%>
-            <%--            <c:otherwise>--%>
-            <%--                ${portfolio.portfolioName}--%>
-            <%--            </c:otherwise>--%>
-            <%--        </c:choose>--%>
         </h3>
         <a id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none; cursor: default;">
             <img id="editIcon" src="https://i.ibb.co/n8LQ5Ys/edit-icon.png"
