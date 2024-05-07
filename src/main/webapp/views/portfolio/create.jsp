@@ -3,56 +3,9 @@
 
 <link rel="stylesheet" href="<c:url value="/css/portfolio/create-edit.css"/>"/>
 
-<%-- TODO: Data input verification--%>
+<script src="<c:url value="/js/countries.js" />"></script>
 
 <script>
-    const asianCountries = [
-        {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
-        {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
-        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
-        {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
-        {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
-        {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
-        {emoji: "🇰🇼", name: "Kuwait", currencyCode: "KWD", currencyName: "Kuwaiti Dinar"},
-        {emoji: "🇲🇾", name: "Malaysia", currencyCode: "MYR", currencyName: "Malaysian Ringgit"},
-        {emoji: "🇧🇭", name: "Bahrain", currencyCode: "BHD", currencyName: "Bahraini Dinar"},
-        {emoji: "🇵🇰", name: "Pakistan", currencyCode: "PKR", currencyName: "Pakistani Rupee"},
-        {emoji: "🇵🇭", name: "Philippines", currencyCode: "PHP", currencyName: "Philippine Peso"},
-        {emoji: "🇶🇦", name: "Qatar", currencyCode: "QAR", currencyName: "Qatari Riyal"},
-        {emoji: "🇷🇺", name: "Russia", currencyCode: "RUB", currencyName: "Russian Ruble"},
-        {emoji: "🇸🇦", name: "Saudi Arabia", currencyCode: "SAR", currencyName: "Saudi Riyal"},
-        {emoji: "🇸🇬", name: "Singapore", currencyCode: "SGD", currencyName: "Singapore Dollar"},
-        {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
-        {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
-        {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
-        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
-    ];
-    const africanCountries = [
-        {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
-    ]
-    const northAmericanCountries = [
-        {emoji: "🇨🇦", name: "Canada", currencyCode: "CAD", currencyName: "Canadian Dollar"},
-        {emoji: "🇲🇽", name: "Mexico", currencyCode: "MXN", currencyName: "Mexican Peso"},
-        {emoji: "🇺🇸", name: "United States", currencyCode: "USD", currencyName: "United States Dollar"},
-    ]
-    const southAmericanCountries = [
-        {emoji: "🇦🇷", name: "Argentina", currencyCode: "ARS", currencyName: "Argentine Peso"}
-    ]
-    const europeanCountries = [
-        {emoji: "🇩🇰", name: "Denmark", currencyCode: "DKK", currencyName: "Danish Krone"},
-        {emoji: "🇭🇺", name: "Hungary", currencyCode: "HUF", currencyName: "Hungarian Forint"},
-        {emoji: "🇳🇴", name: "Norway", currencyCode: "NOK", currencyName: "Norwegian Krone"},
-        {emoji: "🇸🇪", name: "Sweden", currencyCode: "SEK", currencyName: "Swedish Krona"},
-        {emoji: "🇨🇭", name: "Switzerland", currencyCode: "CHF", currencyName: "Swiss Franc"},
-        {emoji: "🇬🇧", name: "United Kingdom", currencyCode: "GBP", currencyName: "British Pound"},
-        {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
-        {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
-    ]
-    const oceaniaCountries = [
-        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
-        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
-    ]
     let portfolio_id = 0;
     let portfolio_text = 0;
     let create = {
@@ -70,7 +23,6 @@
                     let valSpace = $('#allocation' + j).val();
                     if (valSpace == null) continue;
                     let v = Number.parseFloat(valSpace);
-                    console.log(v);
                     total += v;
                     if (dict.hasOwnProperty(key)) {
                         alert("Duplicate input");
@@ -99,45 +51,82 @@
 
                     },
                 });
-
-
             });
             $('#addButton').click(() => {
                 this.addRow();
             });
         },
 
+        // 포트폴리오 구성 단계에서 자산을 추가.
         addRow: function () {
             portfolio_id += 1;
             portfolio_text += 1;
+
+            let rowDiv = this.createRowElement();
+            let assetNum = this.createAssetNumberElement();
+            let assetColumn = this.createAssetColumnElement();
+            let select = this.createSelectElement();
+            let percentage = this.createPercentageElement();
+
+            // 각 요소를 부모 요소에 추가
+            assetColumn.appendChild(this.createAssetLabelElement());
+            assetColumn.appendChild(this.createSelectParentElement(select));
+            rowDiv.appendChild(assetNum);
+            rowDiv.appendChild(assetColumn);
+            rowDiv.appendChild(percentage);
+
+            addDeleteButton(rowDiv);
+
+            document.getElementById("pfSection").appendChild(rowDiv);
+        },
+
+        // 자산이 추가되는 행 구성.
+        createRowElement: function () {
             let rowDiv = document.createElement("div");
             rowDiv.classList.add("row", "asset-row");
+            return rowDiv;
+        },
 
+        // 자산에 대한 이름을 담은 부분 구성
+        createAssetNumberElement: function () {
             let assetNum = document.createElement("div");
             assetNum.id = "assetText" + portfolio_id;
             assetNum.classList.add("col-md-3", "separateTop", "asset-num");
             assetNum.textContent = "Asset" + portfolio_text;
             assetNum.style.fontWeight = "bold";
+            return assetNum;
+        },
 
+        // 자산에 대한 입력값을 담는 부분 구성
+        createAssetColumnElement: function () {
             let assetColumn = document.createElement("div");
             assetColumn.classList.add("col-md-5", "asset-column");
+            return assetColumn;
+        },
 
+        // 입력값에 대한 label 구성
+        createAssetLabelElement: function () {
             let assetLabel = document.createElement("label");
             assetLabel.style.display = "none";
             assetLabel.htmlFor = "asset" + portfolio_id;
             assetLabel.textContent = "Select asset " + portfolio_text;
+            return assetLabel;
+        },
 
+        // 자산으로 활용할 국가 선택 부분 구성
+        createSelectParentElement: function (select) {
             let selectParent = document.createElement("div");
             selectParent.classList.add("select-parent");
+            selectParent.appendChild(select);
+            return selectParent;
+        },
 
-            let select = this.addSelect();
+        createSelectElement: function () {
+            return this.addSelect();
+        },
 
-            selectParent.append(select);
-            assetColumn.append(assetLabel);
-            assetColumn.append(selectParent);
-            rowDiv.append(assetNum);
-            rowDiv.append(assetColumn);
-
+        // 자산 비율 구성
+        createPercentageElement: function () {
             let percentage = document.createElement("div");
             percentage.classList.add("col-md-2");
 
@@ -155,17 +144,15 @@
             percentSpan.classList.add("input-group-text");
             percentSpan.innerText = "%";
 
-            input_group.append(input, percentSpan);
-            percentage.append(input_group);
+            input_group.appendChild(input);
+            input_group.appendChild(percentSpan);
+            percentage.appendChild(input_group);
 
-            rowDiv.append(percentage);
-
-            addDeleteButton(rowDiv);
-
-            document.getElementById("pfSection").append(rowDiv);
+            return percentage;
         },
 
-        addSelect: function (i) {
+        // 국가 선택지 구성
+        addSelect: function () {
             let assetSelect = document.createElement("select");
             assetSelect.id = "asset" + portfolio_id;
             assetSelect.name = "asset" + portfolio_id;
@@ -185,6 +172,7 @@
             return assetSelect;
         },
 
+        // 국가 선택지 대륙별 구성
         addCountries: function (continent, countries) {
             let group = document.createElement("optgroup");
             group.label = continent
@@ -220,20 +208,8 @@
 
         }
     };
-    $(function () {
-        create.init();
-    });
 
-    function checkTotal(input) {
-        let total = parseFloat(input.value);
-        console.log(input.value);
-        if (isNaN(total) || total <= 100) {
-            input.style.backgroundColor = 'rgb(223, 240, 216)';
-        } else {
-            input.style.backgroundColor = 'rgb(255, 200, 200)';
-        }
-    }
-
+    // 국가에 대해 중복된 입력이 있는지 확인
     function checkDuplicate() {
         let selectedValue = this.value; // 현재 선택된 값
 
@@ -248,15 +224,10 @@
             let otherSelect = document.getElementById("asset" + j);
             if (otherSelect == null) continue;
             let otherValue = otherSelect.value;
-            if (selectedValue === otherValue) {
-                // 중복된 값을 선택한 경우, 해당 select 요소들의 배경 색을 변경
-                this.style.backgroundColor = "rgb(255, 200, 200)";
-                otherSelect.style.backgroundColor = "rgb(255, 200, 200)";
-                return;
-            } else {
-                this.style.backgroundColor = "";
-                otherSelect.style.backgroundColor = "";
-            }
+            let dupStyle = (selectedValue === otherValue) ? "rgb(255, 200, 200)" : "";
+
+            this.style.backgroundColor = dupStyle;
+            otherSelect.style.backgroundColor = dupStyle;
         }
     }
 
@@ -266,29 +237,47 @@
         let deleteButton = document.createElement("button");
         deleteButton.textContent = "X";
         deleteButton.classList.add("btn", "delete-button");
-        deleteButton.addEventListener("mouseover", function() {
-            deleteButton.style.color = "red";
-        });
-        deleteButton.addEventListener("mouseout", function() {
-            deleteButton.style.backgroundColor = "transparent";
-            deleteButton.style.color = "black";
-        });
+
+        // 삭제 버튼에 mouseover, mouseout 이벤트 리스너 추가
+        deleteButton.addEventListener("mouseover", handleMouseOver);
+        deleteButton.addEventListener("mouseout", handleMouseOut);
+
         // 삭제 버튼 클릭 이벤트 핸들러 등록
-        deleteButton.addEventListener("click", function() {
-            rowDiv.querySelector("input[type='number']").value = 0;
-            rowDiv.remove();
-            portfolio_text--;
-            create.sumPercentages();
-            // 삭제된 후에 남은 모든 행의 innerText를 재설정하여 숫자순으로 정렬
-            let assetTextElements = document.querySelectorAll('[id^="assetText"]');
-            assetTextElements.forEach((element, index) => {
-                element.innerText = "Asset" + (index + 1);
-            });
+        deleteButton.addEventListener("click", function () {
+            onDeleteButtonClick(rowDiv);
         });
 
         // 행의 맨 오른쪽에 삭제 버튼 추가
-        rowDiv.append(deleteButton);
+        rowDiv.appendChild(deleteButton);
     }
+
+    // 삭제 버튼의 mouseover 이벤트 핸들러
+    function handleMouseOver(event) {
+        event.target.style.color = "red";
+    }
+
+    // 삭제 버튼의 mouseout 이벤트 핸들러
+    function handleMouseOut(event) {
+        event.target.style.color = "black";
+    }
+
+    // 삭제 버튼 클릭 이벤트 핸들러
+    function onDeleteButtonClick(rowDiv) {
+        rowDiv.querySelector("input[type='number']").value = 0;
+        rowDiv.remove();
+        portfolio_text--;
+        create.sumPercentages();
+
+        // 삭제된 후에 남은 모든 행의 innerText를 재설정하여 숫자순으로 정렬
+        let assetTextElements = document.querySelectorAll('[id^="assetText"]');
+        assetTextElements.forEach((element, index) => {
+            element.innerText = "Asset" + (index + 1);
+        });
+    }
+
+    $(function () {
+        create.init();
+    });
 </script>
 
 <div class="container">

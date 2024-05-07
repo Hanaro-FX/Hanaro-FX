@@ -9,62 +9,9 @@
         integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
         crossorigin="anonymous"></script>
 
+<script src="<c:url value="/js/countries.js" />"></script>
+
 <script>
-    const asianCountries = [
-        {emoji: "🇨🇳", name: "China", currencyCode: "CNY", currencyName: "Chinese Yuan"},
-        {emoji: "🇭🇰", name: "Hongkong", currencyCode: "HKD", currencyName: "Hong Kong Dollar"},
-        {emoji: "🇯🇵", name: "Japan", currencyCode: "JPY", currencyName: "Japanese Yen"},
-        {emoji: "🇮🇳", name: "India", currencyCode: "INR", currencyName: "Indian Rupee"},
-        {emoji: "🇮🇩", name: "Indonesia", currencyCode: "IDR", currencyName: "Indonesian Rupiah"},
-        {emoji: "🇮🇱", name: "Israel", currencyCode: "ILS", currencyName: "Israeli New Shekel"},
-        {emoji: "🇰🇼", name: "Kuwait", currencyCode: "KWD", currencyName: "Kuwaiti Dinar"},
-        {emoji: "🇲🇾", name: "Malaysia", currencyCode: "MYR", currencyName: "Malaysian Ringgit"},
-        {emoji: "🇧🇭", name: "Bahrain", currencyCode: "BHD", currencyName: "Bahraini Dinar"},
-        {emoji: "🇵🇰", name: "Pakistan", currencyCode: "PKR", currencyName: "Pakistani Rupee"},
-        {emoji: "🇵🇭", name: "Philippines", currencyCode: "PHP", currencyName: "Philippine Peso"},
-        {emoji: "🇶🇦", name: "Qatar", currencyCode: "QAR", currencyName: "Qatari Riyal"},
-        {emoji: "🇷🇺", name: "Russia", currencyCode: "RUB", currencyName: "Russian Ruble"},
-        {emoji: "🇸🇦", name: "Saudi Arabia", currencyCode: "SAR", currencyName: "Saudi Riyal"},
-        {emoji: "🇸🇬", name: "Singapore", currencyCode: "SGD", currencyName: "Singapore Dollar"},
-        {emoji: "🇻🇳", name: "Vietnam", currencyCode: "VND", currencyName: "Vietnamese Dong"},
-        {emoji: "🇹🇭", name: "Thailand", currencyCode: "THB", currencyName: "Thai Baht"},
-        {emoji: "🇦🇪", name: "UAE", currencyCode: "AED", currencyName: "United Arab Emirates Dirham"},
-        {emoji: "🇹🇼", name: "Taiwan", currencyCode: "TWD", currencyName: "New Taiwan Dollar"},
-        {emoji: "🇹🇷", name: "Turkey", currencyCode: "TRY", currencyName: "Turkish Lira"}
-    ];
-    const africanCountries = [
-        {emoji: "🇿🇦", name: "South Africa", currencyCode: "ZAR", currencyName: "South African Rand"},
-    ]
-    const northAmericanCountries = [
-        {emoji: "🇨🇦", name: "Canada", currencyCode: "CAD", currencyName: "Canadian Dollar"},
-        {emoji: "🇲🇽", name: "Mexico", currencyCode: "MXN", currencyName: "Mexican Peso"},
-        {emoji: "🇺🇸", name: "United States", currencyCode: "USD", currencyName: "United States Dollar"},
-    ]
-    const southAmericanCountries = [
-        {emoji: "🇦🇷", name: "Argentina", currencyCode: "ARS", currencyName: "Argentine Peso"}
-    ]
-    const europeanCountries = [
-        {emoji: "🇩🇰", name: "Denmark", currencyCode: "DKK", currencyName: "Danish Krone"},
-        {emoji: "🇭🇺", name: "Hungary", currencyCode: "HUF", currencyName: "Hungarian Forint"},
-        {emoji: "🇳🇴", name: "Norway", currencyCode: "NOK", currencyName: "Norwegian Krone"},
-        {emoji: "🇸🇪", name: "Sweden", currencyCode: "SEK", currencyName: "Swedish Krona"},
-        {emoji: "🇨🇭", name: "Switzerland", currencyCode: "CHF", currencyName: "Swiss Franc"},
-        {emoji: "🇬🇧", name: "United Kingdom", currencyCode: "GBP", currencyName: "British Pound"},
-        {emoji: "🇪🇺", name: "European Union", currencyCode: "EUR", currencyName: "Euro"},
-        {emoji: "🇵🇱", name: "Poland", currencyCode: "PLN", currencyName: "Polish Zloty"}
-    ]
-    const oceaniaCountries = [
-        {emoji: "🇦🇺", name: "Australia", currencyCode: "AUD", currencyName: "Australian Dollar"},
-        {emoji: "🇳🇿", name: "New Zealand", currencyCode: "NZD", currencyName: "New Zealand Dollar"}
-    ]
-    let allCountries = [
-        ...africanCountries,
-        ...asianCountries,
-        ...europeanCountries,
-        ...northAmericanCountries,
-        ...southAmericanCountries,
-        ...oceaniaCountries
-    ];
     let result = {
         init: function () {
             let resultData;
@@ -104,11 +51,11 @@
                     contentType: 'application/json', // 전송하는 데이터의 타입을 명시
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
+                        console.log(response);
                         // 테이블 표 보이기
                         let table = document.getElementById("resultTable");
                         table.style.display = "table";
 
-                        // TODO: Refer to https://jsfiddle.net/api/post/library/pure/
                         let result_portfolio_name = document.getElementById('portfolioName2');
                         result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
 
@@ -233,7 +180,7 @@
 
                         result_final_value.innerText = total + ' ₩';
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         let errorMessage = JSON.parse(xhr.responseText).message;
                         alert(errorMessage);
                     }
@@ -260,7 +207,7 @@
                     let day = date.getDay();
                     return [(day !== 0 && day !== 6), ''];
                 },
-                onSelect: function (selected) {
+                onSelect: function () {
                     let selectedDate = $('#startDate').datepicker('getDate');
                     selectedDate.setDate(selectedDate.getDate() + 1);
                     $('#endDate').datepicker('option', 'minDate', selectedDate);
@@ -505,14 +452,6 @@
 <div class="container">
     <div style="display: flex">
         <h3 id="portfolioName">
-            <%--        <c:choose>--%>
-            <%--            <c:when test="${empty portfolio.portfolioName}">--%>
-            <%--                제목 없는 포트폴리오--%>
-            <%--            </c:when>--%>
-            <%--            <c:otherwise>--%>
-            <%--                ${portfolio.portfolioName}--%>
-            <%--            </c:otherwise>--%>
-            <%--        </c:choose>--%>
         </h3>
         <a id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none; cursor: default;">
             <img id="editIcon" src="https://i.ibb.co/n8LQ5Ys/edit-icon.png"
