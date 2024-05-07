@@ -57,7 +57,6 @@
             // 값 불러오기
             $('#portfolioName').val("${portfolio.portfolioName}");
             $('#portfolioDescription').val("${portfolio.portfolioDesc}");
-            $('#rebalancing').val(${portfolio.rebalancing});
 
             let percentages = {};
 
@@ -216,7 +215,6 @@
                 dict['userId'] = 1;
                 dict['portfolioName'] = $('#portfolioName').val();
                 dict['portfolioDesc'] = $('#portfolioDescription').val();
-                dict['rebalancing'] = $('#rebalancing').val();
 
                 for (let j = 1; j < i; j++) {
                     let key = $('#asset' + j).val();
@@ -446,17 +444,6 @@
         <div class="form-group">
             <label for="portfolioDescription">포트폴리오 상세</label>
             <input type="text" id="portfolioDescription">
-        </div>
-
-        <div class="form-group">
-            <label for="rebalancing">리밸런싱 주기</label>
-            <select id="rebalancing" name="rebalancing" class="form-control form-select">
-                <option value="0" selected>No rebalancing</option>
-                <option value="12">Rebalance annually</option>
-                <option value="6">Rebalance semi-annually</option>
-                <option value="3">Rebalance quarterly</option>
-                <option value="1">Rebalance monthly</option>
-            </select>
         </div>
     </div>
     <hr>
