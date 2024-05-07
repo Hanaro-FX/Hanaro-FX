@@ -86,13 +86,11 @@
                         nameArray.push("TOTAL");
 
                         nameArray.forEach(function (country) {
-
                             series = chart.addSeries({
                                 name: country,
                                 data: []
                             }, false);
                         })
-
 
                         Object.keys(response).forEach(function (date) {
                             let totalValue = 0;
