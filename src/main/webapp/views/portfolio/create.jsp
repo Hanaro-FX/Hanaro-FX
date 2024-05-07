@@ -240,29 +240,44 @@
         let deleteButton = document.createElement("button");
         deleteButton.textContent = "X";
         deleteButton.classList.add("btn", "delete-button");
-        deleteButton.addEventListener("mouseover", function () {
-            deleteButton.style.color = "red";
-        });
-        deleteButton.addEventListener("mouseout", function () {
-            deleteButton.style.backgroundColor = "transparent";
-            deleteButton.style.color = "black";
-        });
+
+        // 삭제 버튼에 mouseover, mouseout 이벤트 리스너 추가
+        deleteButton.addEventListener("mouseover", handleMouseOver);
+        deleteButton.addEventListener("mouseout", handleMouseOut);
+
         // 삭제 버튼 클릭 이벤트 핸들러 등록
         deleteButton.addEventListener("click", function () {
-            rowDiv.querySelector("input[type='number']").value = 0;
-            rowDiv.remove();
-            portfolio_text--;
-            create.sumPercentages();
-            // 삭제된 후에 남은 모든 행의 innerText를 재설정하여 숫자순으로 정렬
-            let assetTextElements = document.querySelectorAll('[id^="assetText"]');
-            assetTextElements.forEach((element, index) => {
-                element.innerText = "Asset" + (index + 1);
-            });
+            onDeleteButtonClick(rowDiv);
         });
 
         // 행의 맨 오른쪽에 삭제 버튼 추가
-        rowDiv.append(deleteButton);
+        rowDiv.appendChild(deleteButton);
     }
+
+    // 삭제 버튼의 mouseover 이벤트 핸들러
+    function handleMouseOver(event) {
+        event.target.style.color = "red";
+    }
+
+    // 삭제 버튼의 mouseout 이벤트 핸들러
+    function handleMouseOut(event) {
+        event.target.style.color = "black";
+    }
+
+    // 삭제 버튼 클릭 이벤트 핸들러
+    function onDeleteButtonClick(rowDiv) {
+        rowDiv.querySelector("input[type='number']").value = 0;
+        rowDiv.remove();
+        portfolio_text--;
+        create.sumPercentages();
+
+        // 삭제된 후에 남은 모든 행의 innerText를 재설정하여 숫자순으로 정렬
+        let assetTextElements = document.querySelectorAll('[id^="assetText"]');
+        assetTextElements.forEach((element, index) => {
+            element.innerText = "Asset" + (index + 1);
+        });
+    }
+
 </script>
 
 <div class="container">
