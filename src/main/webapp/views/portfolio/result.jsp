@@ -10,6 +10,7 @@
         crossorigin="anonymous"></script>
 
 <script src="<c:url value="/js/countries.js" />"></script>
+<script src="<c:url value="/js/drawChart.js"/>"></script>
 
 <script>
     let result = {
@@ -70,64 +71,8 @@
                         let day = String(lastDay.getDate()).padStart(2, '0');
                         let formattedDate = year + '-' + month + '-' + day;
 
-                        var chart = Highcharts.chart('line-chart', {
-
-                            title: {
-                                text: 'Portfolio Growth',
-                                align: 'left'
-                            },
-
-                            yAxis: {
-                                title: {
-                                    text: 'Portfolio Balance'
-                                },
-                                min: 0,
-                                max: null,
-                                tickInterval: 100
-                            },
-
-                            xAxis: {
-                                type: 'datetime',
-                                title: {
-                                    text: 'Date'
-                                },
-                                rangeSelector: {
-                                    inputDateFormat: '%b %e, %Y'
-                                }
-                            },
-
-                            legend: {
-                                layout: 'vertical',
-                                align: 'right',
-                                verticalAlign: 'middle'
-                            },
-
-                            plotOptions: {
-                                series: {
-                                    label: {
-                                        connectorAllowed: false
-                                    },
-                                    pointStart: 2010
-                                }
-                            },
-
-                            series: [],
-
-                            responsive: {
-                                rules: [{
-                                    condition: {
-                                        maxWidth: 500
-                                    },
-                                    chartOptions: {
-                                        legend: {
-                                            layout: 'horizontal',
-                                            align: 'center',
-                                            verticalAlign: 'bottom'
-                                        }
-                                    }
-                                }]
-                            }
-                        });
+                        let hcOpt = highChartOption();
+                        var chart = Highcharts.chart('line-chart', hcOpt);
 
                         /* Date Info */
                         const keys = Object.keys(response);
