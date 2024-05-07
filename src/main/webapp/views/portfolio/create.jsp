@@ -3,7 +3,6 @@
 
 <link rel="stylesheet" href="<c:url value="/css/portfolio/create-edit.css"/>"/>
 
-<%-- TODO: Data input verification--%>
 <script src="<c:url value="/js/countries.js" />"></script>
 
 <script>
@@ -24,7 +23,6 @@
                     let valSpace = $('#allocation' + j).val();
                     if (valSpace == null) continue;
                     let v = Number.parseFloat(valSpace);
-                    console.log(v);
                     total += v;
                     if (dict.hasOwnProperty(key)) {
                         alert("Duplicate input");
@@ -53,45 +51,82 @@
 
                     },
                 });
-
-
             });
             $('#addButton').click(() => {
                 this.addRow();
             });
         },
 
-        addRow: function () {
+        // 포트폴리오 구성 단계에서 자산을 추가.
+        addRow: function() {
             portfolio_id += 1;
             portfolio_text += 1;
+
+            let rowDiv = this.createRowElement();
+            let assetNum = this.createAssetNumberElement();
+            let assetColumn = this.createAssetColumnElement();
+            let select = this.createSelectElement();
+            let percentage = this.createPercentageElement();
+
+            // 각 요소를 부모 요소에 추가
+            assetColumn.appendChild(this.createAssetLabelElement());
+            assetColumn.appendChild(this.createSelectParentElement(select));
+            rowDiv.appendChild(assetNum);
+            rowDiv.appendChild(assetColumn);
+            rowDiv.appendChild(percentage);
+
+            addDeleteButton(rowDiv);
+
+            document.getElementById("pfSection").appendChild(rowDiv);
+        },
+
+        // 자산이 추가되는 행 구성.
+        createRowElement: function() {
             let rowDiv = document.createElement("div");
             rowDiv.classList.add("row", "asset-row");
+            return rowDiv;
+        },
 
+        // 자산에 대한 이름을 담은 부분 구성
+        createAssetNumberElement: function() {
             let assetNum = document.createElement("div");
             assetNum.id = "assetText" + portfolio_id;
             assetNum.classList.add("col-md-3", "separateTop", "asset-num");
             assetNum.textContent = "Asset" + portfolio_text;
             assetNum.style.fontWeight = "bold";
+            return assetNum;
+        },
 
+        // 자산에 대한 입력값을 담는 부분 구성
+        createAssetColumnElement: function() {
             let assetColumn = document.createElement("div");
             assetColumn.classList.add("col-md-5", "asset-column");
+            return assetColumn;
+        },
 
+        // 입력값에 대한 label 구성
+        createAssetLabelElement: function() {
             let assetLabel = document.createElement("label");
             assetLabel.style.display = "none";
             assetLabel.htmlFor = "asset" + portfolio_id;
             assetLabel.textContent = "Select asset " + portfolio_text;
+            return assetLabel;
+        },
 
+        // 자산으로 활용할 국가 선택 부분 구성
+        createSelectParentElement: function(select) {
             let selectParent = document.createElement("div");
             selectParent.classList.add("select-parent");
+            selectParent.appendChild(select);
+            return selectParent;
+        },
 
-            let select = this.addSelect();
+        createSelectElement: function() {
+            return this.addSelect();
+        },
 
-            selectParent.append(select);
-            assetColumn.append(assetLabel);
-            assetColumn.append(selectParent);
-            rowDiv.append(assetNum);
-            rowDiv.append(assetColumn);
-
+        // 자산 비율 구성
+        createPercentageElement: function() {
             let percentage = document.createElement("div");
             percentage.classList.add("col-md-2");
 
@@ -109,15 +144,13 @@
             percentSpan.classList.add("input-group-text");
             percentSpan.innerText = "%";
 
-            input_group.append(input, percentSpan);
-            percentage.append(input_group);
+            input_group.appendChild(input);
+            input_group.appendChild(percentSpan);
+            percentage.appendChild(input_group);
 
-            rowDiv.append(percentage);
-
-            addDeleteButton(rowDiv);
-
-            document.getElementById("pfSection").append(rowDiv);
+            return percentage;
         },
+
 
         addSelect: function (i) {
             let assetSelect = document.createElement("select");
