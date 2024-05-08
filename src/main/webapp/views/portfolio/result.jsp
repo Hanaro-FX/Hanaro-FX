@@ -11,9 +11,11 @@
 
 <script src="<c:url value="/js/countries.js" />"></script>
 <script src="<c:url value="/js/drawChart.js"/>"></script>
-<script src="<c:url value="/js/datepicker.js"/>"></script>
 
 <script>
+    function formatNumber(number) {
+        return Number(number.toFixed(3));
+    }
     function initializeDatepicker(selector, minDate, maxDate, onSelectCallback) {
         $(selector).datepicker({
             startYear: 2000,
@@ -118,15 +120,16 @@
                         Object.keys(response).forEach(function (date) {
                             let totalValue = 0;
                             Object.keys(response[date]).forEach(function (country) {
-                                totalValue += response[date][country]; // 각 나라의 값을 총합에 더합니다.
+                                let currentCurrency = formatNumber(response[date][country]);
+                                totalValue += currentCurrency; // 각 나라의 값을 총합에 더합니다.
                                 const seriesIndex = nameArray.indexOf(country);
                                 const series = chart.series[seriesIndex];
 
-                                series.addPoint([Date.parse(date), response[date][country]], false);
+                                series.addPoint([Date.parse(date), currentCurrency], false);
                             });
                             const seriesIndex = nameArray.indexOf("TOTAL"); // "Total"이라는 가상의 나라를 추가합니다.
                             const series = chart.series[seriesIndex];
-                            series.addPoint([Date.parse(date), totalValue], false); // 각 날짜별 총합을 차트에 추가합니다.
+                            series.addPoint([Date.parse(date), formatNumber(totalValue)], false); // 각 날짜별 총합을 차트에 추가합니다.
                         });
 
                         chart.redraw();
@@ -134,7 +137,7 @@
                         let info_of_last_day = response[formattedDate];
 
                         // info_of_last_day의 값들을 가져와서 합산
-                        const total = Object.values(info_of_last_day).reduce((acc, curr) => acc + curr, 0);
+                        const total = formatNumber(Object.values(info_of_last_day).reduce((acc, curr) => acc + curr, 0));
 
                         result_final_value.innerText = total + ' ₩';
                     },
