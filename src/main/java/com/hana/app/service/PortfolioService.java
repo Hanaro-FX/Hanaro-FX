@@ -22,6 +22,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
 
     HashMap<String, Integer> countryCnt = new HashMap<>();
     HashMap<String, Double> countryPercentage = new HashMap<>();
+    Double curValTotal = 0.0;
     Double leftCash = 0.0;
     LocalDate startDate;
     LocalDate endDate;
@@ -106,6 +107,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
     public HashMap<String, Double> calcCountryValue(HashMap<String, HashMap<LocalDate, Double>> country_date_currency, LocalDate currentDate) {
         HashMap<String, Double> countryValue = new HashMap<>();
 
+        curValTotal = 0.0;
         country_date_currency.forEach((country, dateCurrency) -> {
             if (!dateCurrency.containsKey(currentDate)) {
                 int days_before = 1;
@@ -120,15 +122,23 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
                 dateCurrency.put(currentDate, recent_currency);
             }
             double curVal = dateCurrency.get(currentDate) * countryCnt.get(country);
+
+            //log.info("country : " + country + " | currentDate : " + currentDate + " | curVal : " + curVal);
+            curValTotal += curVal;
             countryValue.put(country, curVal);
         });
 
+        long dateDiff = ChronoUnit.DAYS.between(startDate, currentDate);
+        if (dateDiff % rebalance == 0) {
+            leftCash = initAmount - curValTotal;
+        }
+        log.info("currentDate : " + currentDate + " | leftCash : " + leftCash);
         countryValue.put("cash", leftCash);
         return countryValue;
     }
 
     public HashMap<String, Double> rebalanceCountryValue(HashMap<String, Double> countryValue, HashMap<String, HashMap<LocalDate, Double>> country_date_currency, LocalDate currentDate) {
-        long dateDiff = ChronoUnit.DAYS.between(currentDate, startDate);
+        long dateDiff = ChronoUnit.DAYS.between(startDate, currentDate);
         if (dateDiff % rebalance == 0) {
             // currentDate 일자에 모든 국가의 가치의 합.
             double sum = 0;
@@ -170,7 +180,6 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
         Map<LocalDate, HashMap<String, Double>> dcc = new HashMap<>();
 
         for (LocalDate currentDate : allDates) {
-            //
             HashMap<String, Double> countryValue = calcCountryValue(country_date_currency, currentDate);
 
             countryValue = rebalanceCountryValue(countryValue, country_date_currency, currentDate);
