@@ -18,7 +18,7 @@
 - 포트폴리오 테스트 결과를 그래프로 시각화하여 사용자가 직관적으로 투자 성과를 확인할 수 있습니다.
 <br/>
 
-![test](https://github.com/Hanaro-FX/Hanaro-FX/assets/68561229/bbbe681e-d5d7-4aab-ade5-dbe838728317)
+![test](https://github.com/Hanaro-FX/Hanaro-FX/assets/68561229/36ee4ef0-4957-4f6c-861b-15b26df17e42)
 <br/>
 <br/>
 
