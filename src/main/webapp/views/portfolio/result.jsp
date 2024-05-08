@@ -367,7 +367,7 @@
                 title: title,
                 description: description,
                 imageUrl:
-                    '<c:url value="http://localhost:8080/img/Hanaro-FX.png"/>',
+                    '<c:url value="http://43.202.39.221:8080/img/Hanaro-FX.png"/>',
                 link: {
                     mobileWebUrl: url,
                     webUrl: url,

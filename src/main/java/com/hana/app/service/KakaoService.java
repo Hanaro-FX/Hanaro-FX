@@ -50,7 +50,7 @@ public class KakaoService{
                 .append(kakaoLoginUri)
                 .append("?response_type=code")
                 .append("&client_id=").append(kakaoClientId)
-                .append("&redirect_uri=").append("http://localhost:8080").append(kakaoLoginRedirectUri);
+                .append("&redirect_uri=").append("http://43.202.39.221:8080").append(kakaoLoginRedirectUri);
 
         log.info(String.valueOf(url));
         return String.valueOf(url);
@@ -71,7 +71,7 @@ public class KakaoService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=").append(kakaoClientId);
-            sb.append("&redirect_uri=http://localhost:8080").append(kakaoLoginRedirectUri);
+            sb.append("&redirect_uri=http://43.202.39.221:8080").append(kakaoLoginRedirectUri);
             sb.append("&code=").append(code);
             bw.write(sb.toString());
             bw.flush();
@@ -142,7 +142,7 @@ public class KakaoService{
         StringBuilder url = new StringBuilder() // 1-1. 카카오 api 로그아웃
                 .append(kakaoLogoutUri)
                 .append("?client_id=").append(kakaoClientId)
-                .append("&logout_redirect_uri=").append("http://localhost:8080").append(kakaoLogoutRedirectUri);
+                .append("&logout_redirect_uri=").append("http://43.202.39.221:8080").append(kakaoLogoutRedirectUri);
 
         log.info(String.valueOf(url));
         return String.valueOf(url);
