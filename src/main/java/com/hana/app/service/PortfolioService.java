@@ -20,13 +20,13 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
 
     final PortfolioRepository portfolioRepository;
 
-    HashMap<String, Double> countryCnt = new HashMap<>();
+    HashMap<String, Integer> countryCnt = new HashMap<>();
     HashMap<String, Double> countryPercentage = new HashMap<>();
-
+    Double leftCash = 0.0;
     LocalDate startDate;
     LocalDate endDate;
     List<LocalDate> allDates = new ArrayList<>();
-
+    Double initAmount;
     int rebalance;
 
     @Override
@@ -69,7 +69,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
         LocalDate startDate = requestData[0].getStartDate();
         LocalDate endDate = requestData[0].getEndDate();
         HashMap<String, HashMap<LocalDate, Double>> country_date_currency = new HashMap<>();
-
+        Double tempSum = 0.0;
         for (PortfolioQueryDTO requestDatum : requestData) {
             String tableName = requestDatum.getTableName();
             double percentage = requestDatum.getPercentage() / 100;
@@ -85,8 +85,9 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
                 throw new Exception("해당 날짜에 " + tableName + "의 환율 데이터가 존재하지 않습니다.");
             }
 
-            double initialCnt = partialAmount / dateCurrency.get(0).getStandardRate();
+            int initialCnt = (int) Math.floor(partialAmount / dateCurrency.get(0).getStandardRate());
 
+            tempSum += initialCnt * dateCurrency.get(0).getStandardRate();
             // 초기 자본으로 구매한 외화 수
             countryCnt.put(tableName, initialCnt);
             countryPercentage.put(tableName, percentage);
@@ -98,6 +99,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
             }
             country_date_currency.put(tableName, minimap);
         }
+        leftCash = initAmount - tempSum;
         return country_date_currency;
     }
 
@@ -106,13 +108,22 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
 
         country_date_currency.forEach((country, dateCurrency) -> {
             if (!dateCurrency.containsKey(currentDate)) {
-                LocalDate yesterday = currentDate.minusDays(1);
-                // 전 날의 데이터도 없다면, 그냥 0 처리
-                dateCurrency.put(currentDate, dateCurrency.get(yesterday) == null ? 0 : dateCurrency.get(yesterday));
+                int days_before = 1;
+                double recent_currency = 0.0;
+                while (true) {
+                    LocalDate beforeDate = currentDate.minusDays(days_before++);
+                    if (dateCurrency.get(beforeDate) != null) {
+                        recent_currency = dateCurrency.get(beforeDate);
+                        break;
+                    }
+                }
+                dateCurrency.put(currentDate, recent_currency);
             }
-            countryValue.put(country, dateCurrency.get(currentDate) * countryCnt.get(country));
+            double curVal = dateCurrency.get(currentDate) * countryCnt.get(country);
+            countryValue.put(country, curVal);
         });
 
+        countryValue.put("cash", leftCash);
         return countryValue;
     }
 
@@ -126,13 +137,19 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
             }
 
             final double finalSum = sum;
+            leftCash = sum;
 
             countryValue.forEach((country, value) -> {
-                double currentCurrency = country_date_currency.get(country).get(currentDate);
-                double newCnt = finalSum * countryPercentage.get(country) / currentCurrency;
-                countryCnt.put(country, newCnt);
-                countryValue.put(country, currentCurrency * countryCnt.get(country));
+                if (!Objects.equals(country, "cash")) {
+                    double currentCurrency = country_date_currency.get(country).get(currentDate);
+                    int newCnt = (int) (finalSum * countryPercentage.get(country) / currentCurrency);
+                    countryCnt.put(country, newCnt);
+                    leftCash -= newCnt * currentCurrency;
+                    double curVal = currentCurrency * countryCnt.get(country);
+                    countryValue.put(country, curVal);
+                }
             });
+            countryValue.put("cash", leftCash);
         }
         return countryValue;
     }
@@ -143,7 +160,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
         startDate = dummy.getStartDate();
         endDate = dummy.getEndDate().plusDays(2);
         allDates = startDate.datesUntil(endDate).toList();
-
+        initAmount = dummy.getInitialAmount();
         countryCnt = new HashMap<>();
         countryPercentage = new HashMap<>();
 
