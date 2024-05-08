@@ -75,6 +75,8 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
             String tableName = requestDatum.getTableName();
             double percentage = requestDatum.getPercentage() / 100;
             double partialAmount = requestDatum.getInitialAmount() * percentage;
+
+            // 설정한 일자보다 더 많은 데이터를 받아와서 cold start problem을 해결
             PortfolioQueryDTO portfolioQueryDTO = PortfolioQueryDTO.builder().tableName(tableName).startDate(startDate.minusDays(7)).endDate(endDate).build();
             // 한 국가에게 주어진 기간동안의 모든 일자, 환율 정보
             List<PortfolioResultDTO> dateCurrency = portfolioRepository.getCurrencyByCountryDate(portfolioQueryDTO);

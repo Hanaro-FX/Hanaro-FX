@@ -10,6 +10,8 @@
         crossorigin="anonymous"></script>
 
 <script src="<c:url value="/js/countries.js" />"></script>
+<script src="<c:url value="/js/drawChart.js"/>"></script>
+<script src="<c:url value="/js/datepicker.js"/>"></script>
 
 <script>
     let result = {
@@ -51,7 +53,6 @@
                     contentType: 'application/json', // 전송하는 데이터의 타입을 명시
                     data: JSON.stringify(dArr), // 객체를 JSON 문자열로 변환하여 전송
                     success: function (response) {
-                        console.log(response);
                         // 테이블 표 보이기
                         let table = document.getElementById("resultTable");
                         table.style.display = "table";
@@ -70,90 +71,25 @@
                         let day = String(lastDay.getDate()).padStart(2, '0');
                         let formattedDate = year + '-' + month + '-' + day;
 
-                        var chart = Highcharts.chart('line-chart', {
+                        let hcOpt = highChartOption();
+                        var chart = Highcharts.chart('line-chart', hcOpt);
 
-                            title: {
-                                text: 'Portfolio Growth',
-                                align: 'left'
-                            },
-
-                            yAxis: {
-                                title: {
-                                    text: 'Portfolio Balance'
-                                },
-                                min: 0,
-                                max: null,
-                                tickInterval: 100
-                            },
-
-                            xAxis: {
-                                type: 'datetime',
-                                title: {
-                                    text: 'Date'
-                                },
-                                rangeSelector: {
-                                    inputDateFormat: '%b %e, %Y'
-                                }
-                            },
-
-                            legend: {
-                                layout: 'vertical',
-                                align: 'right',
-                                verticalAlign: 'middle'
-                            },
-
-                            plotOptions: {
-                                series: {
-                                    label: {
-                                        connectorAllowed: false
-                                    },
-                                    pointStart: 2010
-                                }
-                            },
-
-                            series: [],
-
-                            responsive: {
-                                rules: [{
-                                    condition: {
-                                        maxWidth: 500
-                                    },
-                                    chartOptions: {
-                                        legend: {
-                                            layout: 'horizontal',
-                                            align: 'center',
-                                            verticalAlign: 'bottom'
-                                        }
-                                    }
-                                }]
-                            }
-                        });
-
-                        /* Date Info */
-                        const keys = Object.keys(response);
                         // 국가명을 담은 배열
-                        const nameArray = [];
-                        keys.forEach(key => {
-                            /* Country, currency */
-                            const currencies = response[key];
-                            Object.keys(currencies).forEach(country => {
-                                if (!nameArray.includes(country)) {
-                                    nameArray.push(country);
-                                }
-                            });
-                        });
+                        let dupNameArray = [];
+                        Object.values(response).forEach((nameValue) => {
+                            dupNameArray.push(...Object.keys(nameValue));
+                        })
+                        let nameArray = [...new Set(dupNameArray)];
 
                         // TODO: currency에 total 추가
                         nameArray.push("TOTAL");
 
                         nameArray.forEach(function (country) {
-
                             series = chart.addSeries({
                                 name: country,
                                 data: []
                             }, false);
                         })
-
 
                         Object.keys(response).forEach(function (date) {
                             let totalValue = 0;
@@ -172,11 +108,9 @@
                         chart.redraw();
 
                         let info_of_last_day = response[formattedDate];
-                        console.log(info_of_last_day);
-                        let total = 0;
-                        for (const key in info_of_last_day) {
-                            total += info_of_last_day[key];
-                        }
+
+                        // info_of_last_day의 값들을 가져와서 합산
+                        const total = Object.values(info_of_last_day).reduce((acc, curr) => acc + curr, 0);
 
                         result_final_value.innerText = total + ' ₩';
                     },
@@ -187,60 +121,10 @@
                 });
             });
 
-            $('#startDate').datepicker({
-                startYear: 2000,
-                finalYear: new Date().getFullYear(),
-                monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                dateFormat: 'yy-mm-dd',
-                showOtherMonths: true,
-                showMonthAfterYear: true,
-                changeYear: true,
-                changeMonth: true,
-                showOn: 'both',
-                buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
-                buttonImageOnly: true,
-                minDate: new Date(2000, 0),
-                maxDate: new Date(2024, 2, 31),
-                yearRange: '2000:c',
-                beforeShowDay: function (date) {
-                    let day = date.getDay();
-                    return [(day !== 0 && day !== 6), ''];
-                },
-                onSelect: function () {
-                    let selectedDate = $('#startDate').datepicker('getDate');
-                    selectedDate.setDate(selectedDate.getDate() + 1);
-                    $('#endDate').datepicker('option', 'minDate', selectedDate);
-                    $("#ui-datepicker-div").find(".ui-state-active").removeClass("ui-state-active");
-                }
-            });
-            $('#endDate').datepicker({
-                startYear: 2000,
-                finalYear: new Date().getFullYear(),
-                monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                dateFormat: 'yy-mm-dd',
-                showOtherMonths: true,
-                showMonthAfterYear: true,
-                changeYear: true,
-                changeMonth: true,
-                showOn: 'both',
-                buttonImage: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png",
-                buttonImageOnly: true,
-                minDate: new Date(2000, 0),
-                maxDate: new Date(2024, 2, 31),
-                yearRange: '2000:c',
-                beforeShowDay: function (date) {
-                    let day = date.getDay();
-                    return [(day !== 0 && day !== 6), ''];
-                },
-                onSelect: function (selected) {
-                    let selectedDate = $('#endDate').datepicker('getDate');
-                    selectedDate.setDate(selectedDate.getDate() - 1);
-                    $('#startDate').datepicker('option', 'maxDate', selectedDate);
-                    $("#ui-datepicker-div").find(".ui-state-active").removeClass("ui-state-active");
-                }
-            });
+            let datepicker_min = datePickerOption('minDate');
+            let datepicker_max = datePickerOption('maxDate');
+            $('#startDate').datepicker(datepicker_min);
+            $('#endDate').datepicker(datepicker_max);
 
             $.ajax({
                 url: '<c:url value="/portfolio/resultImpl"/>',
@@ -260,187 +144,10 @@
                     console.log(portfolioName, portfolioDesc, portfolioDate);
                     google.charts.load('current', {'packages': ['corechart']});
                     google.charts.setOnLoadCallback(function () {
-                        drawChart(data);
+                        resultData = drawChart(data, document.getElementById('piechart'));
                     });
                 }
             })
-
-            let getData = function (dd) {
-                {
-                    let portfolio = dd;
-                    data = [];
-
-                    if (portfolio.percentageAED !== 0) {
-                        data.push(['🇦🇪AED', portfolio.percentageAED]);
-                    }
-                    if (portfolio.percentageARS !== 0) {
-                        data.push(['🇦🇷ARS', portfolio.percentageARS]);
-                    }
-
-                    if (portfolio.percentageAUD !== 0) {
-                        data.push(['🇦🇺AUD', portfolio.percentageAUD]);
-                    }
-
-                    if (portfolio.percentageBHD !== 0) {
-                        data.push(['🇧🇭BHD', portfolio.percentageBHD]);
-                    }
-
-                    if (portfolio.percentageCAD !== 0) {
-                        data.push(['🇨🇦CAD', portfolio.percentageCAD]);
-                    }
-
-                    if (portfolio.percentageCHF !== 0) {
-                        data.push(['🇨🇭CHF', portfolio.percentageCHF]);
-                    }
-
-                    if (portfolio.percentageCNY !== 0) {
-                        data.push(['🇨🇳CNY', portfolio.percentageCNY]);
-                    }
-
-                    if (portfolio.percentageDKK !== 0) {
-                        data.push(['🇩🇰DKK', portfolio.percentageDKK]);
-                    }
-
-                    if (portfolio.percentageEUR !== 0) {
-                        data.push(['🇪🇺EUR', portfolio.percentageEUR]);
-                    }
-
-                    if (portfolio.percentageGBP !== 0) {
-                        data.push(['🇬🇧GBP', portfolio.percentageGBP]);
-                    }
-
-                    if (portfolio.percentageHKD !== 0) {
-                        data.push(['🇭🇰HKD', portfolio.percentageHKD]);
-                    }
-
-                    if (portfolio.percentageHUF !== 0) {
-                        data.push(['🇭🇺HUF', portfolio.percentageHUF]);
-                    }
-
-                    if (portfolio.percentageIDR !== 0) {
-                        data.push(['🇮🇩IDR', portfolio.percentageIDR]);
-                    }
-
-                    if (portfolio.percentageILS !== 0) {
-                        data.push(['🇮🇱ILS', portfolio.percentageILS]);
-                    }
-
-                    if (portfolio.percentageINR !== 0) {
-                        data.push(['🇮🇳INR', portfolio.percentageINR]);
-                    }
-
-                    if (portfolio.percentageJPY !== 0) {
-                        data.push(['🇯🇵JPY', portfolio.percentageJPY]);
-                    }
-
-                    if (portfolio.percentageKWD !== 0) {
-                        data.push(['🇰🇼KWD', portfolio.percentageKWD]);
-                    }
-
-                    if (portfolio.percentageMXN !== 0) {
-                        data.push(['🇲🇽MXN', portfolio.percentageMXN]);
-                    }
-
-                    if (portfolio.percentageMYR !== 0) {
-                        data.push(['🇲🇾MYR', portfolio.percentageMYR]);
-                    }
-
-                    if (portfolio.percentageNOK !== 0) {
-                        data.push(['🇳🇴NOK', portfolio.percentageNOK]);
-                    }
-
-                    if (portfolio.percentageNZD !== 0) {
-                        data.push(['🇳🇿NZD', portfolio.percentageNZD]);
-                    }
-
-                    if (portfolio.percentagePHP !== 0) {
-                        data.push(['🇵🇭PHP', portfolio.percentagePHP]);
-                    }
-
-                    if (portfolio.percentagePKR !== 0) {
-                        data.push(['🇵🇰PKR', portfolio.percentagePKR]);
-                    }
-
-                    if (portfolio.percentagePLN !== 0) {
-                        data.push(['🇵🇱PLN', portfolio.percentagePLN]);
-                    }
-
-                    if (portfolio.percentageQAR !== 0) {
-                        data.push(['🇶🇦QAR', portfolio.percentageQAR]);
-                    }
-
-                    if (portfolio.percentageRUB !== 0) {
-                        data.push(['🇷🇺RUB', portfolio.percentageRUB]);
-                    }
-
-                    if (portfolio.percentageSAR !== 0) {
-                        data.push(['🇸🇦SAR', portfolio.percentageSAR]);
-                    }
-
-                    if (portfolio.percentageSEK !== 0) {
-                        data.push(['🇸🇪SEK', portfolio.percentageSEK]);
-                    }
-
-                    if (portfolio.percentageSGD !== 0) {
-                        data.push(['🇸🇬SGD', portfolio.percentageSGD]);
-                    }
-
-                    if (portfolio.percentageTHB !== 0) {
-                        data.push(['🇹🇭THB', portfolio.percentageTHB]);
-                    }
-
-                    if (portfolio.percentageTRY !== 0) {
-                        data.push(['🇹🇷TRY', portfolio.percentageTRY]);
-                    }
-
-                    if (portfolio.percentageTWD !== 0) {
-                        data.push(['🇹🇼TWD', portfolio.percentageTWD]);
-                    }
-
-                    if (portfolio.percentageUSD !== 0) {
-                        data.push(['🇺🇸USD', portfolio.percentageUSD]);
-                    }
-
-                    if (portfolio.percentageVND !== 0) {
-                        data.push(['🇻🇳VND', portfolio.percentageVND]);
-                    }
-
-                    if (portfolio.percentageZAR !== 0) {
-                        data.push(['🇿🇦ZAR', portfolio.percentageZAR]);
-                    }
-
-                    return data;
-                }
-            }
-
-            // Pie Chart
-            let drawChart = function (dd) {
-                let currencyData = getData(dd);
-                resultData = currencyData;
-                let data = google.visualization.arrayToDataTable([
-                    ['Currency', 'Ratio'],
-                    ...currencyData
-                ]);
-
-                let options = {
-                    'title': '선택한 외화',
-                    'colors': [
-                        '#C8E6C9', '#A5D6A7', '#81C784', '#66BB6A', '#4CAF50',
-                        '#43A047', '#388E3C', '#2E7D32', '#1B5E20', '#8BC34A',
-                        '#9CCC65', '#7CB342', '#689F38', '#558B2F', '#33691E',
-                        '#CCFF90', '#B2FF59', '#76FF03', '#64DD17', '#00C853',
-                        '#AED581', '#81C784', '#4CAF50', '#66BB6A', '#43A047',
-                        '#2E7D32', '#1B5E20', '#8BC34A', '#9CCC65', '#7CB342',
-                        '#689F38', '#558B2F', '#33691E'
-                    ],
-                    'width': 400,
-                    'height': 280,
-                    'chartArea': {left: 10, right: 10, top: 20, bottom: 10}
-                };
-
-                let chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                chart.draw(data, options);
-            }
 
         }
     };
