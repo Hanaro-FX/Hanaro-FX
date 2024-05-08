@@ -47,6 +47,10 @@ dependencies {
 
     // JSON parsing
     implementation 'com.google.code.gson:gson'
+
+    // test
+    testImplementation 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
