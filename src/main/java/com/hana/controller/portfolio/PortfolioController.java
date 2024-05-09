@@ -71,6 +71,16 @@ public class PortfolioController {
     public String resultView(@RequestParam("id") Integer id, Model model) throws Exception {
         model.addAttribute("center", dir + "result");
         model.addAttribute("id", id);
+        model.addAttribute("share", 0);
+        return "index";
+    }
+
+    // 포트폴리오 공유
+    @RequestMapping("/result/share")
+    public String resultShareView(@RequestParam("id") Integer id, Model model) throws Exception {
+        model.addAttribute("center", dir + "result");
+        model.addAttribute("id", id);
+        model.addAttribute("share", 1);
         return "index";
     }
 
