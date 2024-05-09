@@ -185,6 +185,10 @@
                         alert("Invalid Input");
                         return;
                     }
+                    if (valSpace < 0) {
+                        alert("Invalid Input");
+                        return;
+                    }
                     dict[key] = v;
                 }
                 if (total != 100) {
@@ -343,6 +347,10 @@
                 let allocationInput = document.getElementById("allocation" + j);
                 if (allocationInput) {
                     let value = parseFloat(allocationInput.value);
+                    if (value > 100 || value < 0) {
+                        allocationInput.style.backgroundColor = 'rgb(255, 200, 200)';
+                    }
+
                     if (!isNaN(value)) {
                         total += value;
                     }
