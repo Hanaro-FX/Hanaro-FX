@@ -112,7 +112,7 @@ public class PortfolioService implements BaseService<Integer, PortfolioDTO> {
             if (!dateCurrency.containsKey(currentDate)) {
                 int days_before = 1;
                 double recent_currency = 0.0;
-                while (true) {
+                while (days_before <= 10) {
                     LocalDate beforeDate = currentDate.minusDays(days_before++);
                     if (dateCurrency.get(beforeDate) != null) {
                         recent_currency = dateCurrency.get(beforeDate);

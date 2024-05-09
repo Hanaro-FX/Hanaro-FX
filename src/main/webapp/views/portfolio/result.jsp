@@ -87,9 +87,14 @@
                         result_portfolio_name.innerText = document.getElementById('portfolioName').innerText;
 
                         let result_initial_value = document.getElementById('initialValue');
+                        if(Number.parseFloat($('#initialAmount').val()) > 1000000000000) {
+                            alert("Amount too large");
+                            return;
+                        }
                         result_initial_value.innerText = Number.parseFloat($('#initialAmount').val()) + ' ₩';
 
                         let result_final_value = document.getElementById('finalValue');
+
 
                         let lastDay = $('#endDate').datepicker('getDate');
                         let year = lastDay.getFullYear();
